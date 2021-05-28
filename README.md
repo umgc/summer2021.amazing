@@ -5,6 +5,7 @@
 ## DevOps
 - Rob Wilson
 - Michelle
+- Jeroen Soeurt
 
 ## Team Amazing
 - 
