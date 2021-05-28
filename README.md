@@ -4,9 +4,8 @@
 
 ## DevOps
 - Rob Wilson
+- Michelle
 
 ## Team Amazing
 - 
-
-## Michelle has made an update
 
