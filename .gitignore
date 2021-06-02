@@ -1,0 +1,8 @@
+# Ignore local build
+\build
+
+# Ignore dart tools on client
+\.dart_tool
+
+# Ignore local package file
+/*.packages
