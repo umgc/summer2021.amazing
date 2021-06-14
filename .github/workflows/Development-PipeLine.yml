@@ -1,0 +1,90 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Dev Linter, Build, Unit Test
+
+env:
+  FLUTTER_VERSION: "debug"
+  
+on:
+  push:
+    branches: [ developer ]
+  pull_request:
+    branches: [ developer ]
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    name: Lint flutter code
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Setup Flutter
+#      - name: Set up Flutter
+#        uses: subosito/flutter-action@v1
+#        
+#      # Add formating standards
+#      - run: flutter pub add --dev effective_dart
+#      - run: flutter pub get
+#
+#      # Analyze
+#      - name: Analyze Flutter
+#        uses: ValentinVignal/action-dart-analyze@v0.11
+#        with:
+#          fail-on: "format"
+        
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      
+#      - name: Set up Flutter
+#        uses: subosito/flutter-action@v1
+#      - run: flutter pub get
+#      
+#      - name: Run tests
+#        run: flutter test
+
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+
+    steps:          
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      
+#      - name: Set up Flutter
+#        uses: subosito/flutter-action@v1
+#      - run: flutter pub get
+#        
+#      - name: Build APK
+#        run: flutter build apk --${{env.FLUTTER_VERSION}}
+#        
+#      - name: Build Web
+#        run: flutter build web
+
+# Disabled on 13 Jun... need to setup project in SonarCloud        
+#      - name: SonarCloud Scan
+#        uses: SonarSource/sonarcloud-github-action@master
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+#          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+     
+#      - name: 'Upload APK Artifact'
+#        uses: 'actions/upload-artifact@v2'
+#        with:
+#          name: hello-flutter-apk-${{env.FLUTTER_VERSION}}
+#          path: build/app/outputs/flutter-apk/*.apk
+#          
+#      - name: 'Upload Web Artifacts'
+#        uses: 'actions/upload-artifact@v2'
+#        with:
+#          name: hello-flutter-web-${{env.FLUTTER_VERSION}}
+#          path: build/web/**/*.*
+
