@@ -1,6 +1,3 @@
-# Ignore local package file
-*.packages
-
 # Miscellaneous
 *.class
 *.log
