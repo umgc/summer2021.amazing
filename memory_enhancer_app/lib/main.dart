@@ -4,9 +4,35 @@ import 'package:avatar_glow/avatar_glow.dart';
 import 'package:flutter/material.dart';
 import 'package:highlight_text/highlight_text.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package: path provider/path_provider. dart';
 
 void main() {
   runApp(MyApp());
+   Class FileOperation {
+    Future<String> get localpath async {
+      final directory = await getApplicationDocumentsDirectory() ;
+      return directory.path;
+    }
+
+    Future<File> get localFile async{
+      final path = await_localpath;
+      return File("$path/counter.txt");
+    }
+
+    Future<int> readCounter() async {
+      try {
+        final file = await_localFile;
+        String content = await file. readAsString() ;
+        return int.parse(content);
+      } catch (e) {
+        return 0;
+      }
+    }
+    Future<File> WriteCounter(int counter) async {
+      final file = await_localFile;
+    }
+  }
+}
 }
 
 class MyApp extends StatelessWidget {
