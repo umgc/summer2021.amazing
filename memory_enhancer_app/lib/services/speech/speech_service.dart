@@ -1,3 +1,7 @@
+//**************************************************************
+// Speech Service
+// Author: Christian Ahmed
+//**************************************************************
 import 'package:injectable/injectable.dart';
 import 'package:porcupine/porcupine.dart';
 import 'package:porcupine/porcupine_error.dart';
@@ -21,7 +25,7 @@ class SpeechService with ReactiveServiceMixin {
 
     speechAvailable = await speech.initialize(
       onStatus: (status) async {
-        print('Speech to text status: ' + status);
+        print('Speech-to-text status: ' + status);
 
         // Need to restart PorcupineManager if there is no detection
         if (speech.isNotListening) {
@@ -68,21 +72,22 @@ class SpeechService with ReactiveServiceMixin {
     await speech.stop();
   }
 
-  /// Create an instance of your porcupineManager which will listen for the given wake words
-  /// Must call start on the manager to actually start listening
+  // Create an instance of your porcupineManager which will listen for the given wake words
+  // Must call start on the manager to actually start listening
   Future<void> createPorcupineManager() async {
     try {
-      porcupineManager = await PorcupineManager.fromKeywords(Porcupine.BUILT_IN_KEYWORDS, wakeWordCallback);
+      porcupineManager = await PorcupineManager.fromKeywords(
+          Porcupine.BUILT_IN_KEYWORDS, wakeWordCallback);
     } on PvError catch (err) {
       // handle porcupine init error
       print('Porcupine error: ' + (err.message ?? 'None'));
     }
   }
 
-  /// The function that's triggered when the Porcupine instance recognizes a wake word
-  /// Input is the index of the wake word in the list of those being used
+  // The function that's triggered when the Porcupine instance recognizes a wake word
+  // Input is the index of the wake word in the list of those being used
   Future<void> wakeWordCallback(int word) async {
-    print('Wake word index: ' + word.toString());
+    print('Wake word index : ' + word.toString());
 
     // Terminator - resets audio resources
     if (word == 13) {
@@ -94,7 +99,7 @@ class SpeechService with ReactiveServiceMixin {
     }
   }
 
-  /// Begin listening for a wake word
+  // Begin listening for a wake word
   Future<void> listenForWakeWord() async {
     try {
       await porcupineManager?.start();
@@ -104,11 +109,13 @@ class SpeechService with ReactiveServiceMixin {
     }
   }
 
+  // Stop listening for a wake word
   Future<void> stopListeningForWakeWord() async {
     print('Stopping wake word listener');
     await porcupineManager?.stop();
   }
 
+  // Dispose all the resources
   Future<void> disposeResources() async {
     print('Disposing speech resources');
     porcupineManager?.delete();
@@ -116,7 +123,7 @@ class SpeechService with ReactiveServiceMixin {
     await speech.stop();
   }
 
-  /// Keep the screen on while the voice recognition screen is open
+  // Keep the screen on while the voice recognition screen is open
   void setWakelock(bool val) {
     val ? Wakelock.enable() : Wakelock.disable();
   }

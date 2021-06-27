@@ -1,3 +1,7 @@
+//**************************************************************
+// Settings view UI
+// Author:
+//**************************************************************
 import 'package:memory_enhancer_app/app/themes/light_Theme.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';

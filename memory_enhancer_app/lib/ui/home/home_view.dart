@@ -1,6 +1,10 @@
+//**************************************************************
+// Home view UI
+// Author: Christian Ahmed
+//**************************************************************
 import 'package:memory_enhancer_app/app/themes/light_Theme.dart';
 import 'package:memory_enhancer_app/services/services.dart';
-import 'package:memory_enhancer_app/ui/drawer/drawer.dart';
+import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
 import 'package:memory_enhancer_app/ui/home/home_view_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +20,8 @@ class HomeView extends StatelessWidget {
   Widget build(BuildContext context) {
 
     return ViewModelBuilder<HomeViewModel>.reactive(
+
+      // Initialize the HomeView model
       viewModelBuilder: () => HomeViewModel(),
       onModelReady: (model) {
         model.initialize();
@@ -24,7 +30,7 @@ class HomeView extends StatelessWidget {
       builder: (context, model, child) {
         return Scaffold(
             backgroundColor: lightTheme.primaryColor,
-            endDrawer: NavDrawer(),
+            endDrawer: NavigationController(),
             appBar: AppBar(
               title: Text(
                 'Memory Enhancer',

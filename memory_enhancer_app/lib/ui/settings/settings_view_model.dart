@@ -1,4 +1,7 @@
-import 'package:memory_enhancer_app/services/services.dart';
+//**************************************************************
+// Settings view model
+// Author:
+//**************************************************************
 import 'package:stacked/stacked.dart';
 
 class SettingsViewModel extends BaseViewModel{

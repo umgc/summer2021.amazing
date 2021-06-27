@@ -1,3 +1,7 @@
+//**************************************************************
+// Home view model
+// Author: Christian Ahmed
+//**************************************************************
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
@@ -5,6 +9,7 @@ import 'package:stacked/stacked.dart';
 class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
   String recognizedWords = '';
 
+  // Boolean storing value whether the speech engine is listening or not
   bool get listening {
     return speechService.speech.isListening;
   }
