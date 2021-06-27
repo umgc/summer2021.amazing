@@ -31,6 +31,7 @@ dependencies:
   speech_to_text: ^4.2.1
   avatar_glow: ^2.0.1
   highlight_text: ^1.0.0
+  path_provider: ^2.0.2
 
 dev_dependencies:
   flutter_test:
@@ -75,5 +76,9 @@ flutter:
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
   #
+  fonts:
+    - family:  MyFlutterApp
+      fonts:
+        - asset: fonts/MyFlutterApp.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
