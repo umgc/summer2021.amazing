@@ -100,13 +100,13 @@ class _BottomNavigationBarControllerState
   void _onTapped(int index) {
     switch (index) {
       case 0:
-        appRouter.push(HomeViewRoute());
+        appRouter.navigate(HomeViewRoute());
         break;
       case 2:
         appRouter.push(SettingsViewRoute());
         break;
       default:
-        appRouter.push(HomeViewRoute());
+        appRouter.navigate(HomeViewRoute());
     }
     setState(() {
       _selectedIndex = index;
@@ -144,7 +144,7 @@ class _BottomNavigationBarControllerState
           onTap: _onTapped,
           type: BottomNavigationBarType.fixed,
           iconSize: 55,
-          selectedItemColor: Colors.grey[600],
+          selectedItemColor: Colors.black,
           selectedFontSize: 16.0,
           unselectedFontSize: 16.0,
           unselectedLabelStyle:
