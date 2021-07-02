@@ -35,28 +35,33 @@ class FileOperations {
 
   /// Reads notes from file.
   Future<String> readNotes() async {
-    return await rootBundle.loadString('assets/text/notes.txt');
+    final file = await _noteFile;
+    String body = await file.readAsString();
+    return body;
   }
 
   // Record notes to file.
   Future recordNotes(String keywords, String content) async {
-    var _triggerList = keywords.split('\n'); // Makes array of trigger words.
+    /*var _triggerList = keywords.split('\n'); // Makes array of trigger words.
     print(_triggerList
-        .join('\n')); // temporary so I can see if my array is populated
-    var exist = false; // boolean to see if word is in triggerList array
+        .join('\n')); // temporary so I can see if my array is populated 
+        var exist = false; // boolean to see if word is in triggerList array   
     // Checks to see if word is in triggerList array.
-    for (var word in _triggerList) {
-      if (content.contains('dinner')) {
+    for (var word in _triggerList) { 
+      if (content.contains(word)){
         exist = true;
         break;
       }
-    }
-    // If word is present in array, then write content to file.
-    if (exist) {
-      await writeData('notes', content);
-    } else {
+      if (exists) {
+        await writeData('notes', content);
+      }else {
       // else, print content was not saved.
       print('Did not save to file.');
+    }
+    }*/
+
+    if (content.contains('dinner') || content.contains('So you are saying')) {
+      await writeData('notes', content);
     }
   }
 

@@ -49,7 +49,7 @@ class HomeView extends StatelessWidget {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 50.0, 20.0, 50.0),
                       child: Text(
-                        speechService.speech.lastRecognizedWords,
+                        model.recognizedWords,
                         style: TextStyle(
                             color: Colors.black87,
                             fontWeight: FontWeight.w400,

@@ -54,6 +54,7 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
         if (result.recognizedWords.isNotEmpty) {
           recognizedWords = result.recognizedWords;
 
+          // record notes
           String keywords = await fileOperations.readTriggers();
           _triggers = keywords;
           await fileOperations.recordNotes(_triggers, recognizedWords);

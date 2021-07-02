@@ -144,7 +144,7 @@ class _BottomNavigationBarControllerState
           onTap: _onTapped,
           type: BottomNavigationBarType.fixed,
           iconSize: 55,
-          selectedItemColor: Colors.red[800],
+          selectedItemColor: Colors.grey[600],
           selectedFontSize: 16.0,
           unselectedFontSize: 16.0,
           unselectedLabelStyle:
