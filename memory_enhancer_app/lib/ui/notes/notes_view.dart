@@ -6,24 +6,24 @@ import 'package:memory_enhancer_app/app/themes/light_Theme.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import 'settings_view_model.dart';
+import 'notes_view_model.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-class SettingsView extends StatelessWidget {
+class NotesView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<SettingsViewModel>.reactive(
-      viewModelBuilder: () => SettingsViewModel(),
+    return ViewModelBuilder<NotesViewModel>.reactive(
+      viewModelBuilder: () => NotesViewModel(),
       onModelReady: (model) {
-        // model.initialize();
+        //model.initialize();
       },
       builder: (context, model, child) {
         return Scaffold(
           appBar: AppBar(
             title: Text(
-              'Settings',
+              'Notes',
               style: GoogleFonts.passionOne(fontSize: 35),
             ),
             backgroundColor: lightTheme.accentColor,

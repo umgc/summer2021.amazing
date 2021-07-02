@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "my-capstone-proj-1624955989482",
+  "private_key_id": "356a808e17f92908730d4569133e8e591de0b77a",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCqMMo2p7KXYjuW\nZUi6+C/wTft6Ht0MdhBa5QI1nuVCZGMxs9yvmokZ5F3RG4AGxhmJugwkQwtYLaFn\npSNZBI10MN5sE9Og77pFI8ScLtaqMXNPCnNDBcHu0gohXh5DkTvPo2dISdc1aJXo\nnH/LZf+xDWiIxdJoSW0KEauSw/hai+rX6xYCLjqX1I654w4qjY3XrK8kFT4k9Qbi\nEytlCBieGqKF5yXcCYf/puVCw3tH5/BYHUHC0g/VjiO5wNgjOqPx31xDPQgEOxpp\nbjnAqlOM1C2j2BEfoH3gdGZ6PxNEy4jyYq+LU+wTzMa2FLltf4b5/0dKmEBcdQXk\nqDE9FJWrAgMBAAECggEAN2fF1RA4KGdu/bHAgTneJW3FwkZ88RsYjPbEBt/RRBF5\nZ4tl+3ckTh0V28cHoWzpkHhUjpOTBGRqiNrujILaaCqmpmm3+ktBCVQxJCVtdh++\nKcu9pWKg9ZZEfQNud9G2toy8SYDcgoMnVoBobDerC6FRWEGKk6/fwyjogdGxrwwY\nXJw2lKqeQ8ri3wb2f6Geu8xPBFgX+XDziTVOFgEyB+CRDpurn4UpugXmPmpTImFX\nS2RSDDLEdjQKquw6reH6ltDG9l/juRh5CDIh+FwIJo9wA4RfbapWkDSaZgQa6Sub\nSd7AgBZ7pRkA9v2XI2jnTb1QmciPDrtIYrQEKcgN2QKBgQDmI71SgGPhpkeZd2Ju\n6VhORrXMw1yX1kF+d3BrdWlfukbmYy1GGtG35oJNlB3HnQVh3qgMpxrczIFHW0vN\nl8mhXPhGl+E92khOJx4YqDJP60UZ/EFawK2lEeCy7yA9jV9OmrQBbtAc+hjsHfwL\nIhYm9bs51w6DbuJ3WKREhYhm6QKBgQC9UIo8a49vKpdMjUx/w0X7cz4u6ozKTzGz\nSUl7NZNVv8gVunvitESVJudud/fPE4bS4fjK9fg8oPRrvKGAXxL1PdEu/Cd0slw3\nt9VFkmylLPKbFFXFBuX7QUJiZO2kBS4/qgwofrBpYsFeqKXnqq/8Pr2PZBTp7Qvk\noeJgsAijcwKBgDjV0LakQIaEoyASbLvJYuaJ7fHwuVhCMJCD/L59E5XxkfrpuU+b\n5fkNs1ZnYudeLusZqtTdG/Q1iSPPNyxB9SilpicA8T5uPvcWEAe02iAEkV82fglk\nlj2y6ZQnHAY3eLcX26aS8FCHr0n4qbsyIthiTWeeZdYttz4UJRVLCQGpAoGBAJ6B\nyLw98qJJLtTRmbN/dCDMpMvzZl4dYKeUPQoEGZA6OvS2ZvOxq5qWMD+2Aq5G0yPO\nP9jviSB6QyvRjAdHkz/yuip0xTRYAg5ExTSzHHRP5fEiXY3R8M0mHsbzamViUQ7M\n+dEOAfa60NzIp+AIccDpZx2f1kLmTobnY/tAaHsxAoGAeu/Ey4n/hHvyFx0P0rtZ\n9eH8JLpzLToS8gctdiZ1BFTYoFYNDnMUyaFMeq94dE8Sopg5SBnU9K6zOObAldCL\nv38AXJ9oogi4kZns7Odf3pnutIczKGP0Dc/l37GjDRGrIgqz8lVXE7g3aF47XKYu\nQSJyJ+Tmxmr9AQqoIYKpdM4=\n-----END PRIVATE KEY-----\n",
+  "client_email": "capstone-memory-app@my-capstone-proj-1624955989482.iam.gserviceaccount.com",
+  "client_id": "108621389322653444784",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/capstone-memory-app%40my-capstone-proj-1624955989482.iam.gserviceaccount.com"
+}
