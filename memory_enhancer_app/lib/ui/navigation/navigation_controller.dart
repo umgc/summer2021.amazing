@@ -27,6 +27,16 @@ class NavigationController extends StatelessWidget {
                     )
                 ),
                 ListTile(
+                  leading: Icon(Icons.assignment),
+                  title: Text('Trigger Words',
+                    style: GoogleFonts.roboto(fontSize: 25),),
+                  onTap: () async {
+                    appRouter.push(
+                      TriggerWordsViewRoute(),
+                    );
+                  },
+                ),
+                ListTile(
                   leading: Icon(Icons.settings),
                   title: Text('Settings',
                     style: GoogleFonts.roboto(fontSize: 25),),
