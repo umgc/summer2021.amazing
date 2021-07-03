@@ -6,7 +6,7 @@
 name: Dev Linter, Build, Unit Test
 
 env:
-  FLUTTER_VERSION: "release"
+  FLUTTER_VERSION: "debug"
   
 on:
   push:
