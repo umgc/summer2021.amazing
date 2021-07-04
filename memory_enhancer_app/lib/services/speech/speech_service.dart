@@ -16,6 +16,7 @@ class SpeechService with ReactiveServiceMixin {
   bool speechAvailable = false;
   stt.SpeechToText speech = stt.SpeechToText();
   PorcupineManager? porcupineManager;
+  bool recognizeFinished = false;
 
   Function(SpeechRecognitionResult result)? contextCallback;
 
@@ -48,15 +49,19 @@ class SpeechService with ReactiveServiceMixin {
 
   /// Start listening for user input
   /// resultCallback is optionally specified by the caller
-  Future<void> startListening({Function(SpeechRecognitionResult result)? resultCallback}) async {
+  Future<void> startListening(
+      {Function(SpeechRecognitionResult result)? resultCallback}) async {
     if (speechAvailable) {
       await porcupineManager?.stop();
       await speech.listen(
           partialResults: true,
           onResult: (result) async {
             print('Speech to text result: ' + result.recognizedWords);
-            if (resultCallback != null) resultCallback(result); // Specified from caller
-            if (contextCallback != null) contextCallback!(result); // Set in SpeechService
+
+            if (resultCallback != null)
+              resultCallback(result); // Specified from caller
+            if (contextCallback != null)
+              contextCallback!(result); // Set in SpeechService
             await listenForWakeWord();
             notifyListeners();
           },
