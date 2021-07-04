@@ -9,114 +9,49 @@ import 'package:memory_enhancer_app/services/services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:memory_enhancer_app/custom_fonts/my_flutter_app_icons.dart';
+import 'package:memory_enhancer_app/app/themes/dark_theme.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-class NavigationController extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Drawer(
-      child: Column(
-        children: [
-          Expanded(
-            child: ListView(
-              children: [
-                DrawerHeader(
-                    child: Center(
-                  child: Text(
-                    'Memory Enhancer',
-                    style: GoogleFonts.passionOne(fontSize: 35),
-                  ),
-                )),
-                ListTile(
-                  leading: Icon(Icons.assignment),
-                  title: Text('Trigger Words',
-                    style: GoogleFonts.roboto(fontSize: 25),),
-                  onTap: () async {
-                    appRouter.push(
-                      TriggerWordsViewRoute(),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.home_filled),
-                  title: Text(
-                    'HOME',
-                    style: GoogleFonts.roboto(fontSize: 25),
-                  ),
-                  onTap: () async {
-                    appRouter.push(
-                      HomeViewRoute(),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(MyFlutterApp.doc_text),
-                  title: Text(
-                    'NOTES',
-                    style: GoogleFonts.roboto(fontSize: 25),
-                  ),
-                  onTap: () async {
-                    appRouter.push(
-                      SettingsViewRoute(),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.settings),
-                  title: Text(
-                    'SETTINGS',
-                    style: GoogleFonts.roboto(fontSize: 25),
-                  ),
-                  onTap: () async {
-                    appRouter.push(
-                      SettingsViewRoute(),
-                    );
-                  },
-                ),
-                ListTile(
-                  leading: Icon(Icons.help),
-                  title: Text(
-                    'HELP',
-                    style: GoogleFonts.roboto(fontSize: 25),
-                  ),
-                  onTap: () async {
-                    appRouter.push(
-                      SettingsViewRoute(),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 // Bottom Navigation
 class BottomNavigationBarController extends StatefulWidget {
+  int pageIndex = 0;
+  // Constructor with page index
+  BottomNavigationBarController({required int pageIndex}) {
+    this.pageIndex = pageIndex;
+  }
+
   @override
   _BottomNavigationBarControllerState createState() =>
-      _BottomNavigationBarControllerState();
+      _BottomNavigationBarControllerState(index: pageIndex);
 }
 
 class _BottomNavigationBarControllerState
     extends State<BottomNavigationBarController> {
+
   int _selectedIndex = 0;
+
+  // Constructor with page index
+  _BottomNavigationBarControllerState({required int index}){
+    _selectedIndex = index;
+  }
 
   void _onTapped(int index) {
     switch (index) {
       case 0:
-        appRouter.navigate(HomeViewRoute());
+       appRouter.pushAndPopUntil(HomeViewRoute(), predicate: (_) => false);
+        break;
+      case 1:
+        appRouter.pushAndPopUntil(NotesViewRoute(), predicate: (_) => false);
         break;
       case 2:
-        appRouter.push(SettingsViewRoute());
+        appRouter.pushAndPopUntil(SettingsViewRoute(), predicate: (_) => false);
+        break;
+      case 3:
+        appRouter.pushAndPopUntil(HelpViewRoute(), predicate: (_) => false);
         break;
       default:
-        appRouter.navigate(HomeViewRoute());
+        appRouter.pushAndPopUntil(HomeViewRoute(), predicate: (_) => false);
     }
     setState(() {
       _selectedIndex = index;
@@ -128,39 +63,40 @@ class _BottomNavigationBarControllerState
     return Container(
         decoration: BoxDecoration(
             color: Colors.white,
-            border: Border(top: BorderSide(color: Colors.red, width: 3.0))),
+            border: Border(top: BorderSide(color: darkTheme.primaryColor, width: 3.0))),
         child: BottomNavigationBar(
           items: [
             BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(_selectedIndex == 0 ? Icons.home : Icons.home_outlined),
               label: 'HOME',
               tooltip: 'Home',
             ), // Home
             BottomNavigationBarItem(
-              icon: Icon(MyFlutterApp.doc_text),
+              icon: Icon(_selectedIndex == 1 ? Icons.text_snippet_rounded : Icons.text_snippet_outlined),
               label: 'NOTES',
               tooltip: 'Notes',
             ), // Notes
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings),
+                icon: Icon(_selectedIndex == 2 ? Icons.settings_sharp : Icons.settings_outlined),
                 label: 'SETTINGS',
                 tooltip: 'Settings'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.help_outlined),
+                icon: Icon(_selectedIndex == 3 ? Icons.help_outlined : Icons.help_outline_sharp),
                 label: 'HELP',
                 tooltip: 'Help') // Help
           ],
           currentIndex: _selectedIndex,
           onTap: _onTapped,
           type: BottomNavigationBarType.fixed,
-          iconSize: 55,
-          selectedItemColor: Colors.black,
+          iconSize: 52,
+          selectedItemColor: darkTheme.primaryColor,
           selectedFontSize: 16.0,
           unselectedFontSize: 16.0,
           unselectedLabelStyle:
               GoogleFonts.anton(fontSize: 25, fontWeight: FontWeight.w200),
           selectedLabelStyle:
               GoogleFonts.anton(fontSize: 25, fontWeight: FontWeight.w200),
-        ));
+        )
+    );
   } // Widget
 }
