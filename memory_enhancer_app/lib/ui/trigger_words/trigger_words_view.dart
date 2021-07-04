@@ -14,17 +14,13 @@ class TriggerWordsView extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => _TriggerWordsViewState();
 
-  /*Future<List<String>> getKeyWordsFrom_File() async {
-    String keyWords = await rootBundle.loadString('resources/words.txt');
-    return keyWords.split('\n');
-  }*/
 }
 
 class _TriggerWordsViewState extends State<TriggerWordsView> {
   List<String> triggerWords = <String>[];
 
   void getTriggerWordsFromFile() async {
-    String fileText = await rootBundle.loadString('text/words.txt');
+    String fileText = await rootBundle.loadString('assets/text/words.txt');
     setState(() {
       triggerWords = fileText.split('\n');
     });
@@ -63,41 +59,4 @@ class _TriggerWordsViewState extends State<TriggerWordsView> {
               ),
             ));
   }
-  /*
-  @override
-  Widget build(BuildContext context) {
-    return ViewModelBuilder<TriggerWordsViewModel>.reactive(
-      viewModelBuilder: () => TriggerWordsViewModel(),
-      onModelReady: (model) {
-        getTriggerWordsFromFile();
-      },
-      builder: (context, model, child) {
-        return Scaffold(
-            appBar: AppBar(
-              title: Text(
-                'Trigger Words',
-                style: GoogleFonts.lobster(fontSize: 35),
-              ),
-              backgroundColor: lightTheme.accentColor,
-            ),
-            body: Center(
-              child: ListView.separated(
-                padding: const EdgeInsets.all(8),
-                //itemCount: entries.length,
-                itemCount: triggerWords.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                      height: 50,
-                      color: Colors.red[900],
-                      child: Center(child: Text('${triggerWords[index]}', style: TextStyle(fontSize: 25, color: Colors.white)))
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
-              ),
-            ));
-      },
-    );
-  }
-  */
 }
