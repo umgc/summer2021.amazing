@@ -2,14 +2,13 @@
 // Settings view UI
 // Author:
 //**************************************************************
-import 'package:memory_enhancer_app/app/themes/light_Theme.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 import 'settings_view_model.dart';
+import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
+import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
-
-import 'package:google_fonts/google_fonts.dart';
 
 class SettingsView extends StatelessWidget {
   @override
@@ -21,17 +20,11 @@ class SettingsView extends StatelessWidget {
       },
       builder: (context, model, child) {
         return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              'Settings',
-              style: GoogleFonts.passionOne(fontSize: 35),
-            ),
-            backgroundColor: lightTheme.accentColor,
-          ),
+          appBar: CustomAppBar(title: 'Settings'),
           body: Center(
-            child: Text('Placeholder'),
+            child: Text('Settings Placeholder'),
           ),
-          bottomNavigationBar: BottomNavigationBarController(),
+          bottomNavigationBar: BottomNavigationBarController(pageIndex: PageEnums.settings.index),
         );
       },
     );
