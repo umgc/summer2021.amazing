@@ -1,0 +1,5 @@
+ # Maintain dependencies for GitHub Wrokflows
+ - package-ecosystem: "github/workflows"
+    directory: "/.github/workfows"
+    schedule:
+      interval: "daily"

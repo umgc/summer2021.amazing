@@ -15,7 +15,6 @@ Future<void> main() async {
 }
 
 class MemoryEnhancerApp extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return ThemeBuilder(
