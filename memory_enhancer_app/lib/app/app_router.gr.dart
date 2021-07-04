@@ -5,9 +5,11 @@
 // **************************************************************************
 
 import 'package:auto_route/auto_route.dart' as _i1;
-import 'package:memory_enhancer_app/ui/home/home_view.dart' as _i3;
-import 'package:memory_enhancer_app/ui/settings/settings_view.dart' as _i4;
 import 'package:flutter/material.dart' as _i2;
+import 'package:memory_enhancer_app/ui/help/help_view.dart' as _i6;
+import 'package:memory_enhancer_app/ui/home/home_view.dart' as _i3;
+import 'package:memory_enhancer_app/ui/notes/notes_view.dart' as _i5;
+import 'package:memory_enhancer_app/ui/settings/settings_view.dart' as _i4;
 
 class AppRouter extends _i1.RootStackRouter {
   AppRouter([_i2.GlobalKey<_i2.NavigatorState>? navigatorKey])
@@ -24,14 +26,25 @@ class AppRouter extends _i1.RootStackRouter {
         routeData: routeData,
         builder: (_) {
           return _i4.SettingsView();
+        }),
+    NotesViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i5.NotesView();
+        }),
+    HelpViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
+        routeData: routeData,
+        builder: (_) {
+          return _i6.HelpView();
         })
   };
 
   @override
   List<_i1.RouteConfig> get routes => [
         _i1.RouteConfig(HomeViewRoute.name, path: '/'),
-        _i1.RouteConfig(SettingsViewRoute.name,
-            path: '/settings-view')
+        _i1.RouteConfig(SettingsViewRoute.name, path: '/settings-view'),
+        _i1.RouteConfig(NotesViewRoute.name, path: '/notes-view'),
+        _i1.RouteConfig(HelpViewRoute.name, path: '/help-view')
       ];
 }
 
@@ -45,4 +58,16 @@ class SettingsViewRoute extends _i1.PageRouteInfo {
   const SettingsViewRoute() : super(name, path: '/settings-view');
 
   static const String name = 'SettingsViewRoute';
+}
+
+class NotesViewRoute extends _i1.PageRouteInfo {
+  const NotesViewRoute() : super(name, path: '/notes-view');
+
+  static const String name = 'NotesViewRoute';
+}
+
+class HelpViewRoute extends _i1.PageRouteInfo {
+  const HelpViewRoute() : super(name, path: '/help-view');
+
+  static const String name = 'HelpViewRoute';
 }

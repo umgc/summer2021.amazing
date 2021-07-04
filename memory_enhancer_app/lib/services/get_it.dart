@@ -5,7 +5,9 @@ import 'package:injectable/injectable.dart';
 final getIt = GetIt.instance;
 
 // Ahmed: Execute below to generated dependency injection
+
 // flutter packages pub run build_runner watch
+// - OR -
 // flutter packages pub run build_runner build
 
 @InjectableInit(

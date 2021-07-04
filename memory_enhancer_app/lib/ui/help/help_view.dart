@@ -1,30 +1,30 @@
 //**************************************************************
-// Settings view UI
+// Help View UI
 // Author:
 //**************************************************************
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-import 'notes_view_model.dart';
+import 'help_view_model.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
 
-class NotesView extends StatelessWidget {
+class HelpView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ViewModelBuilder<NotesViewModel>.reactive(
-      viewModelBuilder: () => NotesViewModel(),
+    return ViewModelBuilder<HelpViewModel>.reactive(
+      viewModelBuilder: () => HelpViewModel(),
       onModelReady: (model) {
-        //model.initialize();
+        // model.initialize();
       },
       builder: (context, model, child) {
         return Scaffold(
-          appBar: CustomAppBar(title: 'Notes'),
+          appBar: CustomAppBar(title: 'Help'),
           body: Center(
-            child: Text('Notes Placeholder'),
+            child: Text('Help Placeholder'),
           ),
-          bottomNavigationBar: BottomNavigationBarController(pageIndex: PageEnums.notes.index),
+          bottomNavigationBar: BottomNavigationBarController(pageIndex: PageEnums.help.index),
         );
       },
     );
