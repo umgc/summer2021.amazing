@@ -57,30 +57,13 @@ jobs:
         run: |
           cd ./memory_enhancer_app
           flutter build apk
-        
-      - name: Build Web
-        run: |
-          cd ./memory_enhancer_app
-          flutter build web
-        
-      - name: SonarCloud Scan
-        uses: SonarSource/sonarcloud-github-action@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
      
       - name: 'Upload APK Artifact'
         uses: 'actions/upload-artifact@v2'
         with:
           name: memory_enhancer_app-apk-${{env.FLUTTER_VERSION}}
           path: ./memory_enhancer_app/build/app/outputs/flutter-apk/*.apk
-          
-      - name: 'Upload Web Artifacts'
-        uses: 'actions/upload-artifact@v2'
-        with:
-          name: memory_enhancer_app-${{env.FLUTTER_VERSION}}
-          path: ./memory_enhancer_app/build/web/**/*.*
-        
+                  
   test:
     name: Run Unit Tests
     runs-on: ubuntu-latest
