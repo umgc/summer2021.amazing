@@ -10,9 +10,9 @@ env:
   
 on:
   push:
-    branches: [ main ]
+    branches: [ developer ]
   pull_request:
-    branches: [ main ]
+    branches: [ developer ]
 
 jobs:
   linter:
