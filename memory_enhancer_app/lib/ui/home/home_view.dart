@@ -3,7 +3,7 @@
 // Author: Christian Ahmed
 //**************************************************************
 import 'package:memory_enhancer_app/app/themes/dark_theme.dart';
-import 'package:memory_enhancer_app/app/themes/light_Theme.dart';
+import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
