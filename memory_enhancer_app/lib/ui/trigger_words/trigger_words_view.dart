@@ -3,7 +3,7 @@
 // Author: Mo Drammeh
 //**************************************************************
 
-import 'package:memory_enhancer_app/app/themes/light_Theme.dart';
+import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
