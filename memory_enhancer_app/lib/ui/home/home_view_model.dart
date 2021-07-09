@@ -41,6 +41,7 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
 
   void initialize() {
     WidgetsBinding.instance?.addObserver(this);
+    fileOperations.initializeTriggersFile();
   }
 
   void startListening() async {

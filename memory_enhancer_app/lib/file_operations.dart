@@ -37,6 +37,7 @@ class FileOperations {
 
       return contents;
     } catch (e) {
+      print("[ERROR] " + e.toString());
       return '[ERROR] Problem reading trigger words file.';
     }
   }
@@ -73,13 +74,25 @@ class FileOperations {
     }
   }
 
+  void initializeTriggersFile() async {
+    final file = await _triggersFile;
+    try {
+      final contents = file.readAsStringSync();
+      print("Triggers file exists");
+    } catch (e) {
+      print("Triggers file needs to be created\nCreating from assets/words.txt");
+      String initFile = await rootBundle.loadString('assets/text/words.txt');
+      file.writeAsString(initFile);
+    }
+  }
+
   /// Add trigger word to file.
   Future addTrigger(String text) async {
     final file = await _triggersFile;
     List<String> triggersArray = file.readAsLinesSync();
     if(!triggersArray.contains(text)) {
       file.writeAsString('\n${text}', mode: io.FileMode.append);
-      print("Adding '" + text + "' as a trigger");
+      print("Trigger added: " + text);
     } else {
       print(text + " is already a trigger");
     }
@@ -92,7 +105,7 @@ class FileOperations {
     String triggersText = file.readAsStringSync();
     List<String> triggersArray = triggersText.trimLeft().split("\n");
     triggersArray.remove(text);
-    print("Removing '" + text + "' from triggers");
+    print("Trigger removed: " + text);
 
     triggersText = triggersArray.join('\n');
     file.writeAsString('${triggersText}', mode: io.FileMode.write);
@@ -107,7 +120,7 @@ class FileOperations {
     List<String> triggersArray = triggersText.trimLeft().split("\n");
 
     triggersArray[triggersArray.indexOf(before)] = after;
-    print("Editing trigger '" + before + "' -> '" + after + "'");
+    print("Editing trigger: " + before + " -> " + after);
     triggersText = triggersArray.join('\n');
     file.writeAsString('${triggersText}', mode: io.FileMode.write);
   }

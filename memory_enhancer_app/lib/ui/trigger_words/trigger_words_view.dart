@@ -25,6 +25,7 @@ class TriggerWordsView extends StatefulWidget {
 class _TriggerWordsViewState extends State<TriggerWordsView> {
   FileOperations fileOperations = FileOperations();
   String triggerWords = "";
+  final txtEditCtrl = TextEditingController();
 
   void updateTriggerWords() {
     print("updating words");
@@ -60,7 +61,7 @@ class _TriggerWordsViewState extends State<TriggerWordsView> {
     return ViewModelBuilder<TriggerWordsViewModel>.reactive(
     viewModelBuilder: () => TriggerWordsViewModel(),
     onModelReady: (model) {
-    model.initialize();
+    //model.initialize();
     },
 
     builder: (context, model, child) {
@@ -73,18 +74,18 @@ class _TriggerWordsViewState extends State<TriggerWordsView> {
         itemBuilder: (BuildContext context, int index) {
           return CustomDynamicListItem(
             onEdit: () {
-              model.txtEditCtrl.text = '${getTriggerWords()[index]}';
+              txtEditCtrl.text = '${getTriggerWords()[index]}';
               showDialog(
                   context: context,
                   builder: (BuildContext context) {
                     return CustomAlertDialog(
-                        content: TextFormField(controller: model.txtEditCtrl),
+                        content: TextFormField(controller: txtEditCtrl),
                         buttonText: 'Edit',
                         onPress: (){
-                          fileOperations.editTrigger('${getTriggerWords()[index]}', model.txtEditCtrl.text);
+                          fileOperations.editTrigger('${getTriggerWords()[index]}', txtEditCtrl.text);
                           updateTriggerWords();
                           Navigator.pop(context);
-                          model.txtEditCtrl.clear();
+                          txtEditCtrl.clear();
                         });
                   });
               },
@@ -127,15 +128,15 @@ class _TriggerWordsViewState extends State<TriggerWordsView> {
                       context: context,
                       builder: (BuildContext context) {
                         return AlertDialog(
-                          content: TextFormField(controller: model.txtEditCtrl),
+                          content: TextFormField(controller: txtEditCtrl),
                           actions: [Center(
                               child: ElevatedButton(
                                 child: Text("Add"),
                                 onPressed: () {
-                                  fileOperations.addTrigger(model.txtEditCtrl.text);
+                                  fileOperations.addTrigger(txtEditCtrl.text);
                                   updateTriggerWords();
                                   Navigator.pop(context);
-                                  model.txtEditCtrl.clear();
+                                  txtEditCtrl.clear();
                             },
                             style: ElevatedButton.styleFrom(primary: lightTheme.accentColor),
                           ))],
