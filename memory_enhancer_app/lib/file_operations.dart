@@ -1,7 +1,7 @@
 //********************************************
 // File Operations
 // Author: Ayodeji Fahumedin
-// Modified by: Chauntika Broggin
+// Modified by: Chauntika Broggin, Mo Drammeh
 //********************************************
 import 'dart:io' as io;
 
@@ -10,17 +10,18 @@ import 'package:flutter/services.dart' show rootBundle;
 
 /// File operations for the Memory Enhancer app.
 class FileOperations {
+
   /// Gets path to local application document directory.
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
   }
 
-  /*/// Gets trigger word file from application document directory.
-  Future<io.File> get _localFile async {
+  /// Gets trigger word file from application document directory.
+  Future<io.File> get _triggersFile async {
     final filePath = await _localPath;
-    return io.File('${filePath}/words.txt');
-  }*/
+    return io.File('${filePath}/triggerWords.txt');
+  }
 
   /// Gets notes file from application document directory.
   Future<io.File> get _noteFile async {
@@ -30,7 +31,15 @@ class FileOperations {
 
   /// Reads trigger keywords from file.
   Future<String> readTriggers() async {
-    return await rootBundle.loadString('assets/text/words.txt');
+    try {
+      final file = await _triggersFile;
+      final contents = await file.readAsString();
+
+      return contents;
+    } catch (e) {
+      print("[ERROR] " + e.toString());
+      return '[ERROR] Problem reading trigger words file.';
+    }
   }
 
   /// Reads notes from file.
@@ -65,19 +74,64 @@ class FileOperations {
     }
   }
 
-  /*/// Delete content of file.
-  Future deleteContents() async {
-    final file = await _noteFile;
-    file.writeAsString(' ');
-  }*/
+  void initializeTriggersFile() async {
+    final file = await _triggersFile;
+    try {
+      final contents = file.readAsStringSync();
+      print("Triggers file exists");
+    } catch (e) {
+      print("Triggers file needs to be created\nCreating from assets/words.txt");
+      String initFile = await rootBundle.loadString('assets/text/words.txt');
+      file.writeAsString(initFile);
+    }
+  }
+
+  /// Add trigger word to file.
+  Future addTrigger(String text) async {
+    final file = await _triggersFile;
+    List<String> triggersArray = file.readAsLinesSync();
+    if(!triggersArray.contains(text)) {
+      file.writeAsString('\n${text}', mode: io.FileMode.append);
+      print("Trigger added: " + text);
+    } else {
+      print(text + " is already a trigger");
+    }
+  }
+
+  /// Delete trigger word from file.
+  Future deleteTrigger(String text) async {
+    final file = await _triggersFile;
+
+    String triggersText = file.readAsStringSync();
+    List<String> triggersArray = triggersText.trimLeft().split("\n");
+    triggersArray.remove(text);
+    print("Trigger removed: " + text);
+
+    triggersText = triggersArray.join('\n');
+    file.writeAsString('${triggersText}', mode: io.FileMode.write);
+
+  }
+
+  /// Edit trigger word from file.
+  Future editTrigger(String before, String after) async {
+    final file = await _triggersFile;
+
+    String triggersText = file.readAsStringSync();
+    List<String> triggersArray = triggersText.trimLeft().split("\n");
+
+    triggersArray[triggersArray.indexOf(before)] = after;
+    print("Editing trigger: " + before + " -> " + after);
+    triggersText = triggersArray.join('\n');
+    file.writeAsString('${triggersText}', mode: io.FileMode.write);
+  }
 
   /// Writes data to file.
   Future writeData(String name, String data) async {
     final file;
     String message = "Data saved to file.";
     if (name == 'triggers') {
-      file = io.File('assets/text/words.txt');
-      await file.writeAsString('${data}\n', mode: io.FileMode.append);
+      file = await _triggersFile;
+      file.writeAsString('\n${data}', mode: io.FileMode.append);
       print(message);
     } else if (name == 'notes') {
       file = await _noteFile;
