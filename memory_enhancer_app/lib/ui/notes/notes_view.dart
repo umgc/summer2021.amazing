@@ -183,6 +183,7 @@ class _NotesViewState extends State<NotesView> {
                                                           notes[index].id,
                                                           context);
                                                       getNoteContent();
+                                                      Navigator.pop(context);
                                                     },
                                                     child: const Text('YES',
                                                         style: TextStyle(
@@ -247,42 +248,16 @@ class _NotesViewState extends State<NotesView> {
                   fontSize: 20)),
         ),
         TextButton(
-          child: Text('SUBMIT',
+          child: Text('SAVE',
               style: TextStyle(
                   color: Colors.red,
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
           onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  title: const Text('Note Creation!'),
-                  content: Text('You wrote:' + _ntTxtControl.text + '\n---',
-                      style: TextStyle(
-                          color: Colors.red,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20)),
-                  actions: <Widget>[
-                    TextButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      child: const Text('CANCEL'),
-                    ),
-                    TextButton(
-                      onPressed: () {
-                        fileOperations.writeNewNote(
-                            _ntTxtControl.text, context);
-                        Navigator.pop(context);
-                        getNoteContent();
-                      },
-                      child: const Text('SAVE'),
-                    ),
-                  ],
-                );
-              },
-            );
+            Navigator.pop(context);
+            fileOperations.writeNewNote(_ntTxtControl.text, context);
+            getNoteContent();
+            _ntTxtControl.clear();
           },
         )
       ],

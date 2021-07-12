@@ -6,7 +6,6 @@
 import 'dart:io' as io;
 
 import 'package:flutter/material.dart';
-import 'package:memory_enhancer_app/ui/alert/alert_popup.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:xml/xml.dart' as xml;
@@ -132,7 +131,7 @@ class FileOperations {
                 TextButton(
                     child: Text('Ok'),
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.pop(context);
                     })
               ]);
         });
@@ -206,6 +205,7 @@ class FileOperations {
         // If it does, remove note and inform user
         if (node.findElements('id').first.text == id) {
           // Write changes to file
+          node.root.children.remove(node);
           print('Note deleted.');
           writeNoteToFile(fileXML.toString());
           showAlertBox('Note Deleted', 'The note was successfully deleted',
