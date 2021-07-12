@@ -81,6 +81,21 @@ class Note {
     return noteFileXML;
   }
 
+  buildNote(xml.XmlBuilder builder) {
+    String formatDate = noteDate.toString();
+    builder.element('note', nest: () {
+      builder.element('id', nest: () {
+        builder.text(noteID);
+      });
+      builder.element('timestamp', nest: () {
+        builder.text(formatDate);
+      });
+      builder.element('content', nest: () {
+        builder.text(noteBody);
+      });
+    });
+  }
+
   // Create notes file
   void createFile() async {
     try {
@@ -89,7 +104,7 @@ class Note {
         print('File already exists');
       } else {
         var noteDocument = noteBuilder();
-        fileOperations.writeNoteToFile(noteDocument.toString());
+        file.writeAsString(noteDocument.toString());
       }
     } catch (e) {
       print('An error occurred. MORE INFO: ' + e.toString());

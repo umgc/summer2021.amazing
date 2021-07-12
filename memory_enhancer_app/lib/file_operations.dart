@@ -53,22 +53,19 @@ class FileOperations {
   }
 
   /// Writes notes to file.
-  Future writeNoteToFile(String data) async {
+  Future writeNoteToFile(Note note) async {
     String message = "Data saved to file.";
     try {
-      // Parse new note data
-      var newNote = xml.XmlDocument.parse(data);
-      var notes = newNote.findAllElements('note');
-      for (xml.XmlNode note in notes) {
-        String id = note.findElements('id').first.text;
-        String dateTime = note.findElements('timestamp').first.text;
-        String body = note.findElements('content').first.text;
-        Note memo = Note(id, dateTime, body); // Create new note from data
+      String xmlString = await readNotes(); // Read notes file
+      var fileXML = xml.XmlDocument.parse(xmlString); // Parse data
+      final builder = xml.XmlBuilder(); // Builder for XML
+      note.buildNote(builder); // Build note
 
-        final file = await _noteFile; // Get notes XML file
-        await file.writeAsString(memo.toString());
-        print(message); // Print that the note was saved.
-      }
+      // Adding note to XML file
+      fileXML.firstElementChild!.children.add(builder.buildFragment());
+      final file = await _noteFile;
+      await file.writeAsString(fileXML.toString()); // Get notes XML file
+      print(message); // Print that the note was saved.
     } catch (e) {
       print('Error has occured. ' + e.toString());
     }
@@ -99,7 +96,7 @@ class FileOperations {
       // If word is in the list, make new Note object and save to file.
       if (exist) {
         var textNote = Note('', DateTime.now(), content);
-        await writeNoteToFile(textNote.toString());
+        await writeNoteToFile(textNote);
       }
     }
   }
@@ -108,7 +105,7 @@ class FileOperations {
   void writeNewNote(String data, BuildContext context) {
     if (data.isNotEmpty) {
       Note note = Note('', DateTime.now(), data); // Make new Note object.
-      writeNoteToFile(note.toString()); // Save to file.
+      writeNoteToFile(note); // Save to file.
       showAlertBox(
           'Note Created', 'Your note was successfully saved.', context);
     } else {
@@ -142,7 +139,7 @@ class FileOperations {
     // If data is not empty , make a Note object and save to file
     if (data.isNotEmpty) {
       Note note = Note('', DateTime.now(), data); // New Note
-      writeNoteToFile(note.toString()); // Save Note to file
+      writeNoteToFile(note); // Save Note to file
       // Display alert to user that note recorded.
       showAlertBox(
           'Note Recorded', 'Your not was recorded successfully', context);
@@ -164,8 +161,7 @@ class FileOperations {
       print('File already exists');
     } else {
       Note note = Note('', DateTime.now(), "Sample note.");
-      var noteDocument = note.noteBuilder();
-      writeNoteToFile(noteDocument.toString());
+      writeNoteToFile(note);
       print('Notes file created.');
     }
   }
@@ -182,7 +178,8 @@ class FileOperations {
         // If it does, get the body content of the note and replace with user changes
         if (e.findElements('id').first.text == id) {
           e.findElements('content').first.innerText = edits;
-          writeNoteToFile(editFile.toString());
+          final file = await _noteFile;
+          file.writeAsString(editFile.toString());
           // Display alert box for edit saving confirmation.
           showAlertBox(
               'Note Saved', 'The edits were saved successfully.', context);
@@ -207,7 +204,8 @@ class FileOperations {
           // Write changes to file
           node.root.children.remove(node);
           print('Note deleted.');
-          writeNoteToFile(fileXML.toString());
+          final file = await _noteFile;
+          file.writeAsString(fileXML.toString());
           showAlertBox('Note Deleted', 'The note was successfully deleted',
               context); // Show deletion confirmation box.
         } else {

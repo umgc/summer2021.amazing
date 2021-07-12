@@ -20,15 +20,7 @@ Future<List<Note>> getContent() async {
       .findAllElements('note')
       .map((xml) => Note.fromXml(xml))
       .toList();
-  /*xml.XmlDocument xmlTextDoc = xml.XmlDocument.parse(xmlContent);
-  var elements = xmlTextDoc.findAllElements('note');
-  for (xml.XmlNode e in elements) {
-    String id = e.findElements('id').first.text;
-    String dateTime = e.findElements('timestamp').first.text;
-    String body = e.findElements('content').first.text;
-    Note note = Note(id, dateTime, body);
-    memo.add(note);
-  }*/
+
   return memo;
 }
 

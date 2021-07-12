@@ -15,7 +15,6 @@ import 'notes_view_model.dart';
 import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
 import 'package:google_fonts/google_fonts.dart';
 
