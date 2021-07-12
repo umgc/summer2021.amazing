@@ -38,14 +38,6 @@ class _NotesViewState extends State<NotesView> {
     });
   }
 
-  void getNotes() async {
-    getContent().then((value) {
-      setState(() {
-        notes = value;
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -54,6 +46,11 @@ class _NotesViewState extends State<NotesView> {
 
   @override
   Widget build(BuildContext context) {
+    getContent().then((value) {
+      setState(() {
+        notes = value;
+      });
+    });
     return ViewModelBuilder<NotesViewModel>.reactive(
         viewModelBuilder: () => NotesViewModel(),
         onModelReady: (model) {

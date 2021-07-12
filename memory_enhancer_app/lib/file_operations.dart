@@ -202,7 +202,7 @@ class FileOperations {
         // If it does, remove note and inform user
         if (node.findElements('id').first.text == id) {
           // Write changes to file
-          node.root.children.remove(node);
+          node.parent!.children.remove(node);
           print('Note deleted.');
           final file = await _noteFile;
           file.writeAsString(fileXML.toString());
