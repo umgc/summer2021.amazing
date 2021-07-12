@@ -9,6 +9,7 @@ import 'settings_view_model.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
+import 'package:memory_enhancer_app/ui/list_item/menu_list_item.dart';
 
 class SettingsView extends StatelessWidget {
   @override
@@ -20,9 +21,14 @@ class SettingsView extends StatelessWidget {
       },
       builder: (context, model, child) {
         return Scaffold(
-          appBar: CustomAppBar(title: 'Settings'),
+          appBar: CustomAppBar(title: PageEnums.settings.name),
           body: Center(
-            child: Text('Settings Placeholder'),
+            child: ListView(
+              padding: const EdgeInsets.all(8),
+                children: <Widget>[
+                  CustomMenuListItem(location: PageEnums.triggerWords),
+                  ]
+            ),
           ),
           bottomNavigationBar: BottomNavigationBarController(pageIndex: PageEnums.settings.index),
         );

@@ -1,16 +1,25 @@
 //**************************************************************
 // Home view model
-// Author: Christian Ahmed
+// Author: Mo Drammeh
 //**************************************************************
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:memory_enhancer_app/file_operations.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
-  String recognizedWords = '';
-  String _triggers = '';
+class TriggerWordsViewModel extends ReactiveViewModel with WidgetsBindingObserver {
+  String recognizedWords = "";
+  String keywords = "";
   FileOperations fileOperations = FileOperations();
+  final txtEditCtrl = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    speechService.stopListeningForWakeWord();
+    WidgetsBinding.instance?.removeObserver(this);
+    txtEditCtrl.dispose();
+  }
 
   // Boolean storing value whether the speech engine is listening or not
   bool get listening {
@@ -41,7 +50,6 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
 
   void initialize() {
     WidgetsBinding.instance?.addObserver(this);
-    fileOperations.initializeTriggersFile();
   }
 
   void startListening() async {
@@ -56,21 +64,13 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
           recognizedWords = result.recognizedWords;
 
           // record notes
-          String keywords = await fileOperations.readTriggers();
-          _triggers = keywords;
-          await fileOperations.recordNotes(_triggers, recognizedWords);
+          keywords = await fileOperations.readTriggers();
+          await fileOperations.recordNotes(keywords, recognizedWords);
           notifyListeners();
         }
       });
     }
     notifyListeners();
-  }
-
-  @override
-  void dispose() {
-    speechService.stopListeningForWakeWord();
-    WidgetsBinding.instance?.removeObserver(this);
-    super.dispose();
   }
 
   @override

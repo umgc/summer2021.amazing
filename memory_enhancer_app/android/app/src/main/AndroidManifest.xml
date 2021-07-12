@@ -9,12 +9,6 @@
         </intent>
     </queries>
 
-   <queries>
-       <intent>
-           <action android:name="android.speech.RecognitionService" />
-       </intent>
-   </queries>
-
    <application
         android:label="Memory Enhancer"
         android:icon="@mipmap/ic_launcher">
