@@ -4,6 +4,7 @@
 //**************************************************************
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:memory_enhancer_app/file_operations.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -55,15 +56,23 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
         if (result.recognizedWords.isNotEmpty) {
           recognizedWords = result.recognizedWords;
 
-          // record notes
-          String keywords = await fileOperations.readTriggers();
-          _triggers = keywords;
-          await fileOperations.recordNotes(_triggers, recognizedWords);
+          startRecord(result); // Record notes.
+
           notifyListeners();
         }
       });
     }
     notifyListeners();
+  }
+
+  // Start recording new note.
+  void startRecord(SpeechRecognitionResult result) async {
+    // record notes
+    String keywords = await fileOperations.readTriggers();
+    _triggers = keywords;
+    if (result.finalResult) {
+      fileOperations.recordNotes(_triggers, result.recognizedWords);
+    } // End record notes
   }
 
   @override
