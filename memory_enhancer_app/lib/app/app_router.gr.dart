@@ -31,8 +31,10 @@ class AppRouter extends _i1.RootStackRouter {
         }),
     NotesViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return _i5.NotesView();
+        builder: (data) {
+          final args = data.argsAs<NotesViewRouteArgs>(
+              orElse: () => const NotesViewRouteArgs());
+          return _i5.NotesView(key: args.key);
         }),
     HelpViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
         routeData: routeData,
@@ -70,10 +72,17 @@ class SettingsViewRoute extends _i1.PageRouteInfo {
   static const String name = 'SettingsViewRoute';
 }
 
-class NotesViewRoute extends _i1.PageRouteInfo {
-  const NotesViewRoute() : super(name, path: '/notes-view');
+class NotesViewRoute extends _i1.PageRouteInfo<NotesViewRouteArgs> {
+  NotesViewRoute({_i2.Key? key})
+      : super(name, path: '/notes-view', args: NotesViewRouteArgs(key: key));
 
   static const String name = 'NotesViewRoute';
+}
+
+class NotesViewRouteArgs {
+  const NotesViewRouteArgs({this.key});
+
+  final _i2.Key? key;
 }
 
 class HelpViewRoute extends _i1.PageRouteInfo {

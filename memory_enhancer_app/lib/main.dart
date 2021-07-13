@@ -11,6 +11,7 @@ Future<void> main() async {
   configureDependencies();
   await ThemeManager.initialise();
   await speechService.initializeSpeechService();
+  textToSpeechService.initialize();
   runApp(MemoryEnhancerApp());
   fileOperations.initialNoteFile();
 }

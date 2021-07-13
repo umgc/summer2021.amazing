@@ -10,6 +10,8 @@ PODS:
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
+  - soundpool (0.0.1):
+    - Flutter
   - speech_to_text (0.0.1):
     - Flutter
     - Try
@@ -24,6 +26,7 @@ DEPENDENCIES:
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
   - porcupine (from `.symlinks/plugins/porcupine/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
+  - soundpool (from `.symlinks/plugins/soundpool/ios`)
   - speech_to_text (from `.symlinks/plugins/speech_to_text/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
@@ -44,6 +47,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/porcupine/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
+  soundpool:
+    :path: ".symlinks/plugins/soundpool/ios"
   speech_to_text:
     :path: ".symlinks/plugins/speech_to_text/ios"
   wakelock:
@@ -56,6 +61,7 @@ SPEC CHECKSUMS:
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
   porcupine: 1db970f35ac2d993b0718bf6b15c158e630505f2
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
+  soundpool: c7f4422ca206e77f8900ed3c4ee6a6ff5a0e38a9
   speech_to_text: b43a7d99aef037bd758ed8e45d79bbac035d2dfe
   Try: 5ef669ae832617b3cee58cb2c6f99fb767a4ff96
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
