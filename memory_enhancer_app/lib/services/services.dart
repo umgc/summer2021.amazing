@@ -5,6 +5,7 @@
 import 'package:memory_enhancer_app/app/app_router.gr.dart';
 import 'package:memory_enhancer_app/services/speech/speech_service.dart';
 import 'package:memory_enhancer_app/file_operations.dart';
+import 'package:memory_enhancer_app/services/encryption/encryption_service.dart';
 
 import 'get_it.dart';
 
@@ -18,3 +19,9 @@ SpeechService get speechService {
 
 // File handler
 FileOperations fileOperations = FileOperations();
+
+// The encryption/decryption service (Singleton)
+EncryptionService get encryptionService {
+  return getIt.get<EncryptionService>();
+}
+
