@@ -67,7 +67,8 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
     String keywords = await fileOperations.readTriggers();
     _triggers = keywords;
     if (speechService.speech.isNotListening && result.finalResult) {
-      fileOperations.recordNotes(_triggers, result.recognizedWords[0]);
+      fileOperations.recordNotes(
+          _triggers, speechService.speech.lastRecognizedWords);
     } // End record notes
   }
 
