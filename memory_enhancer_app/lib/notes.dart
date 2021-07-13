@@ -48,15 +48,18 @@ class Note {
   noteBuilder() {
     String formatDate = noteDate.toString();
     final builder = new xml.XmlBuilder();
-    builder.element('note', nest: () {
-      builder.element('id', nest: () {
-        builder.text(noteID);
-      });
-      builder.element('timestamp', nest: () {
-        builder.text(formatDate);
-      });
-      builder.element('content', nest: () {
-        builder.text(noteBody);
+    builder.processing('xml', 'version="1.0"');
+    builder.element('notes', nest: () {
+      builder.element('note', nest: () {
+        builder.element('id', nest: () {
+          builder.text(noteID);
+        });
+        builder.element('timestamp', nest: () {
+          builder.text(formatDate);
+        });
+        builder.element('content', nest: () {
+          builder.text(noteBody);
+        });
       });
     });
     final noteFileXML = builder.buildDocument();

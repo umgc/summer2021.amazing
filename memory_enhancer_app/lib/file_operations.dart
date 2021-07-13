@@ -71,18 +71,6 @@ class FileOperations {
     }
   }
 
-  // Create initial note file
-  void initialNoteFile() async {
-    final file = await _noteFile;
-    if (await file.exists()) {
-      Note note = Note('', DateTime.now(),
-          'This is a sample note. Please feel free to delete this file after adding your own.');
-      note.createFile();
-    } else {
-      print('Note file already exists.');
-    }
-  }
-
   // Record notes to file.
   void recordNotes(String keywords, String content) async {
     var _triggerList = keywords.split('\n'); // Makes array of trigger words.
@@ -126,7 +114,11 @@ class FileOperations {
               content: Text(message),
               actions: <Widget>[
                 TextButton(
-                    child: Text('Ok'),
+                    child: Text('Ok',
+                        style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20)),
                     onPressed: () {
                       Navigator.pop(context);
                     })
@@ -154,15 +146,19 @@ class FileOperations {
     }
   }
 
-  // Create notes file
-  void createFile() async {
-    final file = await _noteFile;
-    if (await file.exists()) {
-      print('File already exists');
-    } else {
-      Note note = Note('', DateTime.now(), "Sample note.");
-      writeNoteToFile(note);
-      print('Notes file created.');
+  // Create initial notes file
+  void initialNoteFile() async {
+    try {
+      final file = await _noteFile;
+      if (await file.exists()) {
+        print('File already exists');
+      } else {
+        Note note = Note('', DateTime.now(), "Sample note.");
+        note.createFile();
+        print('Notes file created.');
+      }
+    } catch (e) {
+      print('An error occured. MORE INFO: ' + e.toString());
     }
   }
 
@@ -202,10 +198,18 @@ class FileOperations {
         // If it does, remove note and inform user
         if (node.findElements('id').first.text == id) {
           // Write changes to file
-          node.parent!.children.remove(node);
-          print('Note deleted.');
           final file = await _noteFile;
+          if (nodes.length != 1) {
+            node.parent!.children.remove(node); // Remove note
+          } else {
+            Note sampleNote = Note(
+                '', DateTime.now(), 'Sample Note.\nPlease add your own note.');
+            writeNoteToFile(sampleNote);
+            node.parent!.children.remove(node);
+          }
+          print('Note deleted.');
           file.writeAsString(fileXML.toString());
+
           showAlertBox('Note Deleted', 'The note was successfully deleted',
               context); // Show deletion confirmation box.
         } else {

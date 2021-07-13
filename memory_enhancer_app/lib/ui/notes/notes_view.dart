@@ -12,6 +12,7 @@ import 'package:stacked/stacked.dart';
 
 import 'package:memory_enhancer_app/notes.dart';
 import 'notes_view_model.dart';
+import 'package:xml/xml.dart' as xml;
 import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
@@ -29,19 +30,16 @@ class _NotesViewState extends State<NotesView> {
   TextEditingController _ntTxtControl = TextEditingController();
   List<Note> notes = List.empty(growable: true);
 
-  // Get note content.
-  void getNoteContent() {
-    getContent().then((value) {
-      setState(() {
-        notes = value;
+  getNoteContent() => getContent().then((value) {
+        setState(() {
+          notes = value;
+        });
       });
-    });
-  }
 
   @override
   void initState() {
-    super.initState();
     getNoteContent();
+    super.initState();
   }
 
   @override
@@ -55,6 +53,7 @@ class _NotesViewState extends State<NotesView> {
         viewModelBuilder: () => NotesViewModel(),
         onModelReady: (model) {
           //model.initialize();
+          getContent();
         },
         builder: (context, model, child) {
           return Scaffold(
@@ -116,7 +115,7 @@ class _NotesViewState extends State<NotesView> {
                                                         _ntTxtControl.text,
                                                         context);
                                                     _ntTxtControl.clear();
-                                                    getNoteContent();
+                                                    getContent();
                                                     Navigator.pop(context);
                                                   })
                                             ]));
@@ -126,6 +125,11 @@ class _NotesViewState extends State<NotesView> {
                                       padding: const EdgeInsets.all(8),
                                       color: Colors.grey[200],
                                       child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.max,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
                                           Expanded(
                                               child: Text(
@@ -133,7 +137,9 @@ class _NotesViewState extends State<NotesView> {
                                                       '\n' +
                                                       notes[index].noteBody,
                                                   style: GoogleFonts.roboto(
-                                                      fontSize: 20))),
+                                                      fontSize: 20,
+                                                      textStyle: TextStyle(
+                                                          height: 1.5)))),
                                           IconButton(
                                             icon: const Icon(Icons.close),
                                             color: Colors.red,
@@ -178,7 +184,9 @@ class _NotesViewState extends State<NotesView> {
                                                       fileOperations.deleteNote(
                                                           notes[index].id,
                                                           context);
-                                                      getNoteContent();
+                                                      getContent().then(
+                                                          (value) =>
+                                                              notes = value);
                                                       Navigator.pop(context);
                                                     },
                                                     child: const Text('YES',
@@ -252,7 +260,7 @@ class _NotesViewState extends State<NotesView> {
           onPressed: () {
             Navigator.pop(context);
             fileOperations.writeNewNote(_ntTxtControl.text, context);
-            getNoteContent();
+            getContent();
             _ntTxtControl.clear();
           },
         )
