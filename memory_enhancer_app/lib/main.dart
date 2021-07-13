@@ -14,6 +14,7 @@ Future<void> main() async {
   textToSpeechService.initialize();
   runApp(MemoryEnhancerApp());
   fileOperations.initialNoteFile();
+  fileOperations.initializeTriggersFile();
 }
 
 class MemoryEnhancerApp extends StatelessWidget {
