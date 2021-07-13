@@ -2,15 +2,31 @@
 // Notes view model
 // Author:
 //**************************************************************
+import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
-import 'package:memory_enhancer_app/file_operations.dart';
+import 'package:memory_enhancer_app/services/services.dart';
+import 'package:xml/xml.dart' as xml;
 
-FileOperations fileOperations = FileOperations();
-String _text = '';
+import '../../notes.dart';
 
-Future notes() async {
-  _text = await fileOperations.readNotes();
-  return _text;
+List<Note> memos = List.empty(growable: true); // Empty array for notes array
+
+// Get content from notes file to display on page.
+// XML parser is used to parse info from notes.xml file.
+Future<List<Note>> getContent() async {
+  try {
+    String xmlContent = await fileOperations.readNotes();
+    xml.XmlDocument xmlTextDoc = xml.XmlDocument.parse(xmlContent);
+    final memo = xmlTextDoc
+        .findAllElements('note')
+        .map((xml) => Note.fromXml(xml))
+        .toList();
+
+    return memo;
+  } catch (e) {
+    print('An error occurred. MORE INFO: ' + e.toString());
+    return List.empty();
+  }
 }
 
 class NotesViewModel extends BaseViewModel {

@@ -3,14 +3,13 @@
 // Author: Christian Ahmed
 //**************************************************************
 import 'package:memory_enhancer_app/services/services.dart';
-import 'package:memory_enhancer_app/file_operations.dart';
+import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
   String recognizedWords = '';
   String _triggers = '';
-  FileOperations fileOperations = FileOperations();
 
   // Boolean storing value whether the speech engine is listening or not
   bool get listening {
@@ -54,16 +53,22 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
       speechService.startListening(resultCallback: (result) async {
         if (result.recognizedWords.isNotEmpty) {
           recognizedWords = result.recognizedWords;
-
-          // record notes
-          String keywords = await fileOperations.readTriggers();
-          _triggers = keywords;
-          await fileOperations.recordNotes(_triggers, recognizedWords);
+          startRecord(result);
           notifyListeners();
         }
       });
     }
     notifyListeners();
+  }
+
+  // Start recording new note.
+  void startRecord(SpeechRecognitionResult result) async {
+    // record notes
+    String keywords = await fileOperations.readTriggers();
+    _triggers = keywords;
+    if (speechService.speech.isNotListening && result.finalResult) {
+      fileOperations.recordNotes(_triggers, result.recognizedWords[0]);
+    } // End record notes
   }
 
   @override

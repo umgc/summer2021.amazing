@@ -7,7 +7,8 @@ import 'package:memory_enhancer_app/file_operations.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-class TriggerWordsViewModel extends ReactiveViewModel with WidgetsBindingObserver {
+class TriggerWordsViewModel extends ReactiveViewModel
+    with WidgetsBindingObserver {
   String recognizedWords = "";
   String keywords = "";
   FileOperations fileOperations = FileOperations();
@@ -65,7 +66,7 @@ class TriggerWordsViewModel extends ReactiveViewModel with WidgetsBindingObserve
 
           // record notes
           keywords = await fileOperations.readTriggers();
-          await fileOperations.recordNotes(keywords, recognizedWords);
+          fileOperations.recordNotes(keywords, recognizedWords);
           notifyListeners();
         }
       });

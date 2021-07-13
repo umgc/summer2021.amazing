@@ -5,6 +5,7 @@
 import 'package:memory_enhancer_app/app/themes/dark_theme.dart';
 import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:memory_enhancer_app/services/services.dart';
+import 'package:memory_enhancer_app/services/speech/speech_service.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
@@ -13,7 +14,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-
 
 // String _text = 'Press microphone and begin speaking.';
 
@@ -44,12 +44,11 @@ class HomeView extends StatelessWidget {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                       child: Text(
-                        //model.recognizedWords,
                         speechService.speech.lastRecognizedWords,
                         style: TextStyle(
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 30,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 30,
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -95,7 +94,8 @@ class HomeView extends StatelessWidget {
               ],
             ),
           ),
-          bottomNavigationBar: BottomNavigationBarController(pageIndex: PageEnums.home.index),
+          bottomNavigationBar:
+              BottomNavigationBarController(pageIndex: PageEnums.home.index),
         );
       },
     );

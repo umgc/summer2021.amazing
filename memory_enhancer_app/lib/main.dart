@@ -12,6 +12,7 @@ Future<void> main() async {
   await ThemeManager.initialise();
   await speechService.initializeSpeechService();
   runApp(MemoryEnhancerApp());
+  fileOperations.initialNoteFile();
 }
 
 class MemoryEnhancerApp extends StatelessWidget {
