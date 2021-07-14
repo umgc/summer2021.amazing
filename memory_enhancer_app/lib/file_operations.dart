@@ -80,12 +80,11 @@ class FileOperations {
     for (var keyword in _triggerList) {
       if (content.contains(keyword.trim())) {
         exist = true;
-      }
-      // If word is in the list, make new Note object and save to file.
-      if (exist) {
-        var textNote = Note('', DateTime.now(), content);
-        await writeNoteToFile(textNote);
-      }
+      } // If word is in the list, make new Note object and save to file.
+    }
+    if (exist) {
+      var textNote = Note('', DateTime.now(), content);
+      await writeNoteToFile(textNote);
     }
   }
 
@@ -127,14 +126,14 @@ class FileOperations {
   }
 
   //Create note from recording/speaking
-  void speakNote(String data, BuildContext context) {
+  void speakNote(String data, BuildContext context) async {
     // If data is not empty , make a Note object and save to file
     if (data.isNotEmpty) {
       Note note = Note('', DateTime.now(), data); // New Note
       writeNoteToFile(note); // Save Note to file
       // Display alert to user that note recorded.
       showAlertBox(
-          'Note Recorded', 'Your not was recorded successfully', context);
+          'Note Recorded', 'Your note was recorded successfully', context);
     } else {
       // else error occurred recording note
       print('Error has occurred. Note was not recorded.');

@@ -46,7 +46,9 @@ class Note {
   // HELPER METHODS //
   // XML Structure Builder
   noteBuilder() {
-    String formatDate = noteDate.toString();
+    final DateTime now = noteDate;
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    String formattedDate = formatter.format(now);
     final builder = new xml.XmlBuilder();
     builder.processing('xml', 'version="1.0"');
     builder.element('notes', nest: () {
@@ -55,7 +57,7 @@ class Note {
           builder.text(noteID);
         });
         builder.element('timestamp', nest: () {
-          builder.text(formatDate);
+          builder.text(formattedDate);
         });
         builder.element('content', nest: () {
           builder.text(noteBody);
@@ -67,7 +69,9 @@ class Note {
   }
 
   newNoteBuilder() {
-    String formatDate = noteDate.toString();
+    final DateTime now = noteDate;
+    final DateFormat formatter = DateFormat('yyyy-MM-dd');
+    String formatDate = formatter.format(now);
     final builder = new xml.XmlBuilder();
     builder.element('note', nest: () {
       builder.element('id', nest: () {

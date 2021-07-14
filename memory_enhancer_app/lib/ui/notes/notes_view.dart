@@ -12,7 +12,6 @@ import 'package:stacked/stacked.dart';
 
 import 'package:memory_enhancer_app/notes.dart';
 import 'notes_view_model.dart';
-import 'package:xml/xml.dart' as xml;
 import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
@@ -30,7 +29,7 @@ class _NotesViewState extends State<NotesView> {
   TextEditingController _ntTxtControl = TextEditingController();
   List<Note> notes = List.empty(growable: true);
 
-  getNoteContent() => getContent().then((value) {
+  void getNoteContent() => getContent().then((value) {
         setState(() {
           notes = value;
         });
@@ -44,16 +43,11 @@ class _NotesViewState extends State<NotesView> {
 
   @override
   Widget build(BuildContext context) {
-    getContent().then((value) {
-      setState(() {
-        notes = value;
-      });
-    });
     return ViewModelBuilder<NotesViewModel>.reactive(
         viewModelBuilder: () => NotesViewModel(),
         onModelReady: (model) {
           //model.initialize();
-          getContent();
+          getNoteContent();
         },
         builder: (context, model, child) {
           return Scaffold(
@@ -115,7 +109,7 @@ class _NotesViewState extends State<NotesView> {
                                                         _ntTxtControl.text,
                                                         context);
                                                     _ntTxtControl.clear();
-                                                    getContent();
+                                                    getNoteContent();
                                                     Navigator.pop(context);
                                                   })
                                             ]));
@@ -138,8 +132,7 @@ class _NotesViewState extends State<NotesView> {
                                                       notes[index].noteBody,
                                                   style: GoogleFonts.roboto(
                                                       fontSize: 20,
-                                                      textStyle: TextStyle(
-                                                          height: 1.5)))),
+                                                      height: 1.5))),
                                           IconButton(
                                             icon: const Icon(Icons.close),
                                             color: Colors.red,
@@ -184,9 +177,7 @@ class _NotesViewState extends State<NotesView> {
                                                       fileOperations.deleteNote(
                                                           notes[index].id,
                                                           context);
-                                                      getContent().then(
-                                                          (value) =>
-                                                              notes = value);
+                                                      getNoteContent();
                                                       Navigator.pop(context);
                                                     },
                                                     child: const Text('YES',
@@ -216,13 +207,26 @@ class _NotesViewState extends State<NotesView> {
                         style: ElevatedButton.styleFrom(
                             primary: lightTheme.accentColor),
                         child: Text('Write Note',
-                            style: GoogleFonts.roboto(fontSize: 20)),
+                            style: GoogleFonts.anton(fontSize: 25)),
                         onPressed: () {
                           // Show text field for writing new note.
                           showDialog(
                               context: context,
                               builder: (BuildContext context) =>
                                   alert(context));
+                        })),
+                Container(
+                    margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: lightTheme.accentColor),
+                        child: Text(
+                            speechService.speech.isNotListening
+                                ? 'Record Note'
+                                : 'Stop Record',
+                            style: GoogleFonts.anton(fontSize: 25)),
+                        onPressed: () async {
+                          speechService.startListening();
                         }))
               ])),
             ],
@@ -260,7 +264,7 @@ class _NotesViewState extends State<NotesView> {
           onPressed: () {
             Navigator.pop(context);
             fileOperations.writeNewNote(_ntTxtControl.text, context);
-            getContent();
+            getNoteContent();
             _ntTxtControl.clear();
           },
         )

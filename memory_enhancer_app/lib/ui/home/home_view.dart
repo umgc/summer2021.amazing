@@ -14,8 +14,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:avatar_glow/avatar_glow.dart';
-
-// String _text = 'Press microphone and begin speaking.';
+import 'package:speech_to_text/speech_recognition_result.dart';
 
 class HomeView extends StatelessWidget {
   @override
