@@ -198,7 +198,7 @@ class FileOperations {
         if (node.findElements('id').first.text == id) {
           // Write changes to file
           final file = await _noteFile;
-          if (nodes.length != 1) {
+          if (nodes.length >= 0) {
             node.parent!.children.remove(node); // Remove note
           } else {
             Note sampleNote = Note(

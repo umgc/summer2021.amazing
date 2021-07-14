@@ -29,7 +29,7 @@ class _NotesViewState extends State<NotesView> {
   TextEditingController _ntTxtControl = TextEditingController();
   List<Note> notes = List.empty(growable: true);
 
-  void getNoteContent() => getContent().then((value) {
+  getNoteContent() => getContent().then((value) {
         setState(() {
           notes = value;
         });
@@ -42,12 +42,18 @@ class _NotesViewState extends State<NotesView> {
   }
 
   @override
+  void dispose() {
+    _ntTxtControl.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getContent().then((value) => notes = value);
     return ViewModelBuilder<NotesViewModel>.reactive(
         viewModelBuilder: () => NotesViewModel(),
         onModelReady: (model) {
           //model.initialize();
-          getNoteContent();
         },
         builder: (context, model, child) {
           return Scaffold(
@@ -174,11 +180,15 @@ class _NotesViewState extends State<NotesView> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
-                                                      fileOperations.deleteNote(
-                                                          notes[index].id,
-                                                          context);
-                                                      getNoteContent();
                                                       Navigator.pop(context);
+                                                      fileOperations.deleteNote(
+                                                          notes[index]
+                                                              .id
+                                                              .toString(),
+                                                          context);
+                                                      getContent().whenComplete(
+                                                          () =>
+                                                              getNoteContent());
                                                     },
                                                     child: const Text('YES',
                                                         style: TextStyle(
@@ -271,5 +281,4 @@ class _NotesViewState extends State<NotesView> {
       ],
     );
   } // End Write Note Alert
-
-} // End Widget
+}

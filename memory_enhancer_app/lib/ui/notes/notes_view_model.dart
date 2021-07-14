@@ -2,7 +2,6 @@
 // Notes view model
 // Author:
 //**************************************************************
-import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:xml/xml.dart' as xml;
