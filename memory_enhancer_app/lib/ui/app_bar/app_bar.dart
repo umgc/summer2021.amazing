@@ -14,3 +14,16 @@ AppBar CustomAppBar({required String title}){
     automaticallyImplyLeading: false, // Hide the BACK button
   );
 }
+
+AppBar CustomAppBarTabbed({required String title, required PreferredSizeWidget bottom}){
+  return AppBar(
+    title: Text(
+      title,
+      style: GoogleFonts.passionOne(fontSize: 37),
+    ),
+    bottom: bottom,
+    centerTitle: true,
+    backgroundColor: lightTheme.accentColor,
+    automaticallyImplyLeading: false, // Hide the BACK button
+  );
+}

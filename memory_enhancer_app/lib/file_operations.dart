@@ -21,9 +21,21 @@ class FileOperations {
   }
 
   /// Gets trigger word file from application document directory.
-  Future<io.File> get _triggersFile async {
+  Future<io.File> get _startTriggersFile async {
     final filePath = await _localPath;
-    return io.File(filePath + '/triggerWords.txt');
+    return io.File(filePath + '/startTriggerWords.txt');
+  }
+
+  /// Gets trigger word file from application document directory.
+  Future<io.File> get _stopTriggersFile async {
+    final filePath = await _localPath;
+    return io.File(filePath + '/stopTriggerWords.txt');
+  }
+
+  /// Gets trigger word file from application document directory.
+  Future<io.File> get _recallTriggersFile async {
+    final filePath = await _localPath;
+    return io.File(filePath + '/recallTriggerWords.txt');
   }
 
   /// Gets notes file from application document directory.
@@ -224,11 +236,22 @@ class FileOperations {
   }
 
   /// Reads trigger keywords from file.
-  Future<String> readTriggers() async {
+  Future<String> readTriggers(int type) async {
+    String contents = '';
+    late final io.File file;
     try {
-      final file = await _triggersFile;
-      final contents = await file.readAsString();
-
+      switch(type) {
+        case 0:
+          file = await _startTriggersFile;
+          break;
+        case 1:
+          file = await _stopTriggersFile;
+          break;
+        case 2:
+          file = await _recallTriggersFile;
+          break;
+      }
+      contents = await file.readAsString();
       return contents;
     } catch (e) {
       print("[ERROR] " + e.toString());
@@ -237,15 +260,33 @@ class FileOperations {
   }
 
   void initializeTriggersFile() async {
-    final file = await _triggersFile;
+    final startFile = await _startTriggersFile;
+    final stopFile = await _stopTriggersFile;
+    final recallFile = await _recallTriggersFile;
+
     try {
-      final contents = file.readAsStringSync();
-      print("Triggers file exists");
+      startFile.readAsStringSync();
+      print("Start triggers file exists");
     } catch (e) {
-      print(
-          "Triggers file needs to be created\nCreating from assets/words.txt");
+      print("Start triggers file needs to be created\nCreating from assets/words.txt");
       String initFile = await rootBundle.loadString('assets/text/words.txt');
-      file.writeAsString(initFile);
+      startFile.writeAsString(initFile);
+    }
+    try {
+      stopFile.readAsStringSync();
+      print("Stop triggers file exists");
+    } catch (e) {
+      print("Stop triggers file needs to be created\nCreating from assets/words.txt");
+      String initFile = await rootBundle.loadString('assets/text/words.txt');
+      stopFile.writeAsString(initFile);
+    }
+    try {
+      recallFile.readAsStringSync();
+      print("Recall triggers file exists");
+    } catch (e) {
+      print("Recall triggers file needs to be created\nCreating from assets/words.txt");
+      String initFile = await rootBundle.loadString('assets/text/words.txt');
+      recallFile.writeAsString(initFile);
     }
   }
 
@@ -255,10 +296,22 @@ class FileOperations {
   }
 
   /// Add trigger word to file.
-  Future addTrigger(String text) async {
-    final file = await _triggersFile;
+  Future addTrigger(String text, int type) async {
+    late final io.File file;
+    switch(type) {
+      case 0:
+        file = await _startTriggersFile;
+        break;
+      case 1:
+        file = await _stopTriggersFile;
+        break;
+      case 2:
+        file = await _recallTriggersFile;
+        break;
+    }
+    // file = await _startTriggersFile;
     List<String> triggersArray = file.readAsLinesSync();
-    if (!triggersArray.contains(text)) {
+    if(!triggersArray.contains(text.trim())) {
       file.writeAsString('\n${text}', mode: io.FileMode.append);
       print("Trigger added: " + text);
     } else {
@@ -267,9 +320,20 @@ class FileOperations {
   }
 
   /// Delete trigger word from file.
-  Future deleteTrigger(String text) async {
-    final file = await _triggersFile;
-
+  Future deleteTrigger(String text, int type) async {
+    late final io.File file;
+    switch(type) {
+      case 0:
+        file = await _startTriggersFile;
+        break;
+      case 1:
+        file = await _stopTriggersFile;
+        break;
+      case 2:
+        file = await _recallTriggersFile;
+        break;
+    }
+    //final file = await _startTriggersFile;
     String triggersText = file.readAsStringSync();
     List<String> triggersArray = triggersText.trimLeft().split("\n");
     triggersArray.remove(text);
@@ -277,12 +341,23 @@ class FileOperations {
 
     triggersText = triggersArray.join('\n');
     file.writeAsString('${triggersText}', mode: io.FileMode.write);
+
   }
 
   /// Edit trigger word from file.
-  Future editTrigger(String before, String after) async {
-    final file = await _triggersFile;
-
+  Future editTrigger(String before, String after, int type) async {
+    late final io.File file;
+    switch(type) {
+      case 0:
+        file = await _startTriggersFile;
+        break;
+      case 1:
+        file = await _stopTriggersFile;
+        break;
+      case 2:
+        file = await _recallTriggersFile;
+        break;
+    }
     String triggersText = file.readAsStringSync();
     List<String> triggersArray = triggersText.trimLeft().split("\n");
 

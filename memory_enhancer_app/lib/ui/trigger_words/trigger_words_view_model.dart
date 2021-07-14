@@ -65,7 +65,7 @@ class TriggerWordsViewModel extends ReactiveViewModel
           recognizedWords = result.recognizedWords;
 
           // record notes
-          keywords = await fileOperations.readTriggers();
+          keywords = await fileOperations.readTriggers(0);
           fileOperations.recordNotes(keywords, recognizedWords);
           notifyListeners();
         }

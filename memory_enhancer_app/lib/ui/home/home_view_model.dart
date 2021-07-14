@@ -40,7 +40,6 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
 
   void initialize() {
     WidgetsBinding.instance?.addObserver(this);
-    fileOperations.initializeTriggersFile();
   }
 
   void startListening() async {
@@ -64,7 +63,7 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
   // Start recording new note.
   void startRecord(SpeechRecognitionResult result) async {
     // record notes
-    String keywords = await fileOperations.readTriggers();
+    String keywords = await fileOperations.readTriggers(0);
     _triggers = keywords;
     if (speechService.speech.isNotListening && result.finalResult) {
       fileOperations.recordNotes(_triggers, result.recognizedWords[0]);
