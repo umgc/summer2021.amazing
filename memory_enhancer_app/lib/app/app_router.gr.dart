@@ -6,9 +6,14 @@
 
 import 'package:auto_route/auto_route.dart' as _i1;
 import 'package:flutter/material.dart' as _i2;
+import 'package:memory_enhancer_app/ui/contact_us/contact_us_view.dart' as _i10;
 import 'package:memory_enhancer_app/ui/help/help_view.dart' as _i6;
 import 'package:memory_enhancer_app/ui/home/home_view.dart' as _i3;
+import 'package:memory_enhancer_app/ui/how_to_videos/how_to_videos_view.dart'
+    as _i8;
 import 'package:memory_enhancer_app/ui/notes/notes_view.dart' as _i5;
+import 'package:memory_enhancer_app/ui/settings/general/general_settings_view.dart'
+    as _i9;
 import 'package:memory_enhancer_app/ui/settings/settings_view.dart' as _i4;
 import 'package:memory_enhancer_app/ui/trigger_words/trigger_words_view.dart'
     as _i7;
@@ -47,6 +52,27 @@ class AppRouter extends _i1.RootStackRouter {
           final args = data.argsAs<TriggerWordsViewRouteArgs>(
               orElse: () => const TriggerWordsViewRouteArgs());
           return _i7.TriggerWordsView(key: args.key);
+        }),
+    HowToVideosViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<HowToVideosViewRouteArgs>(
+              orElse: () => const HowToVideosViewRouteArgs());
+          return _i8.HowToVideosView(key: args.key);
+        }),
+    GeneralSettingsViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<GeneralSettingsViewRouteArgs>(
+              orElse: () => const GeneralSettingsViewRouteArgs());
+          return _i9.GeneralSettingsView(key: args.key);
+        }),
+    ContactUsViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
+        routeData: routeData,
+        builder: (data) {
+          final args = data.argsAs<ContactUsViewRouteArgs>(
+              orElse: () => const ContactUsViewRouteArgs());
+          return _i10.ContactUsView(key: args.key);
         })
   };
 
@@ -56,7 +82,12 @@ class AppRouter extends _i1.RootStackRouter {
         _i1.RouteConfig(SettingsViewRoute.name, path: '/settings-view'),
         _i1.RouteConfig(NotesViewRoute.name, path: '/notes-view'),
         _i1.RouteConfig(HelpViewRoute.name, path: '/help-view'),
-        _i1.RouteConfig(TriggerWordsViewRoute.name, path: '/trigger-words-view')
+        _i1.RouteConfig(TriggerWordsViewRoute.name,
+            path: '/trigger-words-view'),
+        _i1.RouteConfig(HowToVideosViewRoute.name, path: '/how-to-videos-view'),
+        _i1.RouteConfig(GeneralSettingsViewRoute.name,
+            path: '/general-settings-view'),
+        _i1.RouteConfig(ContactUsViewRoute.name, path: '/contact-us-view')
       ];
 }
 
@@ -103,6 +134,51 @@ class TriggerWordsViewRoute
 
 class TriggerWordsViewRouteArgs {
   const TriggerWordsViewRouteArgs({this.key});
+
+  final _i2.Key? key;
+}
+
+class HowToVideosViewRoute extends _i1.PageRouteInfo<HowToVideosViewRouteArgs> {
+  HowToVideosViewRoute({_i2.Key? key})
+      : super(name,
+            path: '/how-to-videos-view',
+            args: HowToVideosViewRouteArgs(key: key));
+
+  static const String name = 'HowToVideosViewRoute';
+}
+
+class HowToVideosViewRouteArgs {
+  const HowToVideosViewRouteArgs({this.key});
+
+  final _i2.Key? key;
+}
+
+class GeneralSettingsViewRoute
+    extends _i1.PageRouteInfo<GeneralSettingsViewRouteArgs> {
+  GeneralSettingsViewRoute({_i2.Key? key})
+      : super(name,
+            path: '/general-settings-view',
+            args: GeneralSettingsViewRouteArgs(key: key));
+
+  static const String name = 'GeneralSettingsViewRoute';
+}
+
+class GeneralSettingsViewRouteArgs {
+  const GeneralSettingsViewRouteArgs({this.key});
+
+  final _i2.Key? key;
+}
+
+class ContactUsViewRoute extends _i1.PageRouteInfo<ContactUsViewRouteArgs> {
+  ContactUsViewRoute({_i2.Key? key})
+      : super(name,
+            path: '/contact-us-view', args: ContactUsViewRouteArgs(key: key));
+
+  static const String name = 'ContactUsViewRoute';
+}
+
+class ContactUsViewRouteArgs {
+  const ContactUsViewRouteArgs({this.key});
 
   final _i2.Key? key;
 }
