@@ -32,3 +32,24 @@ AlertDialog CustomAlertTwoButton({String? title, required Widget content,
       )],
   );
 }
+
+Future<void> showAlertBox(String title, String message, BuildContext context) {
+  return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: <Widget>[
+              TextButton(
+                  child: Text('OK',
+                      style: TextStyle(
+                          color: lightTheme.accentColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20)),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  })
+            ]);
+      });
+}

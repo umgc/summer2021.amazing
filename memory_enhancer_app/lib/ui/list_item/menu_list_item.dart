@@ -25,6 +25,18 @@ void navigate(PageEnums location) {
       appRouter.pushAndPopUntil(TriggerWordsViewRoute(),
           predicate: (_) => false);
       break;
+    case 5:
+      appRouter.pushAndPopUntil(HowToVideosViewRoute(),
+          predicate: (_) => false);
+      break;
+    case 6:
+      appRouter.pushAndPopUntil(GeneralSettingsViewRoute(),
+          predicate: (_) => false);
+      break;
+    case 7:
+      appRouter.pushAndPopUntil(ContactUsViewRoute(),
+          predicate: (_) => false);
+      break;
     default:
       appRouter.pushAndPopUntil(HomeViewRoute(), predicate: (_) => false);
   }
