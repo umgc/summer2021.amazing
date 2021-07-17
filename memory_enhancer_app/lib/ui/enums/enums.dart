@@ -3,7 +3,10 @@ enum PageEnums {
   notes,
   settings,
   help,
-  triggerWords
+  triggerWords,
+  howToVideos,
+  generalSettings,
+  contactUs
 }
 
 extension PageEnumsExtention on PageEnums {
@@ -20,6 +23,12 @@ extension PageEnumsExtention on PageEnums {
         return 'Help';
       case PageEnums.triggerWords:
         return 'Trigger Words';
+      case PageEnums.howToVideos:
+        return 'How To Videos';
+      case PageEnums.generalSettings:
+        return 'General Settings';
+      case PageEnums.contactUs:
+        return 'Contact Us';
       default:
         return "";
     }

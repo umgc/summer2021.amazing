@@ -125,7 +125,7 @@ class FileOperations {
               content: Text(message),
               actions: <Widget>[
                 TextButton(
-                    child: Text('Ok',
+                    child: Text('OK',
                         style: TextStyle(
                             color: Colors.red,
                             fontWeight: FontWeight.bold,
@@ -220,9 +220,8 @@ class FileOperations {
           }
           print('Note deleted.');
           file.writeAsString(fileXML.toString());
-
-          showAlertBox('Note Deleted', 'The note was successfully deleted',
-              context); // Show deletion confirmation box.
+            showAlertBox('Note Deleted', 'The note was successfully deleted',
+                context); // Show deletion confirmation box.
         } else {
           // else tell user the note was not found
           print('No note found.');
@@ -289,8 +288,9 @@ class FileOperations {
     }
   }
 
-  void deleteFile() async {
-    final file = await _noteFile;
+  void deleteLocalFile(String fileName) async {
+    final filePath = await _localPath;
+    final file = await io.File(filePath + '/' + fileName);
     file.delete();
   }
 
@@ -364,5 +364,104 @@ class FileOperations {
     print("Editing trigger: " + before + " -> " + after);
     triggersText = triggersArray.join('\n');
     file.writeAsString('${triggersText}', mode: io.FileMode.write);
+  }
+
+  void initializeSettingsFile(bool reset) async {
+    final settingsFile = await _settingsValuesFile;
+    if(reset){
+      String xmlBody = await rootBundle.loadString('assets/settings/settingsValues.xml');
+      settingsFile.writeAsString(xmlBody);
+    }
+    try {
+      settingsFile.readAsStringSync();
+      print("Settings file exists");
+    } catch (e) {
+      print("Settings file needs to be created\nCreating from assets/settingsValues.xml");
+      String xmlBody = await rootBundle.loadString('assets/settings/settingsValues.xml');
+      settingsFile.writeAsString(xmlBody);
+    }
+  }
+
+  Future<io.File> get _settingsValuesFile async {
+    final filePath = await _localPath;
+    return io.File(filePath + '/settingsValues.xml');
+  }
+
+  Future<String> getSettingsValue(String setting) async {
+    late final io.File file;
+    String xmlBody = '';
+    try {
+      file = await _settingsValuesFile;
+      xmlBody = await file.readAsString();
+      var xmlFile = xml.XmlDocument.parse(xmlBody);
+      var element = xmlFile.findElements('settings').first.findElements(setting);
+
+      return element.first.innerText;
+
+    } catch (e) {
+      String errorMessage = 'An error has occurred while retrieving settings. MORE INFO: ' + e.toString();
+      print(errorMessage);
+      return errorMessage;
+    }
+  }
+
+  void setSettingsValue(String setting, String value) async {
+    try {
+      final file = await _settingsValuesFile;
+      String xmlBody = await file.readAsStringSync();
+
+      var xmlFile = xml.XmlDocument.parse(xmlBody);
+      xmlFile.findElements('settings').first.findElements(setting).first.innerText = value;
+      file.writeAsString(xmlFile.toString());
+    } catch (e) {
+      String errorMessage = 'An error has occurred while retrieving settings. MORE INFO: ' + e.toString();
+      print(errorMessage);
+    }
+  }
+
+  void cleanupNotes() async {
+    DateTime now = DateTime.now();
+    int days = int.parse(await getSettingsValue('saveNoteDuration'));
+    var deleteTimeframe = now.subtract(Duration(days: days));
+    try {
+      String editContent = await readNotes();
+      var editFile = xml.XmlDocument.parse(editContent);
+      var noteElements = editFile.findAllElements('note');
+      for (var note in noteElements) {
+        String noteTs = note.findElements('timestamp').first.innerText;
+        String noteId = note.findElements('id').first.innerText;
+        DateTime noteTimestamp = DateTime.parse(noteTs);
+        bool delete = noteTimestamp.isBefore(deleteTimeframe);
+        if(delete){
+          print('Deleting note "' + noteId + '", Timestamp: ' + noteTimestamp.toString());
+          deleteCleanupNote(noteId);
+        }
+      }
+    } catch (e) {
+      print('An error has occurred. MORE INFO: ' + e.toString());
+    }
+  }
+
+  // Delete notes based on time created
+  void deleteCleanupNote(String id) async {
+    try {
+      String xmlContent = await readNotes();
+      var fileXML = xml.XmlDocument.parse(xmlContent.toString());
+      var nodes = fileXML.findAllElements('note');
+      for (var node in nodes) {
+        if (node.findElements('id').first.text == id) {
+          final file = await _noteFile;
+          if (nodes.length >=0) {
+            node.parent!.children.remove(node);
+            print('Note "' + id + '" deleted.');
+            file.writeAsString(fileXML.toString());
+          }
+        } else {
+          print('No note found with ID "' + id + '"');
+        }
+      }
+    } catch (e) {
+      print('An error has occurred.' + e.toString());
+    }
   }
 }

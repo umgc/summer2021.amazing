@@ -48,6 +48,8 @@ dependencies:
   intl: ^0.17.0
   encrypt: ^5.0.0
   soundpool: ^2.1.0
+  youtube_player_flutter: ^8.0.0
+  url_launcher: ^6.0.9
 
 dev_dependencies:
   build_runner: ^2.0.5
@@ -102,6 +104,7 @@ flutter:
     - services/my-capstone-proj-1624955989482-356a808e17f9.json
     - assets/text/notes.txt
     - assets/text/words.txt
+    - assets/settings/settingsValues.xml
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -5,12 +5,11 @@
 import 'dart:core';
 
 import 'package:flutter/material.dart';
-import 'package:memory_enhancer_app/app/app_router.gr.dart';
-
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:memory_enhancer_app/notes.dart';
+import 'note_view.dart';
 import 'notes_view_model.dart';
 import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
@@ -209,11 +208,9 @@ class _NotesViewState extends State<NotesView> {
             bottomNavigationBar:
                 BottomNavigationBarController(pageIndex: PageEnums.notes.index),
             persistentFooterButtons: [
-              Center(
-                  child: Row(children: [
-                Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                    child: ElevatedButton(
+              Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: lightTheme.accentColor),
                         child: Text('Write Note',
@@ -224,10 +221,8 @@ class _NotesViewState extends State<NotesView> {
                               context: context,
                               builder: (BuildContext context) =>
                                   alert(context));
-                        })),
-                Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 15, 0),
-                    child: ElevatedButton(
+                        }),
+                ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             primary: lightTheme.accentColor),
                         child: Text(
@@ -237,8 +232,8 @@ class _NotesViewState extends State<NotesView> {
                             style: GoogleFonts.anton(fontSize: 25)),
                         onPressed: () async {
                           speechService.startListening();
-                        }))
-              ])),
+                        })
+              ]),
             ],
           );
         });
@@ -282,3 +277,13 @@ class _NotesViewState extends State<NotesView> {
     );
   } // End Write Note Alert
 }
+
+Future viewNote(BuildContext context, Note note) async {
+  Navigator.of(context).push(new MaterialPageRoute<NotesView>(
+      builder: (BuildContext context) {
+        return new NoteView(note);
+      },
+      fullscreenDialog: true
+  ));
+}
+

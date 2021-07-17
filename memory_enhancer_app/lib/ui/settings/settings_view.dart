@@ -26,6 +26,7 @@ class SettingsView extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(8),
                 children: <Widget>[
+                  CustomMenuListItem(location: PageEnums.generalSettings),
                   CustomMenuListItem(location: PageEnums.triggerWords),
                   ]
             ),

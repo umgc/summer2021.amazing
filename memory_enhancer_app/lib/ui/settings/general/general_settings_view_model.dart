@@ -6,7 +6,7 @@ import 'package:memory_enhancer_app/services/services.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-class TriggerWordsViewModel extends ReactiveViewModel
+class GeneralSettingsViewModel extends ReactiveViewModel
     with WidgetsBindingObserver {
   String recognizedWords = "";
   String keywords = "";
@@ -41,7 +41,6 @@ class TriggerWordsViewModel extends ReactiveViewModel
         print("app in detached");
         break;
     }
-
     notifyListeners();
   }
 

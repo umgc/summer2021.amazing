@@ -15,6 +15,7 @@ Future<void> main() async {
   runApp(MemoryEnhancerApp());
   fileOperations.initialNoteFile();
   fileOperations.initializeTriggersFile();
+  fileOperations.initializeSettingsFile(false);
 }
 
 class MemoryEnhancerApp extends StatelessWidget {

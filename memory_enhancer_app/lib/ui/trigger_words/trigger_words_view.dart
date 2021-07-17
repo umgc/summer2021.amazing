@@ -11,9 +11,9 @@ import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/list_item/list_item_dynamic.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
-import 'package:memory_enhancer_app/file_operations.dart';
 import 'package:memory_enhancer_app/ui/trigger_words/trigger_words_view_model.dart';
 import 'package:stacked/stacked.dart';
+import 'package:memory_enhancer_app/services/services.dart';
 
 class TriggerWordsView extends StatefulWidget {
   TriggerWordsView({Key? key}) : super(key: key);
@@ -23,7 +23,6 @@ class TriggerWordsView extends StatefulWidget {
 }
 
 class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProviderStateMixin {
-  FileOperations fileOperations = FileOperations();
   String startTriggerWords = "";
   String stopTriggerWords = "";
   String recallTriggerWords = "";
@@ -94,7 +93,7 @@ class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProvider
     return ViewModelBuilder<TriggerWordsViewModel>.reactive(
     viewModelBuilder: () => TriggerWordsViewModel(),
     onModelReady: (model) {
-    //model.initialize();
+      model.initialize();
     },
 
     builder: (context, model, child) {
@@ -108,11 +107,11 @@ class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProvider
       TabBarView(
       controller: tabCtrl,
       children: <Widget>[TriggerTabs(getTriggers: getStartTriggerWords, textEditControl: txtEditCtrl,
-          fileOperations: fileOperations, updateTriggers: updateTriggerWords, tabController: tabCtrl),
+          updateTriggers: updateTriggerWords, tabController: tabCtrl),
         TriggerTabs(getTriggers: getStopTriggerWords, textEditControl: txtEditCtrl,
-            fileOperations: fileOperations, updateTriggers: updateTriggerWords, tabController: tabCtrl),
+            updateTriggers: updateTriggerWords, tabController: tabCtrl),
         TriggerTabs(getTriggers: getRecallTriggerWords, textEditControl: txtEditCtrl,
-            fileOperations: fileOperations, updateTriggers: updateTriggerWords, tabController: tabCtrl)]),
+            updateTriggers: updateTriggerWords, tabController: tabCtrl)]),
       bottomNavigationBar:
       BottomNavigationBarController(pageIndex: PageEnums.settings.index),
       persistentFooterButtons: <Widget>[
@@ -130,15 +129,16 @@ class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProvider
                         return CustomAlertTwoButton(
                           title: 'ADD WORD OR PHRASE',
                           content: TextFormField(controller: txtEditCtrl),
-                          actionOneText: 'ADD',
-                          actionOnePressed: (){
+                          actionTwoText: 'ADD',
+                          actionTwoPressed: (){
                             fileOperations.addTrigger(txtEditCtrl.text, tabCtrl.index);
                             updateTriggerWords();
                             Navigator.pop(context);
                             txtEditCtrl.clear();
+                            showAlertBox('TRIGGER ADDED', 'The trigger word was added successfully', context);
                           },
-                          actionTwoText: 'CANCEL',
-                          actionTwoPressed: (){
+                          actionOneText: 'CANCEL',
+                          actionOnePressed: (){
                             Navigator.pop(context);
                             txtEditCtrl.clear();
                           }
@@ -160,13 +160,13 @@ TabBar CustomTabBar({required List<Widget> tabs, required TabController controll
 }
 
 Widget TriggerTabs({required Function() getTriggers, required TextEditingController textEditControl,
-  required FileOperations fileOperations, required Function updateTriggers, required TabController tabController}){
+  required Function updateTriggers, required TabController tabController}){
   return getTriggers().length > 0
       ? ListView.builder(
     padding: const EdgeInsets.all(8),
     itemCount: getTriggers().length,
     itemBuilder: (BuildContext context, int index) {
-      return CustomDynamicListItem(
+      return CustomEditDeleteListItem(
           onEdit: () {
             textEditControl.text = '${getTriggers()[index]}';
             showDialog(
@@ -187,6 +187,7 @@ Widget TriggerTabs({required Function() getTriggers, required TextEditingControl
                         updateTriggers();
                         Navigator.pop(context);
                         textEditControl.clear();
+                        showAlertBox('TRIGGER EDITED', 'The trigger word was edited successfully', context);
                       });
                 });
           },
@@ -208,6 +209,7 @@ Widget TriggerTabs({required Function() getTriggers, required TextEditingControl
                         fileOperations.deleteTrigger('${getTriggers()[index]}', tabController.index);
                         updateTriggers();
                         Navigator.pop(context);
+                        showAlertBox('TRIGGER DELETED', 'The trigger word was deleted successfully', context);
                       });
                 });
           },

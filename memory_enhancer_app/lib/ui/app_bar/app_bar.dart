@@ -27,3 +27,12 @@ AppBar CustomAppBarTabbed({required String title, required PreferredSizeWidget b
     automaticallyImplyLeading: false, // Hide the BACK button
   );
 }
+
+AppBar CustomAppBarPopup({required String title}){
+  return AppBar(
+    title: Text(title, style: GoogleFonts.passionOne(fontSize: 37),
+    ),
+    centerTitle: true,
+    backgroundColor: lightTheme.accentColor,
+  );
+}
