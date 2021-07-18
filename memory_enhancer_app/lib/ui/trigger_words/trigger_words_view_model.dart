@@ -20,7 +20,7 @@ class TriggerWordsViewModel extends ReactiveViewModel
 
   // Boolean storing value whether the speech engine is listening or not
   bool get listening {
-    return speechService.speech.isListening;
+    return speechService.isListening;
   }
 
   @override
@@ -49,6 +49,8 @@ class TriggerWordsViewModel extends ReactiveViewModel
     WidgetsBinding.instance?.addObserver(this);
   }
 
+  // TODO : Ahmed - revisit
+  /*
   void startListening() async {
     // If already listening, stop listening
     if (listening) {
@@ -69,6 +71,8 @@ class TriggerWordsViewModel extends ReactiveViewModel
     }
     notifyListeners();
   }
+
+   */
 
   @override
   List<ReactiveServiceMixin> get reactiveServices => [speechService];

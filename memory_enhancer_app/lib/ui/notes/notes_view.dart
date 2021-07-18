@@ -226,7 +226,7 @@ class _NotesViewState extends State<NotesView> {
                         style: ElevatedButton.styleFrom(
                             primary: lightTheme.accentColor),
                         child: Text(
-                            speechService.speech.isNotListening
+                            !speechService.isListening
                                 ? 'Record Note'
                                 : 'Stop Record',
                             style: GoogleFonts.anton(fontSize: 25)),

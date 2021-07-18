@@ -3,7 +3,6 @@
 // Author: Christian Ahmed
 //**************************************************************
 import 'package:memory_enhancer_app/services/services.dart';
-import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
@@ -13,7 +12,7 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
 
   // Boolean storing value whether the speech engine is listening or not
   bool get listening {
-    return speechService.speech.isListening;
+    return speechService.isListening;
   }
 
   @override
@@ -42,13 +41,17 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
     WidgetsBinding.instance?.addObserver(this);
   }
 
-  void startListening() async {
+  Future<void> startListening() async {
     // If already listening, stop listening
     if (listening) {
       speechService.stopListening();
     }
     // else start listening
     else {
+      speechService.startListening();
+      notifyListeners();
+
+      /*
       speechService.startListening(resultCallback: (result) async {
         if (result.recognizedWords.isNotEmpty) {
           recognizedWords = result.recognizedWords;
@@ -58,21 +61,28 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
           notifyListeners();
         }
       });
+       */
+
+
     }
     notifyListeners();
   }
 
+  // TODO : Ahmed - revisit
+  /*
   // Start recording new note if trigger is heard.
   void startRecord(SpeechRecognitionResult result) async {
     // record notes
     String keywords = await fileOperations.readTriggers(0);
     _triggers = keywords;
 
-    if (speechService.speech.isNotListening && result.finalResult) {
+    if (!speechService.isListening && result.finalResult) {
       fileOperations.recordNotes(
-          _triggers, speechService.speech.lastRecognizedWords);
+          _triggers, speechService.interimTranscript);
     }
   } // End record notes
+
+   */
 
   @override
   void dispose() {
