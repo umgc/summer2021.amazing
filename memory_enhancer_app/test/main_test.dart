@@ -16,11 +16,14 @@ void main() {
    //await tester.pumpWidget(MemoryEnhancerApp());
 
    // Verify that our counter starts at 0.
+    /*
    expect(find.text('Memory Enhancer'), findsNothing);
    expect(find.text('Home'), findsNothing);
    expect(find.text('Notes'), findsNothing);
    expect(find.text('Settings'), findsNothing);
    expect(find.text('Help'), findsNothing);
+   
+     */
 
    // Tap the 'mic' icon and trigger a frame.
    //await tester.tap(find.byIcon(Icons.mic_none));
