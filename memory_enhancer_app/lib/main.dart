@@ -10,8 +10,6 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   await ThemeManager.initialise();
-  await speechService.initializeSpeechService();
-  textToSpeechService.initialize();
   runApp(MemoryEnhancerApp());
   fileOperations.initialNoteFile();
   fileOperations.initializeTriggersFile();
