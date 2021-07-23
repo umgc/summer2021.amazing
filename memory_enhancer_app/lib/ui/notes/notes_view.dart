@@ -179,15 +179,14 @@ class _NotesViewState extends State<NotesView> {
                                                   ),
                                                   TextButton(
                                                     onPressed: () {
+                                                      getNoteContent();
                                                       Navigator.pop(context);
                                                       fileOperations.deleteNote(
                                                           notes[index]
                                                               .id
                                                               .toString(),
-                                                          context);
-                                                      getContent().whenComplete(
-                                                          () =>
-                                                              getNoteContent());
+                                                          context);                       
+                                                      getNoteContent();
                                                     },
                                                     child: const Text('YES',
                                                         style: TextStyle(
@@ -267,6 +266,7 @@ class _NotesViewState extends State<NotesView> {
                   fontWeight: FontWeight.bold,
                   fontSize: 20)),
           onPressed: () {
+            getNoteContent();
             Navigator.pop(context);
             fileOperations.writeNewNote(_ntTxtControl.text, context);
             getNoteContent();
