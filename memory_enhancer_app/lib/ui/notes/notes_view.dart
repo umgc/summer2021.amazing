@@ -27,6 +27,8 @@ class NotesView extends StatefulWidget {
 class _NotesViewState extends State<NotesView> {
   TextEditingController _ntTxtControl = TextEditingController();
   List<Note> notes = List.empty(growable: true);
+  double fontSizePlaceholder = 35;
+  double fontSizeMenu = 20;
 
   getNoteContent() => getContent().then((value) {
         setState(() {
@@ -36,7 +38,18 @@ class _NotesViewState extends State<NotesView> {
 
   @override
   void initState() {
+    fileOperations.cleanupNotes();
     getNoteContent();
+    fileOperations.getSettingsValue('fontSizeMenu').then((String value) {
+      setState(() {
+        fontSizeMenu = double.parse(value);
+      });
+    });
+    fileOperations.getSettingsValue('fontSizePlaceholder').then((String value) {
+      setState(() {
+        fontSizePlaceholder = double.parse(value);
+      });
+    });
     super.initState();
   }
 
@@ -61,7 +74,7 @@ class _NotesViewState extends State<NotesView> {
                 ? Center(
                     child: Text(
                     'There are no notes saved at this time. Please click on the "Write Note" button to type a note or the "Record Note" button to record a note.',
-                    style: GoogleFonts.roboto(fontSize: 35),
+                    style: GoogleFonts.roboto(fontSize: fontSizePlaceholder),
                     textAlign: TextAlign.center,
                   ))
                 : Center(
@@ -136,7 +149,7 @@ class _NotesViewState extends State<NotesView> {
                                                       '\n' +
                                                       notes[index].noteBody,
                                                   style: GoogleFonts.roboto(
-                                                      fontSize: 20,
+                                                      fontSize: fontSizeMenu,
                                                       height: 1.5))),
                                           IconButton(
                                             icon: const Icon(Icons.close),
