@@ -37,7 +37,8 @@ Card CustomEditDeleteListItem(
 Card CustomEditDeleteMenuItem(
     {String? subtitle,
       required String title,
-      required Function() onPress,
+      Function()? onPress,
+      Function()? onLongPress,
       required Function onEdit,
       required Function onDelete,
       required fontSizeMenu}) {
@@ -45,6 +46,7 @@ Card CustomEditDeleteMenuItem(
       child: InkWell(
           splashColor: lightTheme.accentColor,
           onTap: onPress,
+          onLongPress: onLongPress,
       child: ListTile(
         leading: IconButton(
             icon: const Icon(Icons.delete_rounded),
