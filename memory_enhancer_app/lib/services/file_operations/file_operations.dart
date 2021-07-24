@@ -1,19 +1,25 @@
-//********************************************
+//***************************************************************************
 // File Operations
 // Author: Ayodeji Fahumedin
-// Modified by: Chauntika Broggin, Mo Drammeh
-//********************************************
+// Modified by: Chauntika Broggin, Mo Drammeh, Christian Ahmed
+//***************************************************************************
 import 'dart:io' as io;
+
+import 'package:injectable/injectable.dart';
+import 'package:memory_enhancer_app/services/services.dart';
+import 'package:stacked/stacked.dart';
 
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:xml/xml.dart' as xml;
 
-import 'notes.dart';
+import '../../notes.dart';
 
 /// File operations for the Memory Enhancer app.
-class FileOperations {
+@singleton
+class FileOperations with ReactiveServiceMixin {
+
   /// Gets path to local application document directory.
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
@@ -78,6 +84,7 @@ class FileOperations {
       final file = await _noteFile;
       await file.writeAsString(fileXML.toString()); // Get notes XML file
       print(message); // Print that the note was saved.
+      dataProcessingService.initializeUserNotes();
     } catch (e) {
       print('Error has occured. ' + e.toString());
     }
@@ -98,6 +105,8 @@ class FileOperations {
       var textNote = Note('', DateTime.now(), content);
       await writeNoteToFile(textNote);
     }
+
+    dataProcessingService.initializeUserNotes();
   }
 
   // Create note from typing in note
@@ -144,6 +153,7 @@ class FileOperations {
       Note note = Note('', DateTime.now(), data); // New Note
       writeNoteToFile(note); // Save Note to file
       // Display alert to user that note recorded.
+
       showAlertBox(
           'Note Recorded', 'Your note was recorded successfully', context);
     } else {
@@ -155,6 +165,8 @@ class FileOperations {
           'Your note was not recorded. Please visit the Help page for assistance.',
           context);
     }
+
+    dataProcessingService.initializeUserNotes();
   }
 
   // Create initial notes file
@@ -190,8 +202,12 @@ class FileOperations {
           // Display alert box for edit saving confirmation.
           showAlertBox(
               'Note Saved', 'The edits were saved successfully.', context);
+
+          dataProcessingService.initializeUserNotes();
         }
       }
+
+      dataProcessingService.initializeUserNotes();
     } catch (e) {
       print('An error has occured. MORE INFO: ' + e.toString());
     } // catch
@@ -227,10 +243,29 @@ class FileOperations {
           print('No note found.');
         } // End if..else
       } // End for in loop
+
+      dataProcessingService.initializeUserNotes();
     } catch (e) {
       // if there is a file or parsing error, print error
       print('An error has occurred.' + e.toString());
     } // End try...catch
+  }
+
+  /// Retrieves notes in notes file.
+  Future<List<String>> getNotesData() async {
+    List<String> notesData = [];
+    try {
+      String notes = await readNotes(); // Read notes from file
+      var xmlNotes = xml.XmlDocument.parse(notes); // Parses data
+      var elements = xmlNotes.findAllElements('note'); // Collects all the note items
+      for (var e in elements) {
+        notesData.add(e.findElements('content').first.innerText);
+      }
+    } catch (e) {
+      print('An error has occurred. MORE INFO: ' + e.toString());
+    } // catch
+
+    return notesData;
   }
 
   /// Reads trigger keywords from file.
@@ -266,24 +301,24 @@ class FileOperations {
       startFile.readAsStringSync();
       print("Start triggers file exists");
     } catch (e) {
-      print("Start triggers file needs to be created\nCreating from assets/words.txt");
-      String initFile = await rootBundle.loadString('assets/text/words.txt');
+      print("Start triggers file needs to be created\nCreating from assets/default_start_record_triggers.txt");
+      String initFile = await rootBundle.loadString('assets/text/default_start_record_triggers.txt');
       startFile.writeAsString(initFile);
     }
     try {
       stopFile.readAsStringSync();
       print("Stop triggers file exists");
     } catch (e) {
-      print("Stop triggers file needs to be created\nCreating from assets/words.txt");
-      String initFile = await rootBundle.loadString('assets/text/words.txt');
+      print("Stop triggers file needs to be created\nCreating from assets/default_stop_record_triggers.txt");
+      String initFile = await rootBundle.loadString('assets/text/default_stop_record_triggers.txt');
       stopFile.writeAsString(initFile);
     }
     try {
       recallFile.readAsStringSync();
       print("Recall triggers file exists");
     } catch (e) {
-      print("Recall triggers file needs to be created\nCreating from assets/words.txt");
-      String initFile = await rootBundle.loadString('assets/text/words.txt');
+      print("Recall triggers file needs to be created\nCreating from assets/default_recall_triggers.txt");
+      String initFile = await rootBundle.loadString('assets/text/default_recall_triggers.txt');
       recallFile.writeAsString(initFile);
     }
   }
@@ -313,6 +348,7 @@ class FileOperations {
     if(!triggersArray.contains(text.trim())) {
       file.writeAsString('\n${text}', mode: io.FileMode.append);
       print("Trigger added: " + text);
+      dataProcessingService.initializeTriggers();
     } else {
       print(text + " is already a trigger");
     }
@@ -341,6 +377,7 @@ class FileOperations {
     triggersText = triggersArray.join('\n');
     file.writeAsString('${triggersText}', mode: io.FileMode.write);
 
+    dataProcessingService.initializeTriggers();
   }
 
   /// Edit trigger word from file.
@@ -364,6 +401,8 @@ class FileOperations {
     print("Editing trigger: " + before + " -> " + after);
     triggersText = triggersArray.join('\n');
     file.writeAsString('${triggersText}', mode: io.FileMode.write);
+
+    dataProcessingService.initializeTriggers();
   }
 
   void initializeSettingsFile(bool reset) async {

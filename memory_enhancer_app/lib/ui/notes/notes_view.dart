@@ -231,7 +231,10 @@ class _NotesViewState extends State<NotesView> {
                                 : 'Stop Record',
                             style: GoogleFonts.anton(fontSize: 25)),
                         onPressed: () async {
-                          speechService.startListening();
+                          !speechService.isListening
+                              ? speechService.startListening
+                              : speechService.stopListening;
+                          getNoteContent();
                         })
               ]),
             ],
