@@ -27,7 +27,6 @@ class HomeView extends StatelessWidget {
       builder: (context, model, child) {
         return Scaffold(
           backgroundColor: lightTheme.primaryColor,
-          //endDrawer: NavigationController(), // TODO: remove after the bottom navigation is fully implemented
           appBar: CustomAppBar(title: 'Memory Enhancer'),
           body: Center(
             child: Column(
@@ -45,7 +44,7 @@ class HomeView extends StatelessWidget {
                         style: TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.w400,
-                          fontSize: 30,
+                          fontSize: 25,
                         ),
                         textAlign: TextAlign.left,
                       ),

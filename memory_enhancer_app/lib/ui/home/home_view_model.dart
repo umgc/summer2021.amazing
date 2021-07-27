@@ -20,14 +20,14 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         print("app in resumed");
-        speechService.listenForWakeWord();
+        //speechService.listenForWakeWord(); AHMED
         break;
       case AppLifecycleState.inactive:
         print("app in inactive");
         break;
       case AppLifecycleState.paused:
         print("app in paused");
-        speechService.stopListeningForWakeWord();
+        //speechService.stopListeningForWakeWord(); AHMED
         break;
       case AppLifecycleState.detached:
         print("app in detached");
@@ -86,7 +86,7 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    speechService.stopListeningForWakeWord();
+    //speechService.stopListeningForWakeWord(); AHMED
     WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }
