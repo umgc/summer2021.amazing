@@ -10,10 +10,11 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
   await ThemeManager.initialise();
-  runApp(MemoryEnhancerApp());
   fileOperations.initialNoteFile();
   fileOperations.initializeTriggersFile();
   fileOperations.initializeSettingsFile(false);
+  await dataProcessingService.initialize();
+  runApp(MemoryEnhancerApp());
 }
 
 class MemoryEnhancerApp extends StatelessWidget {
