@@ -27,6 +27,8 @@ class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProvider
   String stopTriggerWords = "";
   String recallTriggerWords = "";
   final txtEditCtrl = TextEditingController();
+  double fontSizeMenu = 25;
+  double fontSizePlaceholder = 35;
   late TabController tabCtrl;
 
   void updateTriggerWords() {
@@ -80,6 +82,16 @@ class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProvider
     super.initState();
     tabCtrl = TabController(length: 3, vsync: this);
     updateTriggerWords();
+    fileOperations.getSettingsValue('fontSizeMenu').then((String value) {
+      setState(() {
+        fontSizeMenu = double.parse(value);
+      });
+    });
+    fileOperations.getSettingsValue('fontSizePlaceholder').then((String value) {
+      setState(() {
+        fontSizePlaceholder = double.parse(value);
+      });
+    });
   }
 
   @override
@@ -107,11 +119,11 @@ class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProvider
       TabBarView(
       controller: tabCtrl,
       children: <Widget>[TriggerTabs(getTriggers: getStartTriggerWords, textEditControl: txtEditCtrl,
-          updateTriggers: updateTriggerWords, tabController: tabCtrl),
+          updateTriggers: updateTriggerWords, tabController: tabCtrl, fontSizeMenu: fontSizeMenu, fontSizePlaceholder: fontSizePlaceholder),
         TriggerTabs(getTriggers: getStopTriggerWords, textEditControl: txtEditCtrl,
-            updateTriggers: updateTriggerWords, tabController: tabCtrl),
+            updateTriggers: updateTriggerWords, tabController: tabCtrl, fontSizeMenu: fontSizeMenu, fontSizePlaceholder: fontSizePlaceholder),
         TriggerTabs(getTriggers: getRecallTriggerWords, textEditControl: txtEditCtrl,
-            updateTriggers: updateTriggerWords, tabController: tabCtrl)]),
+            updateTriggers: updateTriggerWords, tabController: tabCtrl, fontSizeMenu: fontSizeMenu, fontSizePlaceholder: fontSizePlaceholder)]),
       bottomNavigationBar:
       BottomNavigationBarController(pageIndex: PageEnums.settings.index),
       persistentFooterButtons: <Widget>[
@@ -160,13 +172,14 @@ TabBar CustomTabBar({required List<Widget> tabs, required TabController controll
 }
 
 Widget TriggerTabs({required Function() getTriggers, required TextEditingController textEditControl,
-  required Function updateTriggers, required TabController tabController}){
+  required Function updateTriggers, required TabController tabController, required double fontSizeMenu, required double fontSizePlaceholder}){
   return getTriggers().length > 0
       ? ListView.builder(
     padding: const EdgeInsets.all(8),
     itemCount: getTriggers().length,
     itemBuilder: (BuildContext context, int index) {
       return CustomEditDeleteListItem(
+          fontSizeMenu: fontSizeMenu,
           onEdit: () {
             textEditControl.text = '${getTriggers()[index]}';
             showDialog(
@@ -216,8 +229,8 @@ Widget TriggerTabs({required Function() getTriggers, required TextEditingControl
           title: '${getTriggers()[index]}');
     },
   )
-      : const Center(
+      : Center(
       child: Text('Add words or phrases with the button below',
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500)));
+          style: TextStyle(fontSize: fontSizePlaceholder, fontWeight: FontWeight.w500)));
 }

@@ -5,7 +5,7 @@ import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 
-Card CustomMenuListItem({required PageEnums location}) {
+Card CustomMenuListItem({required PageEnums location, required double fontSizeMenu}) {
   return Card(
       child: InkWell(
           splashColor: lightTheme.accentColor,
@@ -15,7 +15,7 @@ Card CustomMenuListItem({required PageEnums location}) {
           child: ListTile(
             title: Text(location.name,
                 style: GoogleFonts.anton(
-                    fontSize: 25, textStyle: TextStyle(letterSpacing: .75))),
+                    fontSize: fontSizeMenu, textStyle: TextStyle(letterSpacing: .75))),
           )));
 }
 

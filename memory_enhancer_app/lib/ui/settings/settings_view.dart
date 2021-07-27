@@ -3,6 +3,7 @@
 // Author:
 //**************************************************************
 import 'package:flutter/material.dart';
+import 'package:memory_enhancer_app/services/services.dart';
 import 'package:stacked/stacked.dart';
 
 import 'settings_view_model.dart';
@@ -11,7 +12,25 @@ import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
 import 'package:memory_enhancer_app/ui/list_item/menu_list_item.dart';
 
-class SettingsView extends StatelessWidget {
+class SettingsView extends StatefulWidget {
+  SettingsView({Key? key}) : super(key: key);
+
+  @override
+  State<StatefulWidget> createState() => _SettingsViewState();
+}
+
+class _SettingsViewState extends State<SettingsView> {
+  double fontSizeMenu = 25;
+
+  @override
+  void initState() {
+    fileOperations.getSettingsValue('fontSizeMenu').then((String value) {
+      setState(() {
+        fontSizeMenu = double.parse(value);
+      });
+    });
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return ViewModelBuilder<SettingsViewModel>.reactive(
@@ -26,8 +45,8 @@ class SettingsView extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(8),
                 children: <Widget>[
-                  CustomMenuListItem(location: PageEnums.generalSettings),
-                  CustomMenuListItem(location: PageEnums.triggerWords),
+                  CustomMenuListItem(location: PageEnums.generalSettings, fontSizeMenu: fontSizeMenu),
+                  CustomMenuListItem(location: PageEnums.triggerWords, fontSizeMenu: fontSizeMenu),
                   ]
             ),
           ),

@@ -7,6 +7,7 @@ import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:memory_enhancer_app/notes.dart';
+import 'package:memory_enhancer_app/services/services.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
@@ -20,9 +21,15 @@ class NoteView extends StatefulWidget {
 }
 
 class _NoteViewState extends State<NoteView> {
+  double fontSizeNotes = 15;
 
   @override
   void initState() {
+    fileOperations.getSettingsValue('fontSizeNote').then((String value) {
+      setState(() {
+        fontSizeNotes = double.parse(value);
+      });
+    });
     super.initState();
   }
 
@@ -33,7 +40,7 @@ class _NoteViewState extends State<NoteView> {
             body: ListView(children: [
               Center(child: Text(widget.note.noteDate, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
               Divider(thickness: 3),
-              Text(widget.note.noteBody, style: TextStyle(fontSize: 25))],),
+              Text(widget.note.noteBody, style: TextStyle(fontSize: fontSizeNotes))],),
         bottomNavigationBar:
               BottomNavigationBarController(pageIndex: PageEnums.notes.index),
           );
