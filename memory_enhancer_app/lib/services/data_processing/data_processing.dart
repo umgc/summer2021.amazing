@@ -46,6 +46,9 @@ class DataProcessingService with ReactiveServiceMixin {
   // User's notes stored on the device
   List<String> _userNotes = [];
 
+  // Words to ignore in the note searches
+  List<String> _ignoredWords = [];
+
   // User's words to save as a note
   String _userWordsToSave = "";
 
@@ -56,6 +59,7 @@ class DataProcessingService with ReactiveServiceMixin {
   Future<void> initialize() async {
     // Initialize the Triggers and User Notes
     refresh();
+    _initializeIgnoredWords();
   }
 
 
@@ -243,8 +247,8 @@ class DataProcessingService with ReactiveServiceMixin {
 
     // Remove single character to avoid quadratic time complexity
     for(int i  = 0; i < tempInputWords.length; i++) {
-      if(tempInputWords[i].length > 1) {
-        userInputWords.add(tempInputWords[i]);
+      if(tempInputWords[i].length > 1 && !_ignoredWords.contains(tempInputWords[i])) {
+        userInputWords.add(tempInputWords[i].toLowerCase());
       }
     }
     print("DATA PROCESSING / Recall user words : $userInputWords");
@@ -388,6 +392,14 @@ class DataProcessingService with ReactiveServiceMixin {
           _userNotes = value
         })
         .whenComplete(() => print("DATA PROCESSING / User notes : $_userNotes")); // TODO : AHMED - comment this line later
+  }
+
+
+  // ---------------------------------------------------------------------------
+  // Words to ignore in the user's notes search
+  // ---------------------------------------------------------------------------
+  void _initializeIgnoredWords() {
+    _ignoredWords = ["i", "you", "he", "she", "we", "they", "my", "your", "am", "is", "are", "the", "a", "it" "it's", "i'm"];
   }
 
 }
