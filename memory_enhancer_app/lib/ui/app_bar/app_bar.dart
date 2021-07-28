@@ -3,8 +3,9 @@ import 'package:memory_enhancer_app/app/themes/light_theme.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-AppBar CustomAppBar({required String title}){
+AppBar CustomAppBar({required String title, List<Widget>? actions}){
   return AppBar(
+    actions: actions,
     title: Text(
       title,
       style: GoogleFonts.passionOne(fontSize: 37),
@@ -15,8 +16,9 @@ AppBar CustomAppBar({required String title}){
   );
 }
 
-AppBar CustomAppBarTabbed({required String title, required PreferredSizeWidget bottom}){
+AppBar CustomAppBarTabbed({required String title, required PreferredSizeWidget bottom, List<Widget>? actions}){
   return AppBar(
+    actions: actions,
     title: Text(
       title,
       style: GoogleFonts.passionOne(fontSize: 37),

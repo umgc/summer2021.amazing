@@ -6,7 +6,9 @@ Card CustomEditDeleteListItem(
     {String? subtitle,
       required String title,
       required Function onEdit,
-      required Function onDelete}) {
+      required Function onDelete,
+    required double fontSizeMenu}) {
+
   return Card(
       child: ListTile(
         leading: IconButton(
@@ -25,7 +27,7 @@ Card CustomEditDeleteListItem(
             color: lightTheme.accentColor),
         title: Center(child: Text(title,
             style: GoogleFonts.anton(
-                fontSize: 20, textStyle: TextStyle(letterSpacing: .6)))),
+                fontSize: fontSizeMenu, textStyle: TextStyle(letterSpacing: .6)))),
         subtitle: subtitle != null ? Text(subtitle,
             style: GoogleFonts.anton(
                 fontSize: 15, textStyle: TextStyle(letterSpacing: .6))) : null,
@@ -35,13 +37,16 @@ Card CustomEditDeleteListItem(
 Card CustomEditDeleteMenuItem(
     {String? subtitle,
       required String title,
-      required Function() onPress,
+      Function()? onPress,
+      Function()? onLongPress,
       required Function onEdit,
-      required Function onDelete}) {
+      required Function onDelete,
+      required fontSizeMenu}) {
   return Card(
       child: InkWell(
           splashColor: lightTheme.accentColor,
           onTap: onPress,
+          onLongPress: onLongPress,
       child: ListTile(
         leading: IconButton(
             icon: const Icon(Icons.delete_rounded),
@@ -59,7 +64,7 @@ Card CustomEditDeleteMenuItem(
             color: lightTheme.accentColor),
         title: Center(child: Text(title,
             style: GoogleFonts.anton(
-                fontSize: 20, textStyle: TextStyle(letterSpacing: .6)))),
+                fontSize: fontSizeMenu, textStyle: TextStyle(letterSpacing: .6)))),
         subtitle: subtitle != null ? Text(subtitle,
             style: GoogleFonts.anton(
                 fontSize: 15, textStyle: TextStyle(letterSpacing: .6))) : null,
@@ -71,7 +76,8 @@ Card CustomEditDeleteMenuItem(
 Card CustomEditListItem(
     {String? subtitle,
       required String title,
-      required Function onEdit}) {
+      required Function onEdit,
+      required fontSizeMenu}) {
   return Card(
       child: ListTile(
         trailing: IconButton(
@@ -83,7 +89,7 @@ Card CustomEditListItem(
             color: lightTheme.accentColor),
         title: Text(title,
             style: GoogleFonts.anton(
-                fontSize: 20, textStyle: TextStyle(letterSpacing: .6))),
+                fontSize: fontSizeMenu, textStyle: TextStyle(letterSpacing: .6))),
         subtitle: subtitle != null ? Text(subtitle,
             style: GoogleFonts.anton(
                 fontSize: 15, textStyle: TextStyle(letterSpacing: .6))) : null,
@@ -95,7 +101,8 @@ Card CustomOneButtonListItem(
       String? tooltip,
       required String title,
       required Icon icon,
-      required Function onBtnOnePress}) {
+      required Function onBtnOnePress,
+      required fontSizeMenu}) {
   return Card(
       child: ListTile(
         trailing: IconButton(
@@ -107,7 +114,7 @@ Card CustomOneButtonListItem(
             color: lightTheme.accentColor),
         title: Text(title,
             style: GoogleFonts.anton(
-                fontSize: 20, textStyle: TextStyle(letterSpacing: .6))),
+                fontSize: fontSizeMenu, textStyle: TextStyle(letterSpacing: .6))),
         subtitle: subtitle != null ? Text(subtitle,
             style: GoogleFonts.anton(
                 fontSize: 15, textStyle: TextStyle(letterSpacing: .6))) : null,
@@ -122,7 +129,8 @@ Card CustomTwoButtonListItem(
       required Icon iconOne,
       required Function onBtnOnePress,
       required Icon iconTwo,
-      required Function onBtnTwoPress}) {
+      required Function onBtnTwoPress,
+      required fontSizeMenu}) {
   return Card(
       child: ListTile(
         trailing: IconButton(
@@ -141,7 +149,7 @@ Card CustomTwoButtonListItem(
             color: lightTheme.accentColor),
         title: Center(child: Text(title,
             style: GoogleFonts.anton(
-                fontSize: 20, textStyle: TextStyle(letterSpacing: .6)))),
+                fontSize: fontSizeMenu, textStyle: TextStyle(letterSpacing: .6)))),
         subtitle: subtitle != null ? Text(subtitle,
             style: GoogleFonts.anton(
                 fontSize: 15, textStyle: TextStyle(letterSpacing: .6))) : null,

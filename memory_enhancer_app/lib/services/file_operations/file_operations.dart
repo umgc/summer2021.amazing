@@ -462,8 +462,9 @@ class FileOperations with ReactiveServiceMixin {
         DateTime noteTimestamp = DateTime.parse(noteTs);
         bool delete = noteTimestamp.isBefore(deleteTimeframe);
         if(delete){
-          print('Deleting note "' + noteId + '", Timestamp: ' + noteTimestamp.toString());
-          deleteCleanupNote(noteId);
+          print('Note "' + noteId + '", Timestamp: ' + noteTimestamp.toString() + ', should be deleted');
+          //print('Deleting note "' + noteId + '", Timestamp: ' + noteTimestamp.toString());
+          //deleteCleanupNote(noteId);
         }
       }
     } catch (e) {

@@ -15,6 +15,7 @@ import 'package:memory_enhancer_app/ui/list_item/list_item_dynamic.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
 import 'package:stacked/stacked.dart';
 import 'general_settings_view_model.dart';
+import 'dart:math';
 
 class GeneralSettingsView extends StatefulWidget {
   GeneralSettingsView({Key? key}) : super(key: key);
@@ -25,9 +26,9 @@ class GeneralSettingsView extends StatefulWidget {
 
 class _GeneralSettingsViewState extends State<GeneralSettingsView> {
   int saveNoteDuration = 7;
-  int fontSizeNote = 20;
-  int fontSizeMenu = 25;
-  int fontSizePlaceholder = 35;
+  double fontSizeNote = 20;
+  double fontSizeMenu = 25;
+  double fontSizePlaceholder = 35;
   final txtEditCtrl = TextEditingController();
 
   void updateSettingsValues(){
@@ -38,17 +39,17 @@ class _GeneralSettingsViewState extends State<GeneralSettingsView> {
     });
     fileOperations.getSettingsValue('fontSizeNote').then((String value) {
       setState(() {
-        fontSizeNote = int.parse(value);
+        fontSizeNote = double.parse(value);
       });
     });
     fileOperations.getSettingsValue('fontSizeMenu').then((String value) {
       setState(() {
-        fontSizeMenu = int.parse(value);
+        fontSizeMenu = double.parse(value);
       });
     });
     fileOperations.getSettingsValue('fontSizePlaceholder').then((String value) {
       setState(() {
-        fontSizePlaceholder = int.parse(value);
+        fontSizePlaceholder = double.parse(value);
       });
     });
   }
@@ -78,6 +79,7 @@ class _GeneralSettingsViewState extends State<GeneralSettingsView> {
               child:
                   ListView(padding: const EdgeInsets.all(8), children: <Widget>[
                 CustomEditListItem(
+                    fontSizeMenu: fontSizeMenu,
                     title: 'Delete Notes After ' +
                         saveNoteDuration.toString() +
                         ' Day(s)',
@@ -111,10 +113,11 @@ class _GeneralSettingsViewState extends State<GeneralSettingsView> {
                           });
     });}),
                     CustomEditListItem(
+                        fontSizeMenu: fontSizeMenu,
                         title: 'Font Size (Menu) : ' +
-                            fontSizeMenu.toString(),
+                            fontSizeMenu.toInt().toString(),
                         onEdit: () {
-                          txtEditCtrl.text = fontSizeMenu.toString();
+                          txtEditCtrl.text = fontSizeMenu.toInt().toString();
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -123,8 +126,8 @@ class _GeneralSettingsViewState extends State<GeneralSettingsView> {
                                     content: TextField(
                                       controller: txtEditCtrl,
                                       decoration: new InputDecoration(labelText: "Enter the font size"),
-                                      keyboardType: TextInputType.number,
-                                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly],),
+                                      keyboardType: TextInputType.numberWithOptions(decimal: false),
+                                      inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]),
                                     actionOneText: 'CANCEL',
                                     actionOnePressed: () {
                                       Navigator.pop(context);
@@ -138,10 +141,11 @@ class _GeneralSettingsViewState extends State<GeneralSettingsView> {
                                     });
                               });}),
                     CustomEditListItem(
+                        fontSizeMenu: fontSizeMenu,
                         title: 'Font Size (Notes) : ' +
-                            fontSizeNote.toString(),
+                            fontSizeNote.toInt().toString(),
                         onEdit: () {
-                          txtEditCtrl.text = fontSizeNote.toString();
+                          txtEditCtrl.text = fontSizeNote.toInt().toString();
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
@@ -165,10 +169,11 @@ class _GeneralSettingsViewState extends State<GeneralSettingsView> {
                                     });
                               });}),
                     CustomEditListItem(
+                        fontSizeMenu: fontSizeMenu,
                         title: 'Font Size (Placeholders) : ' +
-                            fontSizePlaceholder.toString(),
+                            fontSizePlaceholder.toInt().toString(),
                         onEdit: () {
-                          txtEditCtrl.text = fontSizePlaceholder.toString();
+                          txtEditCtrl.text = fontSizePlaceholder.toInt().toString();
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
