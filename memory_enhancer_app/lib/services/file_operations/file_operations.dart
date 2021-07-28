@@ -121,6 +121,7 @@ class FileOperations with ReactiveServiceMixin {
       showAlertBox(
           'Note Empty', 'You cannot save a note without content.', context);
     }
+    dataProcessingService.initializeUserNotes();
   }
 
   // Displays Alert Dialog Box
@@ -147,23 +148,15 @@ class FileOperations with ReactiveServiceMixin {
   }
 
   //Create note from recording/speaking
-  void speakNote(String data, BuildContext context) async {
+  void speakNote(String data) async {
     // If data is not empty , make a Note object and save to file
-    if (data.isNotEmpty) {
+    if (data.isNotEmpty && !speechService.isListening) {
       Note note = Note('', DateTime.now(), data); // New Note
-      writeNoteToFile(note); // Save Note to file
-      // Display alert to user that note recorded.
-
-      showAlertBox(
-          'Note Recorded', 'Your note was recorded successfully', context);
+      await writeNoteToFile(note); // Save Note to file
+      dataProcessingService.initializeUserNotes();
     } else {
       // else error occurred recording note
       print('Error has occurred. Note was not recorded.');
-      // Display alert dialog that note was not recorded.
-      showAlertBox(
-          'Note Not Recorded',
-          'Your note was not recorded. Please visit the Help page for assistance.',
-          context);
     }
 
     dataProcessingService.initializeUserNotes();
@@ -186,35 +179,29 @@ class FileOperations with ReactiveServiceMixin {
   }
 
   /// Edits notes in notes file.
-  void editNote(String id, String edits, BuildContext context) async {
+  void editNote(String id, String edits) async {
     try {
       String editContent = await readNotes(); // Read notes from file
       var editFile = xml.XmlDocument.parse(editContent); // Parses data
       var elements =
-          editFile.findAllElements('note'); // Collects all the note items
+      editFile.findAllElements('note'); // Collects all the note items
       // Check each note to see if it has a matching id number.
       for (var e in elements) {
         // If it does, get the body content of the note and replace with user changes
         if (e.findElements('id').first.text == id) {
           e.findElements('content').first.innerText = edits;
           final file = await _noteFile;
-          file.writeAsString(editFile.toString());
-          // Display alert box for edit saving confirmation.
-          showAlertBox(
-              'Note Saved', 'The edits were saved successfully.', context);
-
-          dataProcessingService.initializeUserNotes();
+          await file.writeAsString(editFile.toString());
         }
       }
-
-      dataProcessingService.initializeUserNotes();
     } catch (e) {
       print('An error has occured. MORE INFO: ' + e.toString());
     } // catch
+    dataProcessingService.initializeUserNotes();
   }
 
   // Delete note.
-  void deleteNote(String id, BuildContext context) async {
+  void deleteNote(String id) async {
     try {
       String xmlContent = await readNotes(); // Read notes from file
       var fileXML = xml.XmlDocument.parse(xmlContent.toString()); // Parses data
@@ -228,16 +215,18 @@ class FileOperations with ReactiveServiceMixin {
           final file = await _noteFile;
           if (nodes.length >= 0) {
             node.parent!.children.remove(node); // Remove note
+            dataProcessingService.initializeUserNotes();
           } else {
             Note sampleNote = Note(
                 '', DateTime.now(), 'Sample Note.\nPlease add your own note.');
-            writeNoteToFile(sampleNote);
+            await writeNoteToFile(sampleNote);
             node.parent!.children.remove(node);
+            dataProcessingService.initializeUserNotes();
           }
           print('Note deleted.');
-          file.writeAsString(fileXML.toString());
-            showAlertBox('Note Deleted', 'The note was successfully deleted',
-                context); // Show deletion confirmation box.
+          await file.writeAsString(fileXML.toString());
+          dataProcessingService.initializeUserNotes();
+
         } else {
           // else tell user the note was not found
           print('No note found.');
@@ -249,6 +238,7 @@ class FileOperations with ReactiveServiceMixin {
       // if there is a file or parsing error, print error
       print('An error has occurred.' + e.toString());
     } // End try...catch
+    dataProcessingService.initializeUserNotes();
   }
 
   /// Retrieves notes in notes file.
