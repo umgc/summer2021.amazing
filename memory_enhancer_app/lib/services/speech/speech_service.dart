@@ -11,12 +11,6 @@ import 'package:injectable/injectable.dart';
 import 'package:memory_enhancer_app/services/data_processing/data_processing.dart';
 import 'package:stacked/stacked.dart';
 
-// Porcupine for wake words
-//import 'package:porcupine/porcupine.dart';
-//import 'package:porcupine/porcupine_error.dart';
-//import 'package:porcupine/porcupine_manager.dart';
-//import 'package:wakelock/wakelock.dart';
-
 @singleton
 class SpeechService with ReactiveServiceMixin {
   // The Method Channel to access the native custom speech service
@@ -71,9 +65,10 @@ class SpeechService with ReactiveServiceMixin {
         synthesizeTextToSpeech("Memory Enhancer is no longer listening to you.");
         isListening = false;
         String result = await speechServiceChannel.invokeMethod('stopListening');
-        print("SPEECH SERVICE / Returned transcripts : $result");
         List<String> transcriptions = (jsonDecode(result) as List<dynamic>).cast<String>();
         print("SPEECH SERVICE / Returned transcripts : $transcriptions");
+
+        //GetIt.I.get<DataProcessingService>().processSpeechTranscriptions(transcriptions);
 
         //TODO : AHMED - Diarization display.  Delete later
         interimTranscript =  "";
@@ -90,6 +85,7 @@ class SpeechService with ReactiveServiceMixin {
       }
     }
   }
+
 
   //----------------------------------------------------------------------------
   // Initiate the IBM Watson Listening service to transcribe the user's speech
@@ -108,18 +104,8 @@ class SpeechService with ReactiveServiceMixin {
   // Callback sending from the native speech service
   //----------------------------------------------------------------------------
   Future<void> _processSpeechServiceOutput(MethodCall call) async {
-    if (call.method == 'processTranscriptions') {
-      String jsonList = call.arguments;
-      List<String> transcriptions  = jsonDecode(jsonList);
-
-      print("##################################################################");
-      print(transcriptions);
-      print("##################################################################");
-    }
-    else if (call.method == 'processTranscription') {
-      String transcription = call.arguments;
-      print("##################################################################");
-      GetIt.I.get<DataProcessingService>().processSpeechTranscriptions([transcription]);
+    if (call.method == 'processTranscription') {
+      GetIt.I.get<DataProcessingService>().processSpeechTranscriptions([call.arguments]);
     }
     else if (call.method == 'interimTranscription') {
       interimTranscript = call.arguments;

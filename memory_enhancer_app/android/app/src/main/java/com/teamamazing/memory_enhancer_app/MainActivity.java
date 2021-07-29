@@ -39,6 +39,7 @@ import java.util.List;
 // For Channel creation ----------------------------------------------------------------------------
 import androidx.annotation.NonNull;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import io.flutter.embedding.android.FlutterActivity;
@@ -286,13 +287,19 @@ public class MainActivity extends FlutterActivity {
 
             // Handle unique speaker ---------------------------------------------------------------
             if(labels.isEmpty()) {
-                speakerWords.put(0, results.getResults().get(0).getAlternatives().get(0).getTranscript());
+                speakerWords.put(0, _removeHesitation(results.getResults().get(0).getAlternatives().get(0).getTranscript()));
                 return;
             }
 
             // Handle multiple speakers ------------------------------------------------------------
             // For each timestamp, get the speaker label; then append text to speaker words list
             for (SpeechTimestamp timestamp : results.getResults().get(0).getAlternatives().get(0).getTimestamps()) {
+
+                // Ignore hesitation
+                if (StringUtils.containsIgnoreCase("%HESITATION", timestamp.getWord())) {
+                    continue;
+                }
+
                 // Get speaker label for the timestamp
                 int speakerLabel = getSpeakerLabel(labels, timestamp);
 
@@ -422,7 +429,7 @@ public class MainActivity extends FlutterActivity {
     // ---------------------------------------------------------------------------------------------
     void _temporaryTranscriptionCallback() {
         runOnUiThread(() -> methodChannel.invokeMethod(
-                "processTranscription", temporaryTranscription));
+                "processTranscription", _removeHesitation(temporaryTranscription)));
     }
 
 
@@ -432,7 +439,15 @@ public class MainActivity extends FlutterActivity {
     void _notifyTranscriptionResults(String additionalTranscription) {
         runOnUiThread(() -> methodChannel.invokeMethod(
                 "interimTranscription",
-                temporaryTranscription + additionalTranscription));
+                _removeHesitation(temporaryTranscription + additionalTranscription)));
+    }
+
+
+    // ---------------------------------------------------------------------------------------------
+    // Eliminate hesitation
+    // ---------------------------------------------------------------------------------------------
+    String _removeHesitation(String value) {
+        return value.replace("%HESITATION", "");
     }
 
 }

@@ -21,6 +21,7 @@ void main() {
 
   // Create instance of service
   DataProcessingService service = new DataProcessingService();
+  service.initialize();
 
   test("No transcription", () async {
     print("\n-------------------------------------------------------------------------------------------------------------------------------------\n");
@@ -43,6 +44,12 @@ void main() {
   test("Start record and stop record triggers found", () async {
     print("\n-------------------------------------------------------------------------------------------------------------------------------------\n");
     List<String> transcriptions = ["Hello john i will remember lunch at the diplomat restaurant in dc at noon got it see you on saturday john"];
+    service.processSpeechTranscriptions(transcriptions);
+  });
+
+  test("Record and switch my to your", () async {
+    print("\n-------------------------------------------------------------------------------------------------------------------------------------\n");
+    List<String> transcriptions = ["remember my social security number is 123456789"];
     service.processSpeechTranscriptions(transcriptions);
   });
 
@@ -74,7 +81,7 @@ class FileOperationsMock extends Fake implements FileOperations {
     String contents = "";
     switch(type) {
       case 0:
-        contents = await ["help me remember", "so you are saying", "i will remember"].join('\n');;
+        contents = await ["help me remember", "so you are saying", "i will remember", "remember that my", "remember my"].join('\n');;
         break;
       case 1:
         contents = await ["it is noted", "got it", "i got it"].join('\n');;
