@@ -9,6 +9,7 @@ import 'app/themes/light_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
+  // something
   await ThemeManager.initialise();
   fileOperations.initialNoteFile();
   fileOperations.initializeTriggersFile();
