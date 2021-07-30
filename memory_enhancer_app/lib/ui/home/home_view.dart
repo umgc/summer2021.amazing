@@ -40,7 +40,7 @@ class HomeView extends StatelessWidget {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                       child: Text(
-                        speechService.interimTranscript,
+                        speechService.interimTranscription,
                         style: TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.w400,
@@ -74,7 +74,7 @@ class HomeView extends StatelessWidget {
                               backgroundColor: darkTheme.primaryColor,
                               foregroundColor: Colors.white,
                               onPressed: () {
-                                model.startListening();
+                                model.handleListening();
                               },
                               child: Icon(
                                 model.listening ? Icons.mic : Icons.mic_none,
