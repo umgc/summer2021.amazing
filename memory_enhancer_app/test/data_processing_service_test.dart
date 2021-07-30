@@ -8,7 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:memory_enhancer_app/services/file_operations/file_operations.dart';
 import 'package:memory_enhancer_app/notes.dart';
 import 'package:memory_enhancer_app/services/data_processing/data_processing.dart';
-import 'package:memory_enhancer_app/services/speech/speech_service.dart';
+import 'package:memory_enhancer_app/services/speech/custom/text_to_speech_service.dart';
 
 // For mockup purpose
 import 'package:mockito/mockito.dart';
@@ -17,7 +17,7 @@ void main() {
 
   GetIt sl=GetIt.instance;
   sl.registerSingleton<FileOperations>(FileOperationsMock());
-  sl.registerSingleton<SpeechService>(NativeSpeechServiceMock());
+  sl.registerSingleton<TextToSpeechService>(NativeSpeechServiceMock());
 
   // Create instance of service
   DataProcessingService service = new DataProcessingService();
@@ -110,10 +110,10 @@ class FileOperationsMock extends Fake implements FileOperations {
 }
 
 // Fake Speech Service
-class NativeSpeechServiceMock extends Fake implements SpeechService {
+class NativeSpeechServiceMock extends Fake implements TextToSpeechService {
 
   @override
-  Future<void> synthesizeTextToSpeech(String text) async {
+  Future<void> synthesizeText(String text) async {
     print("MOCK SPEECH SERVICE / Synthesizing and playing sound for : $text");
   }
 }
