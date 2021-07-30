@@ -7,12 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
-  String recognizedWords = '';
-  String _triggers = '';
+  //String recognizedWords = '';
+  //String _triggers = '';
 
   // Boolean storing value whether the speech engine is listening or not
   bool get listening {
     return speechService.isListening;
+  }
+
+  String get recognizedWords {
+    return speechService.interimTranscription;
   }
 
   @override
@@ -41,48 +45,11 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
     WidgetsBinding.instance?.addObserver(this);
   }
 
-  Future<void> startListening() async {
+  Future<void> handleListening() async {
     // If already listening, stop listening
-    if (listening) {
-      speechService.stopListening();
-    }
-    // else start listening
-    else {
-      speechService.startListening();
-      notifyListeners();
-
-      /*
-      speechService.startListening(resultCallback: (result) async {
-        if (result.recognizedWords.isNotEmpty) {
-          recognizedWords = result.recognizedWords;
-
-          startRecord(result); // Record if trigger is heard
-
-          notifyListeners();
-        }
-      });
-       */
-
-
-    }
+    speechService.processSpeechRecognize();
     notifyListeners();
   }
-
-  // TODO : Ahmed - revisit
-  /*
-  // Start recording new note if trigger is heard.
-  void startRecord(SpeechRecognitionResult result) async {
-    // record notes
-    String keywords = await fileOperations.readTriggers(0);
-    _triggers = keywords;
-
-    if (!speechService.isListening && result.finalResult) {
-      fileOperations.recordNotes(
-          _triggers, speechService.interimTranscript);
-    }
-  } // End record notes
-
-   */
 
   @override
   void dispose() {

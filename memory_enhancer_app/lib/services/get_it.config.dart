@@ -10,6 +10,8 @@ import 'package:injectable/injectable.dart' as _i2;
 import 'data_processing/data_processing.dart' as _i3;
 import 'encryption/encryption_service.dart' as _i4;
 import 'file_operations/file_operations.dart' as _i5;
+import 'speech/custom/speech_to_text_service.dart' as _i7;
+import 'speech/custom/text_to_speech_service.dart' as _i8;
 import 'speech/speech_service.dart'
     as _i6; // ignore_for_file: unnecessary_lambdas
 
@@ -22,5 +24,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
   gh.singleton<_i4.EncryptionService>(_i4.EncryptionService());
   gh.singleton<_i5.FileOperations>(_i5.FileOperations());
   gh.singleton<_i6.SpeechService>(_i6.SpeechService());
+  gh.singleton<_i7.SpeechToTextService>(_i7.SpeechToTextService());
+  gh.singleton<_i8.TextToSpeechService>(_i8.TextToSpeechService());
   return get;
 }

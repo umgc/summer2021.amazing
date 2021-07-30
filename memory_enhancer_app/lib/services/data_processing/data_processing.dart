@@ -9,7 +9,8 @@ import 'package:memory_enhancer_app/services/file_operations/file_operations.dar
 import 'package:memory_enhancer_app/notes.dart';
 import 'package:memory_enhancer_app/services/data_processing/aho_corasick_search/aho_corasick.dart';
 import 'package:memory_enhancer_app/services/data_processing/aho_corasick_search/match.dart';
-import 'package:memory_enhancer_app/services/speech/speech_service.dart';
+import 'package:memory_enhancer_app/services/speech/custom/speech_to_text_service.dart';
+import 'package:memory_enhancer_app/services/speech/custom/text_to_speech_service.dart';
 import 'package:stacked/stacked.dart';
 
 
@@ -52,6 +53,8 @@ class DataProcessingService with ReactiveServiceMixin {
   // User's words to save as a note
   String _userWordsToSave = "";
 
+  String _stopListeningPhrase = "thank you amazing";
+
 
   // ---------------------------------------------------------------------------
   // Initialization of the service
@@ -89,6 +92,11 @@ class DataProcessingService with ReactiveServiceMixin {
     // Handle note replay scenario
     if(!isRecordScenario) {
       _handleReplayScenario();
+    }
+
+    // If signal to stop listening, stop listening
+    if(_userTranscription.contains(_stopListeningPhrase)) {
+      GetIt.I.get<SpeechToTextService>().processSpeechRecognize();
     }
   }
 
@@ -324,8 +332,8 @@ class DataProcessingService with ReactiveServiceMixin {
   // Synthesize message to voice and play voice.
   // ---------------------------------------------------------------------------
   Future<void> voiceMessage(String message) async {
-    print("Synthesized Message : $message");
-    GetIt.I.get<SpeechService>().synthesizeTextToSpeech(message);
+    print("DATA PROCESSING / Synthesized Message : $message");
+    GetIt.I.get<TextToSpeechService>().synthesizeText(message);
   }
 
 
