@@ -31,8 +31,10 @@ class AppRouter extends _i1.RootStackRouter {
         }),
     SettingsViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return _i4.SettingsView();
+        builder: (data) {
+          final args = data.argsAs<SettingsViewRouteArgs>(
+              orElse: () => const SettingsViewRouteArgs());
+          return _i4.SettingsView(key: args.key);
         }),
     NotesViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
         routeData: routeData,
@@ -43,8 +45,10 @@ class AppRouter extends _i1.RootStackRouter {
         }),
     HelpViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
         routeData: routeData,
-        builder: (_) {
-          return _i6.HelpView();
+        builder: (data) {
+          final args = data.argsAs<HelpViewRouteArgs>(
+              orElse: () => const HelpViewRouteArgs());
+          return _i6.HelpView(key: args.key);
         }),
     TriggerWordsViewRoute.name: (routeData) => _i1.AdaptivePage<dynamic>(
         routeData: routeData,
@@ -97,10 +101,18 @@ class HomeViewRoute extends _i1.PageRouteInfo {
   static const String name = 'HomeViewRoute';
 }
 
-class SettingsViewRoute extends _i1.PageRouteInfo {
-  const SettingsViewRoute() : super(name, path: '/settings-view');
+class SettingsViewRoute extends _i1.PageRouteInfo<SettingsViewRouteArgs> {
+  SettingsViewRoute({_i2.Key? key})
+      : super(name,
+            path: '/settings-view', args: SettingsViewRouteArgs(key: key));
 
   static const String name = 'SettingsViewRoute';
+}
+
+class SettingsViewRouteArgs {
+  const SettingsViewRouteArgs({this.key});
+
+  final _i2.Key? key;
 }
 
 class NotesViewRoute extends _i1.PageRouteInfo<NotesViewRouteArgs> {
@@ -116,10 +128,17 @@ class NotesViewRouteArgs {
   final _i2.Key? key;
 }
 
-class HelpViewRoute extends _i1.PageRouteInfo {
-  const HelpViewRoute() : super(name, path: '/help-view');
+class HelpViewRoute extends _i1.PageRouteInfo<HelpViewRouteArgs> {
+  HelpViewRoute({_i2.Key? key})
+      : super(name, path: '/help-view', args: HelpViewRouteArgs(key: key));
 
   static const String name = 'HelpViewRoute';
+}
+
+class HelpViewRouteArgs {
+  const HelpViewRouteArgs({this.key});
+
+  final _i2.Key? key;
 }
 
 class TriggerWordsViewRoute

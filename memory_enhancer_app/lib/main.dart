@@ -16,6 +16,7 @@ Future<void> main() async {
   fileOperations.initialNoteFile();
   fileOperations.initializeTriggersFile();
   fileOperations.initializeSettingsFile(false);
+  fileOperations.cleanupNotes();
   runApp(MemoryEnhancerApp());
 }
 

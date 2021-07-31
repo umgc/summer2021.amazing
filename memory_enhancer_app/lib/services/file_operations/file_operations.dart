@@ -6,6 +6,7 @@
 import 'dart:io' as io;
 
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:stacked/stacked.dart';
 
@@ -111,16 +112,8 @@ class FileOperations with ReactiveServiceMixin {
 
   // Create note from typing in note
   void writeNewNote(String data, BuildContext context) {
-    if (data.isNotEmpty) {
       Note note = Note('', DateTime.now(), data); // Make new Note object.
       writeNoteToFile(note); // Save to file.
-      showAlertBox(
-          'Note Created', 'Your note was successfully saved.', context);
-    } else {
-      print('Note cannot be empty');
-      showAlertBox(
-          'Note Empty', 'You cannot save a note without content.', context);
-    }
     dataProcessingService.initializeUserNotes();
   }
 
@@ -438,8 +431,18 @@ class FileOperations with ReactiveServiceMixin {
     try {
       final file = await _settingsValuesFile;
       String xmlBody = await file.readAsStringSync();
+      String newValue = value;
 
       var xmlFile = xml.XmlDocument.parse(xmlBody);
+      if(setting.startsWith('font') && int.parse(value) < 15){
+        newValue = '15';
+        print('Cannot set value to ' + value + ' changing to ' + newValue);
+      } else if (setting == 'saveNoteDuration' && int.parse(value) < 1) {
+        newValue = '1';
+        print('Cannot set value to ' + value + ' changing to ' + newValue);
+      }
+      value = newValue;
+
       xmlFile.findElements('settings').first.findElements(setting).first.innerText = value;
       file.writeAsString(xmlFile.toString());
     } catch (e) {
@@ -449,9 +452,10 @@ class FileOperations with ReactiveServiceMixin {
   }
 
   void cleanupNotes() async {
-    DateTime now = DateTime.now();
+    List<String> notesToBeDeleted = List.empty(growable: true);
+    DateFormat formatter = DateFormat('MM-dd-yyyy h:mm:ss');
     int days = int.parse(await getSettingsValue('saveNoteDuration'));
-    var deleteTimeframe = now.subtract(Duration(days: days));
+    DateTime deleteTimeframe = formatter.parse(formatter.format((DateTime.now().subtract(Duration(days: days)))));
     try {
       String editContent = await readNotes();
       var editFile = xml.XmlDocument.parse(editContent);
@@ -459,39 +463,35 @@ class FileOperations with ReactiveServiceMixin {
       for (var note in noteElements) {
         String noteTs = note.findElements('timestamp').first.innerText;
         String noteId = note.findElements('id').first.innerText;
-        DateTime noteTimestamp = DateTime.parse(noteTs);
+        DateTime noteTimestamp = formatter.parse(noteTs);
         bool delete = noteTimestamp.isBefore(deleteTimeframe);
+        Duration duration = deleteTimeframe.difference(noteTimestamp);
         if(delete){
-          print('Note "' + noteId + '", Timestamp: ' + noteTimestamp.toString() + ', should be deleted');
-          //print('Deleting note "' + noteId + '", Timestamp: ' + noteTimestamp.toString());
-          //deleteCleanupNote(noteId);
+          print('Setting note to be deleted: "' + noteId + '", Timestamp: ' + noteTimestamp.toString());
+          notesToBeDeleted.add(noteId);
         }
       }
+      deleteMultipleNotes(notesToBeDeleted);
     } catch (e) {
-      print('An error has occurred. MORE INFO: ' + e.toString());
+      print('An error has occurred while cleaning up notes. MORE INFO: ' + e.toString());
     }
   }
 
-  // Delete notes based on time created
-  void deleteCleanupNote(String id) async {
+  void deleteMultipleNotes(List<String> ids) async {
     try {
       String xmlContent = await readNotes();
-      var fileXML = xml.XmlDocument.parse(xmlContent.toString());
+      xml.XmlDocument fileXML = xml.XmlDocument.parse(xmlContent);
       var nodes = fileXML.findAllElements('note');
+      final file = await _noteFile;
       for (var node in nodes) {
-        if (node.findElements('id').first.text == id) {
-          final file = await _noteFile;
-          if (nodes.length >=0) {
-            node.parent!.children.remove(node);
-            print('Note "' + id + '" deleted.');
-            file.writeAsString(fileXML.toString());
-          }
-        } else {
-          print('No note found with ID "' + id + '"');
+        if (ids.contains(node.firstChild!.innerText)) {
+          fileXML.getElement('notes')!.children.remove(node);
         }
       }
+      file.writeAsStringSync(fileXML.toXmlString());
     } catch (e) {
-      print('An error has occurred.' + e.toString());
+      print('An error has occurred while deleting notes for cleanup.' + e.toString());
     }
+    dataProcessingService.initializeUserNotes();
   }
 }

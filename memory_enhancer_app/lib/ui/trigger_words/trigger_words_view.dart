@@ -3,6 +3,7 @@
 // Author: Mo Drammeh
 //**************************************************************
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:memory_enhancer_app/app/themes/light_theme.dart';
@@ -140,14 +141,19 @@ class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProvider
                       builder: (BuildContext context) {
                         return CustomAlertTwoButton(
                           title: 'ADD WORD OR PHRASE',
-                          content: TextFormField(controller: txtEditCtrl),
+                          content: TextField(controller: txtEditCtrl),
                           actionTwoText: 'ADD',
                           actionTwoPressed: (){
-                            fileOperations.addTrigger(txtEditCtrl.text, tabCtrl.index);
-                            updateTriggerWords();
-                            Navigator.pop(context);
-                            txtEditCtrl.clear();
-                            showAlertBox('TRIGGER ADDED', 'The trigger word was added successfully', context);
+                            if(txtEditCtrl.text.isNotEmpty) {
+                              fileOperations.addTrigger(
+                                  txtEditCtrl.text, tabCtrl.index);
+                              updateTriggerWords();
+                              Navigator.pop(context);
+                              txtEditCtrl.clear();
+                              showAlertBox('TRIGGER ADDED',
+                                  'The trigger word was added successfully',
+                                  context);
+                            }
                           },
                           actionOneText: 'CANCEL',
                           actionOnePressed: (){
@@ -187,20 +193,25 @@ Widget TriggerTabs({required Function() getTriggers, required TextEditingControl
                 builder: (BuildContext context) {
                   return CustomAlertTwoButton(
                     title: 'EDIT TRIGGER',
-                      content: TextFormField(controller: textEditControl),
+                      content: TextField(controller: textEditControl),
                       actionOneText: 'CANCEL',
                       actionOnePressed: (){
-                        fileOperations.editTrigger('${getTriggers()[index]}', textEditControl.text, tabController.index);
                         Navigator.pop(context);
                         textEditControl.clear();
                       },
                       actionTwoText: 'EDIT',
                       actionTwoPressed: (){
-                        fileOperations.editTrigger('${getTriggers()[index]}', textEditControl.text, tabController.index);
+                      if(textEditControl.text.isNotEmpty) {
+                        fileOperations.editTrigger(
+                            '${getTriggers()[index]}', textEditControl.text,
+                            tabController.index);
                         updateTriggers();
                         Navigator.pop(context);
                         textEditControl.clear();
-                        showAlertBox('TRIGGER EDITED', 'The trigger word was edited successfully', context);
+                        showAlertBox('TRIGGER EDITED',
+                            'The trigger word was edited successfully',
+                            context);
+                      }
                       });
                 });
           },
@@ -230,7 +241,9 @@ Widget TriggerTabs({required Function() getTriggers, required TextEditingControl
     },
   )
       : Center(
-      child: Text('Add words or phrases with the button below',
-          textAlign: TextAlign.center,
-          style: TextStyle(fontSize: fontSizePlaceholder, fontWeight: FontWeight.w500)));
+      child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text('Add words or phrases with the button below',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: fontSizePlaceholder, fontWeight: FontWeight.w500))));
 }

@@ -6,6 +6,9 @@ import 'dart:core';
 
 import 'package:flutter/material.dart';
 import 'package:memory_enhancer_app/services/services.dart';
+import 'package:memory_enhancer_app/ui/alert/alert_popup.dart';
+import 'package:memory_enhancer_app/ui/list_item/list_item_dynamic.dart';
+import 'package:memory_enhancer_app/ui/notes/search_notes_view.dart';
 import 'package:stacked/stacked.dart';
 
 import 'package:memory_enhancer_app/notes.dart';
@@ -298,173 +301,101 @@ class _NotesViewState extends State<NotesView> {
   noteLists(subject, int id, NotesViewModel model) {
     // ignore: unnecessary_null_comparison
     return subjectNoteLists(id).isEmpty
-        ? Text('No notes at this time.')
+        ? Text('No notes at this time.', style: TextStyle(fontSize: 20))
         : new ListView.builder(
         padding: const EdgeInsets.all(8),
         itemCount: subjectNoteLists(id).length > 0
             ? subjectNoteLists(id).length
             : 0,
         itemBuilder: (BuildContext context, int index) {
-          return Card(
-              child: ListTile(
-                  onLongPress: () async {
-                    viewNote(context, subjectNoteLists(id)[index]);
-                  },
-                  leading: IconButton(
-                      icon: const Icon(Icons.delete_rounded),
-                      onPressed: () {
-                        showDialog(
-                            context: _noteScaffoldKey.currentContext!,
-                            builder: (context) =>
-                                AlertDialog(
-                                    contentTextStyle:
-                                    GoogleFonts.anton(fontSize: 18),
-                                    title: Text('Delete Note?',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 25)),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('NO',
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20)),
-                                      ),
-                                      TextButton(
-                                          child: Text('YES',
-                                              style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                  fontSize: 20)),
-                                          onPressed: () {
-                                            model.onDelete(
-                                                subjectNoteLists(id)[index]
-                                                    .noteID);
-                                            model.notifyListeners();
-                                            setState(() {
-                                              getNoteContent();
-                                              updateSubjectLists();
-                                            });
-                                            Navigator.pop(context);
-                                          })
-                                    ]));
-                        getNoteContent();
-                        updateSubjectLists();
-                      },
-                      tooltip: "delete",
-                      color: lightTheme.accentColor),
-                  trailing: IconButton(
-                      icon: const Icon(Icons.create_rounded),
-                      onPressed: () {
-                        _ntTxtControl.text =
-                            subjectNoteLists(id)[index].body;
-                        getNoteContent();
-                        updateSubjectLists();
-                        showDialog(
-                            context: _noteScaffoldKey.currentContext!,
-                            builder: (_context) =>
-                                AlertDialog(
-                                    contentTextStyle:
-                                    GoogleFonts.anton(
-                                        fontSize: fontSizeMenu),
-                                    title: Text('Edit Note',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 25)),
-                                    content: TextField(
-                                        controller: _ntTxtControl,
-                                        style: TextStyle(fontSize: fontSizePlaceholder)),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.pop(context);
-                                        },
-                                        child: const Text('CANCEL',
-                                            style: TextStyle(
-                                                color: Colors.red,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 20)),
-                                      ),
-                                      TextButton(
-                                          child: Text('SAVE',
-                                              style: TextStyle(
-                                                  color: Colors.red,
-                                                  fontWeight:
-                                                  FontWeight.bold,
-                                                  fontSize: 20)),
-                                          onPressed: () {
-                                            model.onEdit(
-                                                subjectNoteLists(id)[index]
-                                                    .noteID,
-                                                _ntTxtControl.text);
-                                            _ntTxtControl.clear();
-                                            setState(() {
-                                              getNoteContent();
-                                              updateSubjectLists();
-                                              model.notifyListeners();
-                                            });
-                                            Navigator.pop(context);
-                                          })
-                                    ]));
-                      },
-                      tooltip: "edit",
-                      color: lightTheme.accentColor),
-                  title: Text(
-                      subjectNoteLists(id)[index].noteBody.isNotEmpty
-                          ? subjectNoteLists(id)[index].noteBody
-                          : 'There are no notes available.',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      softWrap: false,
-                      style: GoogleFonts.roboto(
-                          fontSize: fontSizeMenu,
-                          textStyle:
-                          TextStyle(letterSpacing: .6, height: 1.2))),
-                  subtitle: Text(subjectNoteLists(id)[index].noteDate,
-                      style: GoogleFonts.anton(
-                          fontSize: 14,
-                          textStyle: TextStyle(letterSpacing: .6)))));
+          return CustomEditDeleteMenuItem(
+              title: subjectNoteLists(id)[index].noteBody.isNotEmpty
+                  ? subjectNoteLists(id)[index].noteBody
+                  : 'There are no notes available.',
+              onLongPress: () {
+                viewNote(context, subjectNoteLists(id)[index]);
+              },
+              onEdit: () {
+                _ntTxtControl.text = subjectNoteLists(id)[index].body;
+                getNoteContent();
+                updateSubjectLists();
+                showDialog(
+                  context: _noteScaffoldKey.currentContext!,
+                  builder: (BuildContext _context) {
+                    return CustomAlertTwoButton(
+                        title: 'EDIT NOTE',
+                        content: TextField(controller: _ntTxtControl, maxLines: null),
+                        actionOneText: 'CANCEL',
+                        actionOnePressed: (){
+                          Navigator.pop(_context);
+                          _ntTxtControl.clear();
+                        },
+                        actionTwoText: 'SAVE',
+                        actionTwoPressed: (){
+                          if(_ntTxtControl.text.isNotEmpty) {
+                            fileOperations.editNote(subjectNoteLists(id)[index]
+                                .noteID, _ntTxtControl.text);
+                            setState(() {
+                              getNoteContent();
+                              updateSubjectLists();
+                              model.notifyListeners();
+                            });
+                            Navigator.pop(_context);
+                            _ntTxtControl.clear();
+                            showAlertBox('NOTE EDITED',
+                                'The note was edited successfully', context);
+                          }
+                        });
+                  });
+              },
+              onDelete: () {
+                showDialog (
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CustomAlertTwoButton(
+                          title: 'DELETE NOTE?',
+                          content: Text(subjectNoteLists(id)[index].noteBody,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400)),
+                          actionOneText: 'CANCEL',
+                          actionOnePressed: (){
+                            Navigator.pop(context);
+                          },
+                          actionTwoText: 'DELETE',
+                          actionTwoPressed: (){
+                            fileOperations.deleteNote(subjectNoteLists(id)[index].noteID);
+                            model.notifyListeners();
+                            setState(() {
+                              getNoteContent();
+                              updateSubjectLists();
+                            });
+                            Navigator.pop(context);
+                            showAlertBox('NOTE DELETED', 'The note was deleted successfully', context);
+                          });
+                    });
+                getNoteContent();
+                updateSubjectLists();
+              },
+              fontSizeMenu: fontSizeMenu,
+              subtitle: subjectNoteLists(id)[index].noteDate);
         });
   } // #End of Note List View Lists
 
   // Write New Note
   Widget writeNoteAlert(BuildContext context, NotesViewModel model) {
-    // set up the AlertDialog
-    return AlertDialog(
-      contentTextStyle: GoogleFonts.anton(fontSize: 14),
-      title: Text('Write Note',
-          style: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: fontSizePlaceholder)),
-      content: Container(
-          width: 500,
-          child: TextField(
-            controller: _ntTxtControl,
-          )),
-      actions: [
-        TextButton(
-          onPressed: () {
-            _ntTxtControl.clear();
-            Navigator.pop(context);
-          },
-          child: const Text('CANCEL',
-              style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20)),
-        ),
-        TextButton(
-          child: Text('SAVE',
-              style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20)),
-          onPressed: () {
-            Navigator.pop(context);
+    return CustomAlertTwoButton(
+        title: 'WRITE NEW NOTE',
+        content: TextField(controller: _ntTxtControl, maxLines: null),
+        actionOneText: 'CANCEL',
+        actionOnePressed: (){
+          _ntTxtControl.clear();
+          Navigator.pop(context);
+        },
+        actionTwoText: 'SAVE',
+        actionTwoPressed:  (){
+          if(_ntTxtControl.text.isNotEmpty) {
             updateSubjectLists();
             fileOperations.writeNewNote(_ntTxtControl.text, context);
             setState(() {
@@ -473,10 +404,11 @@ class _NotesViewState extends State<NotesView> {
             });
             model.notifyListeners();
             _ntTxtControl.clear();
-          },
-        )
-      ],
-    );
+            Navigator.pop(context);
+            showAlertBox(
+                'NOTE CREATED', 'The note was created successfully', context);
+          }
+        });
   } // End Write Note Alert
 
   @override
@@ -491,7 +423,10 @@ class _NotesViewState extends State<NotesView> {
         builder: (context, model, child) {
           return Scaffold(
             key: _noteScaffoldKey,
-            appBar: CustomAppBar(title: PageEnums.notes.name),
+            appBar: CustomAppBar(title: PageEnums.notes.name,
+                actions: [IconButton(onPressed:(){
+                  searchNotes(context);
+                  }, icon: Icon(Icons.search))]),
             bottomSheet: Container(
                 height: 30,
                 padding: EdgeInsets.all(5),
@@ -559,6 +494,14 @@ class _NotesViewState extends State<NotesView> {
         },
         fullscreenDialog: true));
   }
+
+  Future searchNotes(BuildContext context) async {
+    Navigator.of(context).push(new MaterialPageRoute<NotesView>(
+        builder: (BuildContext context) {
+          return new SearchNotes(notes);
+        },
+        fullscreenDialog: true));
+  }
 }
 
 // Subject class for note subjects
@@ -586,4 +529,3 @@ class Subject {
     this.isExpanded = expanded;
   }
 }
-
