@@ -2,7 +2,6 @@
 // Notes view model
 // Author:
 //**************************************************************
-import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
@@ -72,7 +71,7 @@ class NotesViewModel extends BaseViewModel {
     // If already listening, stop listening
     if (listening) {
       speechService.stopListening();
-      this.speakNote(speechService.interimTranscript);
+      this.speakNote(speechService.interimTranscription);
       notifyListeners();
     }
     // else start listening
