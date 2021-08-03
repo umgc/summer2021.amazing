@@ -52,11 +52,30 @@ dependencies:
   permission_handler: ^8.1.4+2
   porcupine: ^1.9.13
   text_to_speech: ^0.2.3
+  flutter_launcher_icons: ^0.9.1
+  flutter_native_splash: ^1.2.0
 
 dev_dependencies:
   build_runner: ^2.0.5
   flutter_test:
     sdk: flutter
+
+
+# Configuration for application icon
+flutter_icons:
+  ios: true
+  android: true
+  image_path_ios: "images/app_icon.png"
+  image_path_android: "images/app_icon.png"
+  adaptive_icon_background: "#f70d33" # or image
+  adaptive_icon_foreground: "images/app_icon_foreground.png"
+
+
+# Configuration for splash screen
+flutter_native_splash:
+  image: images/logo.png
+  color: "#f70d33"
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -113,6 +132,7 @@ flutter:
     - assets/porcupine/hey_amazing_en_android.ppn
     - assets/porcupine/hey_amazing_en_ios.ppn
     - assets/ibm_watson/speech_to_text_credentials.xml
+    - assets/ibm_watson/user_voice_data.txt
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
