@@ -103,7 +103,6 @@ flutter:
         - asset: fonts/MyFlutterApp.ttf
 
   assets:
-    - services/my-capstone-proj-1624955989482-356a808e17f9.json
     - assets/text/notes.txt
     - assets/text/words.txt
     - assets/text/default_start_record_triggers.txt

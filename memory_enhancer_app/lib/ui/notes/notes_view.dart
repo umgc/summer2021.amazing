@@ -24,7 +24,7 @@ class NotesView extends StatefulWidget {
   NotesView({Key? key}) : super(key: key);
 
   @override
-  State<StatefulWidget> createState() => _NotesViewState();
+  _NotesViewState createState() => _NotesViewState();
 }
 
 class _NotesViewState extends State<NotesView> {
@@ -49,6 +49,7 @@ class _NotesViewState extends State<NotesView> {
       getContent().then((value) {
         setState(() {
           notes = value;
+          updateSubjectLists();
         });
       });
 
@@ -251,10 +252,14 @@ class _NotesViewState extends State<NotesView> {
           if (n.noteBody.toLowerCase().contains(t.toLowerCase())) {
             if (!otherNotes.contains(n)) {
               otherNotes.add(n);
-            } else {
+            }else {
               print('Note already found');
             }
           }
+        }
+        if (!personalNotes.contains(n) && !dinnerNotes.contains(n) && !lunchNotes.contains(n) && !medicalNotes.contains(n) &&
+            !familyNotes.contains(n)){
+          otherNotes.add(n);
         }
       }
     }
@@ -335,10 +340,12 @@ class _NotesViewState extends State<NotesView> {
                           if(_ntTxtControl.text.isNotEmpty) {
                             fileOperations.editNote(subjectNoteLists(id)[index]
                                 .noteID, _ntTxtControl.text);
+                            // model.onEdit(subjectNoteLists(id)[index].noteID, _ntTxtControl.text);
                             setState(() {
                               getNoteContent();
                               updateSubjectLists();
                               model.notifyListeners();
+                              subject.isExpanded = false;
                             });
                             Navigator.pop(_context);
                             _ntTxtControl.clear();
@@ -366,10 +373,11 @@ class _NotesViewState extends State<NotesView> {
                           actionTwoText: 'DELETE',
                           actionTwoPressed: (){
                             fileOperations.deleteNote(subjectNoteLists(id)[index].noteID);
-                            model.notifyListeners();
                             setState(() {
                               getNoteContent();
                               updateSubjectLists();
+                              model.notifyListeners();
+                              subject.isExpanded = false;
                             });
                             Navigator.pop(context);
                             showAlertBox('NOTE DELETED', 'The note was deleted successfully', context);
@@ -398,9 +406,11 @@ class _NotesViewState extends State<NotesView> {
           if(_ntTxtControl.text.isNotEmpty) {
             updateSubjectLists();
             fileOperations.writeNewNote(_ntTxtControl.text, context);
+
             setState(() {
               getNoteContent();
               updateSubjectLists();
+              model.notifyListeners();
             });
             model.notifyListeners();
             _ntTxtControl.clear();
@@ -479,7 +489,7 @@ class _NotesViewState extends State<NotesView> {
                         !model.listening ? 'Record Note' : 'Stop Record',
                         style: GoogleFonts.anton(fontSize: 25)),
                     onPressed: () {
-                      model.startListening();
+                      model.handleListening();
                     })
               ]),
             ],
