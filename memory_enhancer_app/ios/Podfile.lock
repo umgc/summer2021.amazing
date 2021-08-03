@@ -1,71 +1,101 @@
 PODS:
   - Flutter (1.0.0)
+  - flutter_inappwebview (0.0.1):
+    - Flutter
+    - flutter_inappwebview/Core (= 0.0.1)
+    - OrderedSet (~> 5.0)
+  - flutter_inappwebview/Core (0.0.1):
+    - Flutter
+    - OrderedSet (~> 5.0)
+  - flutter_sound (8.3.9):
+    - Flutter
+    - mobile-ffmpeg-audio (= 4.4.LTS)
+    - tau_core (= 8.3.9)
   - flutter_statusbarcolor_ns (0.0.1):
     - Flutter
   - flutter_voice_processor (1.0.0):
     - Flutter
+  - mobile-ffmpeg-audio (4.4.LTS)
+  - OrderedSet (5.0.0)
   - path_provider (0.0.1):
+    - Flutter
+  - "permission_handler (5.1.0+2)":
     - Flutter
   - porcupine (1.9.12):
     - Flutter
   - shared_preferences (0.0.1):
     - Flutter
-  - soundpool (0.0.1):
+  - tau_core (8.3.9)
+  - text_to_speech (0.0.1):
     - Flutter
-  - speech_to_text (0.0.1):
+  - url_launcher (0.0.1):
     - Flutter
-    - Try
-  - Try (2.1.1)
   - wakelock (0.0.1):
     - Flutter
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - flutter_inappwebview (from `.symlinks/plugins/flutter_inappwebview/ios`)
+  - flutter_sound (from `.symlinks/plugins/flutter_sound/ios`)
   - flutter_statusbarcolor_ns (from `.symlinks/plugins/flutter_statusbarcolor_ns/ios`)
   - flutter_voice_processor (from `.symlinks/plugins/flutter_voice_processor/ios`)
   - path_provider (from `.symlinks/plugins/path_provider/ios`)
+  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
   - porcupine (from `.symlinks/plugins/porcupine/ios`)
   - shared_preferences (from `.symlinks/plugins/shared_preferences/ios`)
-  - soundpool (from `.symlinks/plugins/soundpool/ios`)
-  - speech_to_text (from `.symlinks/plugins/speech_to_text/ios`)
+  - text_to_speech (from `.symlinks/plugins/text_to_speech/ios`)
+  - url_launcher (from `.symlinks/plugins/url_launcher/ios`)
   - wakelock (from `.symlinks/plugins/wakelock/ios`)
 
 SPEC REPOS:
   trunk:
-    - Try
+    - mobile-ffmpeg-audio
+    - OrderedSet
+    - tau_core
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  flutter_inappwebview:
+    :path: ".symlinks/plugins/flutter_inappwebview/ios"
+  flutter_sound:
+    :path: ".symlinks/plugins/flutter_sound/ios"
   flutter_statusbarcolor_ns:
     :path: ".symlinks/plugins/flutter_statusbarcolor_ns/ios"
   flutter_voice_processor:
     :path: ".symlinks/plugins/flutter_voice_processor/ios"
   path_provider:
     :path: ".symlinks/plugins/path_provider/ios"
+  permission_handler:
+    :path: ".symlinks/plugins/permission_handler/ios"
   porcupine:
     :path: ".symlinks/plugins/porcupine/ios"
   shared_preferences:
     :path: ".symlinks/plugins/shared_preferences/ios"
-  soundpool:
-    :path: ".symlinks/plugins/soundpool/ios"
-  speech_to_text:
-    :path: ".symlinks/plugins/speech_to_text/ios"
+  text_to_speech:
+    :path: ".symlinks/plugins/text_to_speech/ios"
+  url_launcher:
+    :path: ".symlinks/plugins/url_launcher/ios"
   wakelock:
     :path: ".symlinks/plugins/wakelock/ios"
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
+  flutter_inappwebview: bfd58618f49dc62f2676de690fc6dcda1d6c3721
+  flutter_sound: 91c069f33d811a4c98b9aa7cec9cd1dbfd1786d9
   flutter_statusbarcolor_ns: 68a360889d88d7915ae524e422aeab62e4063804
   flutter_voice_processor: f563048750dd0dcdca5aac253fa57e86f83a6e54
+  mobile-ffmpeg-audio: 1e0a053f8a6de57114e50ff48b3a85ff1c60f902
+  OrderedSet: aaeb196f7fef5a9edf55d89760da9176ad40b93c
   path_provider: abfe2b5c733d04e238b0d8691db0cfd63a27a93c
+  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
   porcupine: 1db970f35ac2d993b0718bf6b15c158e630505f2
   shared_preferences: af6bfa751691cdc24be3045c43ec037377ada40d
-  soundpool: c7f4422ca206e77f8900ed3c4ee6a6ff5a0e38a9
-  speech_to_text: b43a7d99aef037bd758ed8e45d79bbac035d2dfe
-  Try: 5ef669ae832617b3cee58cb2c6f99fb767a4ff96
+  tau_core: f7bbd1c6a632f52c2fa7c14feea385ab966b1e45
+  text_to_speech: 8669facdbd5b72d2939b810493defd991634f6f9
+  url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   wakelock: d0fc7c864128eac40eba1617cb5264d9c940b46f
 
-PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+PODFILE CHECKSUM: cc1f88378b4bfcf93a6ce00d2c587857c6008d3b
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.10.2
