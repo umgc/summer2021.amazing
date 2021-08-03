@@ -536,4 +536,20 @@ class FileOperations with ReactiveServiceMixin {
     }
     dataProcessingService.initializeUserNotes();
   }
+
+  Future<Iterable<xml.XmlElement>> getHowToVideoLinks() async {
+    String xmlBody = '';
+    try {
+      xmlBody = await rootBundle.loadString('assets/how_to_videos/howToVideoLinks.xml');
+      var xmlFile = xml.XmlDocument.parse(xmlBody);
+      var elements = xmlFile.findElements('videos').first.findElements('video');
+
+      return elements;
+
+    } catch (e) {
+      String errorMessage = 'An error has occurred while retrieving video links. MORE INFO: ' + e.toString();
+      print(errorMessage);
+      return Iterable.empty();
+    }
+  }
 }

@@ -1,0 +1,10 @@
+<videos>
+    <video>
+        <title>Video One</title>
+        <url>https://www.youtube.com/watch?v=Z6KZ3cTGBWw</url>
+    </video>
+    <video>
+        <title>Video Two</title>
+        <url>https://www.youtube.com/watch?v=GLSG_Wh_YWc</url>
+    </video>
+</videos>
