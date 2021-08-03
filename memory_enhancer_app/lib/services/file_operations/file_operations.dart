@@ -6,6 +6,7 @@
 import 'dart:io' as io;
 
 import 'package:injectable/injectable.dart';
+import 'package:intl/intl.dart';
 import 'package:memory_enhancer_app/services/services.dart';
 import 'package:stacked/stacked.dart';
 
@@ -70,19 +71,40 @@ class FileOperations with ReactiveServiceMixin {
     }
   }
 
+  // Decrypt note content
+  Future<xml.XmlDocument> decryptContent(xml.XmlDocument notes) async{
+    try{
+      var elements =
+      notes.findAllElements('note'); // Collects all the note items
+      // Check each note to see if it has a matching id number.
+      for (var e in elements) {
+        // If it does, get the body content of the note and replace with user changes
+        var oldContent = e.findElements('content').first.innerText;
+        var decryptedContent = encryptionService.decryptText(encrypted: oldContent);
+        e.findElements('content').first.innerText = decryptedContent;
+      }
+      return notes;
+    } catch (e){
+      print (e.toString());
+      return notes;
+    }
+  }
+
   /// Writes notes to file.
   Future writeNoteToFile(Note note) async {
     String message = "Data saved to file.";
     try {
       String xmlString = await readNotes(); // Read notes file
       var fileXML = xml.XmlDocument.parse(xmlString); // Parse data
+      // Encrypt content
+      note.noteBody = encryptionService.encryptText(text:note.noteBody);
       final builder = xml.XmlBuilder(); // Builder for XML
       note.buildNote(builder); // Build note
 
       // Adding note to XML file
       fileXML.firstElementChild!.children.add(builder.buildFragment());
       final file = await _noteFile;
-      await file.writeAsString(fileXML.toString()); // Get notes XML file
+      file.writeAsStringSync(fileXML.toString()); // Get notes XML file
       print(message); // Print that the note was saved.
       dataProcessingService.initializeUserNotes();
     } catch (e) {
@@ -103,7 +125,7 @@ class FileOperations with ReactiveServiceMixin {
     }
     if (exist) {
       var textNote = Note('', DateTime.now(), content);
-      await writeNoteToFile(textNote);
+      writeNoteToFile(textNote);
     }
 
     dataProcessingService.initializeUserNotes();
@@ -111,16 +133,8 @@ class FileOperations with ReactiveServiceMixin {
 
   // Create note from typing in note
   void writeNewNote(String data, BuildContext context) {
-    if (data.isNotEmpty) {
       Note note = Note('', DateTime.now(), data); // Make new Note object.
       writeNoteToFile(note); // Save to file.
-      showAlertBox(
-          'Note Created', 'Your note was successfully saved.', context);
-    } else {
-      print('Note cannot be empty');
-      showAlertBox(
-          'Note Empty', 'You cannot save a note without content.', context);
-    }
     dataProcessingService.initializeUserNotes();
   }
 
@@ -152,7 +166,7 @@ class FileOperations with ReactiveServiceMixin {
     // If data is not empty , make a Note object and save to file
     if (data.isNotEmpty && !speechService.isListening) {
       Note note = Note('', DateTime.now(), data); // New Note
-      await writeNoteToFile(note); // Save Note to file
+      writeNoteToFile(note); // Save Note to file
       dataProcessingService.initializeUserNotes();
     } else {
       // else error occurred recording note
@@ -169,7 +183,9 @@ class FileOperations with ReactiveServiceMixin {
       if (await file.exists()) {
         print('File already exists');
       } else {
-        Note note = Note('', DateTime.now(), "Sample note.");
+        String noteText = "Sample initial note";
+        String encryptedNoteContent = encryptionService.encryptText(text: noteText);
+        Note note = Note('', DateTime.now(), encryptedNoteContent);
         note.createFile();
         print('Notes file created.');
       }
@@ -189,9 +205,9 @@ class FileOperations with ReactiveServiceMixin {
       for (var e in elements) {
         // If it does, get the body content of the note and replace with user changes
         if (e.findElements('id').first.text == id) {
-          e.findElements('content').first.innerText = edits;
+          e.findElements('content').first.innerText = encryptionService.encryptText(text: edits);
           final file = await _noteFile;
-          await file.writeAsString(editFile.toString());
+          file.writeAsStringSync(editFile.toString());
         }
       }
     } catch (e) {
@@ -217,14 +233,14 @@ class FileOperations with ReactiveServiceMixin {
             node.parent!.children.remove(node); // Remove note
             dataProcessingService.initializeUserNotes();
           } else {
-            Note sampleNote = Note(
-                '', DateTime.now(), 'Sample Note.\nPlease add your own note.');
-            await writeNoteToFile(sampleNote);
-            node.parent!.children.remove(node);
+            String noteText = "Sample initial note";
+            String encryptedNoteContent = encryptionService.encryptText(text: noteText);
+            Note note = Note('', DateTime.now(), encryptedNoteContent);
+            writeNoteToFile(note);
             dataProcessingService.initializeUserNotes();
           }
           print('Note deleted.');
-          await file.writeAsString(fileXML.toString());
+          file.writeAsStringSync(fileXML.toString());
           dataProcessingService.initializeUserNotes();
 
         } else {
@@ -241,7 +257,7 @@ class FileOperations with ReactiveServiceMixin {
     dataProcessingService.initializeUserNotes();
   }
 
-  /// Retrieves notes in notes file.
+  /*/// Retrieves notes in notes file.
   Future<List<String>> getNotesData() async {
     List<String> notesData = [];
     try {
@@ -250,6 +266,25 @@ class FileOperations with ReactiveServiceMixin {
       var elements = xmlNotes.findAllElements('note'); // Collects all the note items
       for (var e in elements) {
         notesData.add(e.findElements('content').first.innerText);
+      }
+    } catch (e) {
+      print('An error has occurred. MORE INFO: ' + e.toString());
+    } // catch
+
+    return notesData;
+  }*/
+
+  /// Retrieves notes in notes file.
+  Future<List<String>> getNotesData() async {
+    List<String> notesData = [];
+    try {
+      String notes = await readNotes(); // Read notes from file
+      var xmlNotes = xml.XmlDocument.parse(notes); // Parses data
+      var elements = xmlNotes.findAllElements('note'); // Collects all the note items
+      for (var e in elements) {
+        var encryptedContent = e.findElements('content').first.innerText;
+        var decryptedText = encryptionService.decryptText(encrypted: encryptedContent);
+        notesData.add(decryptedText);
       }
     } catch (e) {
       print('An error has occurred. MORE INFO: ' + e.toString());
@@ -438,8 +473,18 @@ class FileOperations with ReactiveServiceMixin {
     try {
       final file = await _settingsValuesFile;
       String xmlBody = await file.readAsStringSync();
+      String newValue = value;
 
       var xmlFile = xml.XmlDocument.parse(xmlBody);
+      if(setting.startsWith('font') && int.parse(value) < 15){
+        newValue = '15';
+        print('Cannot set value to ' + value + ' changing to ' + newValue);
+      } else if (setting == 'saveNoteDuration' && int.parse(value) < 1) {
+        newValue = '1';
+        print('Cannot set value to ' + value + ' changing to ' + newValue);
+      }
+      value = newValue;
+
       xmlFile.findElements('settings').first.findElements(setting).first.innerText = value;
       file.writeAsString(xmlFile.toString());
     } catch (e) {
@@ -449,9 +494,10 @@ class FileOperations with ReactiveServiceMixin {
   }
 
   void cleanupNotes() async {
-    DateTime now = DateTime.now();
+    List<String> notesToBeDeleted = List.empty(growable: true);
+    DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
     int days = int.parse(await getSettingsValue('saveNoteDuration'));
-    var deleteTimeframe = now.subtract(Duration(days: days));
+    DateTime deleteTimeframe = formatter.parse(formatter.format((DateTime.now().subtract(Duration(days: days)))));
     try {
       String editContent = await readNotes();
       var editFile = xml.XmlDocument.parse(editContent);
@@ -459,39 +505,35 @@ class FileOperations with ReactiveServiceMixin {
       for (var note in noteElements) {
         String noteTs = note.findElements('timestamp').first.innerText;
         String noteId = note.findElements('id').first.innerText;
-        DateTime noteTimestamp = DateTime.parse(noteTs);
+        DateTime noteTimestamp = formatter.parse(noteTs);
         bool delete = noteTimestamp.isBefore(deleteTimeframe);
+        Duration duration = deleteTimeframe.difference(noteTimestamp);
         if(delete){
-          print('Note "' + noteId + '", Timestamp: ' + noteTimestamp.toString() + ', should be deleted');
-          //print('Deleting note "' + noteId + '", Timestamp: ' + noteTimestamp.toString());
-          //deleteCleanupNote(noteId);
+          print('Setting note to be deleted: "' + noteId + '", Timestamp: ' + noteTimestamp.toString());
+          notesToBeDeleted.add(noteId);
         }
       }
+      deleteMultipleNotes(notesToBeDeleted);
     } catch (e) {
-      print('An error has occurred. MORE INFO: ' + e.toString());
+      print('An error has occurred while cleaning up notes. MORE INFO: ' + e.toString());
     }
   }
 
-  // Delete notes based on time created
-  void deleteCleanupNote(String id) async {
+  void deleteMultipleNotes(List<String> ids) async {
     try {
       String xmlContent = await readNotes();
-      var fileXML = xml.XmlDocument.parse(xmlContent.toString());
+      xml.XmlDocument fileXML = xml.XmlDocument.parse(xmlContent);
       var nodes = fileXML.findAllElements('note');
+      final file = await _noteFile;
       for (var node in nodes) {
-        if (node.findElements('id').first.text == id) {
-          final file = await _noteFile;
-          if (nodes.length >=0) {
-            node.parent!.children.remove(node);
-            print('Note "' + id + '" deleted.');
-            file.writeAsString(fileXML.toString());
-          }
-        } else {
-          print('No note found with ID "' + id + '"');
+        if (ids.contains(node.firstChild!.innerText)) {
+          fileXML.getElement('notes')!.children.remove(node);
         }
       }
+      file.writeAsStringSync(fileXML.toXmlString());
     } catch (e) {
-      print('An error has occurred.' + e.toString());
+      print('An error has occurred while deleting notes for cleanup.' + e.toString());
     }
+    dataProcessingService.initializeUserNotes();
   }
 }

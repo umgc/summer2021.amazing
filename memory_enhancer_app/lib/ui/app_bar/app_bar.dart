@@ -30,10 +30,10 @@ AppBar CustomAppBarTabbed({required String title, required PreferredSizeWidget b
   );
 }
 
-AppBar CustomAppBarPopup({required String title}){
+AppBar CustomAppBarPopup({required String title, List<Widget>? actions}){
   return AppBar(
-    title: Text(title, style: GoogleFonts.passionOne(fontSize: 37),
-    ),
+    title: Text(title, style: GoogleFonts.passionOne(fontSize: 37)),
+    actions: actions,
     centerTitle: true,
     backgroundColor: lightTheme.accentColor,
   );

@@ -11,11 +11,12 @@ Future<void> main() async {
   configureDependencies();
   // something
   await ThemeManager.initialise();
-  await dataProcessingService.initialize();
   await speechService.initialize();
   fileOperations.initialNoteFile();
   fileOperations.initializeTriggersFile();
   fileOperations.initializeSettingsFile(false);
+  await dataProcessingService.initialize();
+  fileOperations.cleanupNotes();
   runApp(MemoryEnhancerApp());
 }
 

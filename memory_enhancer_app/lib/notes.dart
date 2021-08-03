@@ -47,7 +47,7 @@ class Note {
   // XML Structure Builder
   noteBuilder() {
     final DateTime now = noteDate;
-    final DateFormat formatter = DateFormat('MM-dd-yyyy hh:mm:ss');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
     String formattedDate = formatter.format(now);
     final builder = new xml.XmlBuilder();
     builder.processing('xml', 'version="1.0"');
@@ -70,7 +70,7 @@ class Note {
 
   newNoteBuilder() {
     final DateTime now = noteDate;
-    final DateFormat formatter = DateFormat('MM-dd-yyyy hh:mm:ss');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
     String formatDate = formatter.format(now);
     final builder = new xml.XmlBuilder();
     builder.element('note', nest: () {
@@ -90,7 +90,7 @@ class Note {
 
   buildNote(xml.XmlBuilder builder) {
     final DateTime now = noteDate;
-    final DateFormat formatter = DateFormat('MM-dd-yyyy hh:mm:ss');
+    final DateFormat formatter = DateFormat('yyyy-MM-dd hh:mm:ss');
     String formattedDate = formatter.format(now);
     builder.element('note', nest: () {
       builder.element('id', nest: () {

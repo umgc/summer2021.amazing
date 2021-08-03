@@ -19,7 +19,8 @@ Future<List<Note>> getContent() async {
   try {
     String xmlContent = await fileOperations.readNotes();
     xml.XmlDocument xmlTextDoc = xml.XmlDocument.parse(xmlContent);
-    final memo = xmlTextDoc
+    var newXml = await fileOperations.decryptContent(xmlTextDoc);
+    final memo = newXml
         .findAllElements('note')
         .map((xml) => Note.fromXml(xml))
         .toList();
@@ -67,20 +68,13 @@ class NotesViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  Future<void> startListening() async {
+  Future<void> handleListening() async {
     // If already listening, stop listening
-    if (listening) {
-      speechService.stopListening();
-      this.speakNote(speechService.interimTranscription);
-      notifyListeners();
-    }
-    // else start listening
-    else {
-      speechService.startListening();
-      notifyListeners();
-    }
+    speechService.processSpeechRecognize();
+    this.speakNote(speechService.interimTranscription);
     notifyListeners();
   }
+
 
   @override
   void dispose() {

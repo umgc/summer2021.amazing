@@ -38,9 +38,9 @@ class _NoteViewState extends State<NoteView> {
     return Scaffold(
             appBar: CustomAppBarPopup(title: 'View Note'),
             body: ListView(children: [
-              Center(child: Text(widget.note.noteDate, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25))),
+              Padding(padding: EdgeInsets.all(8.0), child: Center(child: Text(widget.note.noteDate, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25)))),
               Divider(thickness: 3),
-              Text(widget.note.noteBody, style: TextStyle(fontSize: fontSizeNotes))],),
+              Padding(padding: EdgeInsets.all(10.0), child: Text(widget.note.noteBody, style: TextStyle(fontSize: fontSizeNotes)))],),
         bottomNavigationBar:
               BottomNavigationBarController(pageIndex: PageEnums.notes.index),
           );
