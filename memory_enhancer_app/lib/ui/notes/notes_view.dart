@@ -36,7 +36,6 @@ class _NotesViewState extends State<NotesView> {
   List<Note> personalNotes = <Note>[];
   List<Note> dinnerNotes = <Note>[];
   List<Note> lunchNotes = <Note>[];
-  List<Note> birthdayNotes = <Note>[];
   List<Note> familyNotes = <Note>[];
   List<Note> medicalNotes = <Note>[];
   List<Note> otherNotes = <Note>[];
@@ -84,15 +83,14 @@ class _NotesViewState extends State<NotesView> {
               'shopping',
               'grocery',
               'birthday',
-              'sample',
               'exercise',
               'nutrition'
             ],
             personalNotes),
-        Subject(2, 'Dinner', ['dinner', 'restaurant', 'food', 'sample'],
+        Subject(2, 'Dinner', ['dinner', 'restaurant', 'food'],
             dinnerNotes),
         Subject(3, 'Lunch',
-            ['lunch', 'food', 'eat', 'afternoon', 'restaurant', 'sample'],
+            ['lunch', 'food', 'eat', 'afternoon', 'restaurant'],
             lunchNotes),
         Subject(
             4,
@@ -114,8 +112,7 @@ class _NotesViewState extends State<NotesView> {
               'granddaughter',
               'grandson',
               'wedding',
-              'funeral',
-              'sample'
+              'funeral'
             ],
             familyNotes),
         Subject(
@@ -132,29 +129,14 @@ class _NotesViewState extends State<NotesView> {
               'illness',
               'insurance',
               'surgery',
-              'procedure',
-              'sample'
+              'medication',
+              'procedure'
             ],
             medicalNotes),
         Subject(
             6,
             'Other',
-            [
-              'conversations',
-              'talk',
-              'speak',
-              'phone',
-              'work',
-              'call',
-              'holiday',
-              'party',
-              'other',
-              'note',
-              'sample',
-              'hello',
-              'breakfast',
-              'sample'
-            ],
+            [],
             otherNotes),
       ];
     });
@@ -198,67 +180,58 @@ class _NotesViewState extends State<NotesView> {
     otherNotes.clear();
     if (id != 0) {
       for (var n in notes) {
+        bool addNote = true;
         for (var t in _subjects[0].topics) {
-          if (n.noteBody.toLowerCase().contains(t.toLowerCase())) {
+          if (addNote && n.noteBody.toLowerCase().contains(t.toLowerCase())) {
             if (!personalNotes.contains(n)) {
               personalNotes.add(n);
+              addNote = false;
             } else {
               print('Note already found');
             }
           }
         }
-
         for (var t in _subjects[1].topics) {
-          if (n.noteBody.toLowerCase().contains(t.toLowerCase())) {
+          if (addNote && n.noteBody.toLowerCase().contains(t.toLowerCase())) {
             if (!dinnerNotes.contains(n)) {
               dinnerNotes.add(n);
+              addNote = false;
             } else {
               print('Note already found');
             }
           }
         }
-
         for (var t in _subjects[2].topics) {
-          if (n.noteBody.toLowerCase().contains(t.toLowerCase())) {
+          if (addNote && n.noteBody.toLowerCase().contains(t.toLowerCase())) {
             if (!lunchNotes.contains(n)) {
               lunchNotes.add(n);
+              addNote = false;
             } else {
               print('Note already found');
             }
           }
         }
-
         for (var t in _subjects[3].topics) {
-          if (n.noteBody.toLowerCase().contains(t.toLowerCase())) {
+          if (addNote && n.noteBody.toLowerCase().contains(t.toLowerCase())) {
             if (!familyNotes.contains(n)) {
               familyNotes.add(n);
+              addNote = false;
             } else {
               print('Note already found');
             }
           }
         }
-
         for (var t in _subjects[4].topics) {
-          if (n.noteBody.toLowerCase().contains(t.toLowerCase())) {
+          if (addNote && n.noteBody.toLowerCase().contains(t.toLowerCase())) {
             if (!medicalNotes.contains(n)) {
               medicalNotes.add(n);
+              addNote = false;
             } else {
               print('Note already found');
             }
           }
         }
-
-        for (var t in _subjects[5].topics) {
-          if (n.noteBody.toLowerCase().contains(t.toLowerCase())) {
-            if (!otherNotes.contains(n)) {
-              otherNotes.add(n);
-            }else {
-              print('Note already found');
-            }
-          }
-        }
-        if (!personalNotes.contains(n) && !dinnerNotes.contains(n) && !lunchNotes.contains(n) && !medicalNotes.contains(n) &&
-            !familyNotes.contains(n)){
+        if (addNote && !otherNotes.contains(n)){
           otherNotes.add(n);
         }
       }
