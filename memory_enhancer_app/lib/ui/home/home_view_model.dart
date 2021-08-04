@@ -3,18 +3,20 @@
 // Author: Christian Ahmed
 //**************************************************************
 import 'package:memory_enhancer_app/services/services.dart';
-import 'package:memory_enhancer_app/file_operations.dart';
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
 class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
-  String recognizedWords = '';
-  String _triggers = '';
-  FileOperations fileOperations = FileOperations();
+  //String recognizedWords = '';
+  //String _triggers = '';
 
   // Boolean storing value whether the speech engine is listening or not
   bool get listening {
-    return speechService.speech.isListening;
+    return speechService.isListening;
+  }
+
+  String get recognizedWords {
+    return speechService.interimTranscription;
   }
 
   @override
@@ -22,14 +24,14 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.resumed:
         print("app in resumed");
-        speechService.listenForWakeWord();
+        //speechService.listenForWakeWord(); AHMED
         break;
       case AppLifecycleState.inactive:
         print("app in inactive");
         break;
       case AppLifecycleState.paused:
         print("app in paused");
-        speechService.stopListeningForWakeWord();
+        //speechService.stopListeningForWakeWord(); AHMED
         break;
       case AppLifecycleState.detached:
         print("app in detached");
@@ -43,31 +45,15 @@ class HomeViewModel extends ReactiveViewModel with WidgetsBindingObserver {
     WidgetsBinding.instance?.addObserver(this);
   }
 
-  void startListening() async {
+  Future<void> handleListening() async {
     // If already listening, stop listening
-    if (listening) {
-      speechService.stopListening();
-    }
-    // else start listening
-    else {
-      speechService.startListening(resultCallback: (result) async {
-        if (result.recognizedWords.isNotEmpty) {
-          recognizedWords = result.recognizedWords;
-
-          // record notes
-          String keywords = await fileOperations.readTriggers();
-          _triggers = keywords;
-          await fileOperations.recordNotes(_triggers, recognizedWords);
-          notifyListeners();
-        }
-      });
-    }
+    speechService.processSpeechRecognize();
     notifyListeners();
   }
 
   @override
   void dispose() {
-    speechService.stopListeningForWakeWord();
+    //speechService.stopListeningForWakeWord(); AHMED
     WidgetsBinding.instance?.removeObserver(this);
     super.dispose();
   }

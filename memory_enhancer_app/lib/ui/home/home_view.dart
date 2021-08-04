@@ -14,9 +14,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 
-
-// String _text = 'Press microphone and begin speaking.';
-
 class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -30,7 +27,6 @@ class HomeView extends StatelessWidget {
       builder: (context, model, child) {
         return Scaffold(
           backgroundColor: lightTheme.primaryColor,
-          //endDrawer: NavigationController(), // TODO: remove after the bottom navigation is fully implemented
           appBar: CustomAppBar(title: 'Memory Enhancer'),
           body: Center(
             child: Column(
@@ -44,12 +40,11 @@ class HomeView extends StatelessWidget {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                       child: Text(
-                        //model.recognizedWords,
-                        speechService.speech.lastRecognizedWords,
+                        speechService.interimTranscription,
                         style: TextStyle(
-                            color: Colors.black87,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 30,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 25,
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -79,7 +74,7 @@ class HomeView extends StatelessWidget {
                               backgroundColor: darkTheme.primaryColor,
                               foregroundColor: Colors.white,
                               onPressed: () {
-                                model.startListening();
+                                model.handleListening();
                               },
                               child: Icon(
                                 model.listening ? Icons.mic : Icons.mic_none,
@@ -95,7 +90,8 @@ class HomeView extends StatelessWidget {
               ],
             ),
           ),
-          bottomNavigationBar: BottomNavigationBarController(pageIndex: PageEnums.home.index),
+          bottomNavigationBar:
+              BottomNavigationBarController(pageIndex: PageEnums.home.index),
         );
       },
     );
