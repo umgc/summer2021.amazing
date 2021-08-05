@@ -10,6 +10,8 @@ import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
 import 'package:flutter/rendering.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
+import 'package:memory_enhancer_app/services/services.dart';
+import 'package:xml/xml.dart' as xml;
 
 class HowToVideosView extends StatefulWidget {
   HowToVideosView({Key? key}) : super(key: key);
@@ -19,12 +21,19 @@ class HowToVideosView extends StatefulWidget {
 }
 
 class _HowToVideosViewState extends State<HowToVideosView> {
-  final List<Map> videoUrls = <Map<String, String>>[
-  {'title':'Video One', 'url':'https://www.youtube.com/watch?v=Z6KZ3cTGBWw'},
-    {'title':'Video Two', 'url':'https://www.youtube.com/watch?v=GLSG_Wh_YWc'}];
+  final List<Map> videoUrls = <Map<String, String>>[];
 
   @override
   void initState() {
+    fileOperations.getHowToVideoLinks().then((value) {
+      setState(() {
+        for(xml.XmlElement xmlElement in value){
+          String title = xmlElement.findElements('title').first.innerText;
+          String url = xmlElement.findElements('url').first.innerText;
+          videoUrls.add(<String, String>{'title':title, 'url':url});
+        }
+      });
+    });
     super.initState();
   }
 

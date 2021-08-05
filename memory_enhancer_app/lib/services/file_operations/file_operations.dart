@@ -327,7 +327,7 @@ class FileOperations with ReactiveServiceMixin {
       print("Start triggers file exists");
     } catch (e) {
       print("Start triggers file needs to be created\nCreating from assets/default_start_record_triggers.txt");
-      String initFile = await rootBundle.loadString('assets/text/default_start_record_triggers.txt');
+      String initFile = await rootBundle.loadString('assets/settings/default_start_record_triggers.txt');
       startFile.writeAsString(initFile);
     }
     try {
@@ -335,7 +335,7 @@ class FileOperations with ReactiveServiceMixin {
       print("Stop triggers file exists");
     } catch (e) {
       print("Stop triggers file needs to be created\nCreating from assets/default_stop_record_triggers.txt");
-      String initFile = await rootBundle.loadString('assets/text/default_stop_record_triggers.txt');
+      String initFile = await rootBundle.loadString('assets/settings/default_stop_record_triggers.txt');
       stopFile.writeAsString(initFile);
     }
     try {
@@ -343,7 +343,7 @@ class FileOperations with ReactiveServiceMixin {
       print("Recall triggers file exists");
     } catch (e) {
       print("Recall triggers file needs to be created\nCreating from assets/default_recall_triggers.txt");
-      String initFile = await rootBundle.loadString('assets/text/default_recall_triggers.txt');
+      String initFile = await rootBundle.loadString('assets/settings/default_recall_triggers.txt');
       recallFile.writeAsString(initFile);
     }
   }
@@ -368,7 +368,6 @@ class FileOperations with ReactiveServiceMixin {
         file = await _recallTriggersFile;
         break;
     }
-    // file = await _startTriggersFile;
     List<String> triggersArray = file.readAsLinesSync();
     if(!triggersArray.contains(text.trim())) {
       file.writeAsString('\n${text}', mode: io.FileMode.append);
@@ -535,5 +534,21 @@ class FileOperations with ReactiveServiceMixin {
       print('An error has occurred while deleting notes for cleanup.' + e.toString());
     }
     dataProcessingService.initializeUserNotes();
+  }
+
+  Future<Iterable<xml.XmlElement>> getHowToVideoLinks() async {
+    String xmlBody = '';
+    try {
+      xmlBody = await rootBundle.loadString('assets/how_to_videos/howToVideoLinks.xml');
+      var xmlFile = xml.XmlDocument.parse(xmlBody);
+      var elements = xmlFile.findElements('videos').first.findElements('video');
+
+      return elements;
+
+    } catch (e) {
+      String errorMessage = 'An error has occurred while retrieving video links. MORE INFO: ' + e.toString();
+      print(errorMessage);
+      return Iterable.empty();
+    }
   }
 }

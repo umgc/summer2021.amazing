@@ -44,11 +44,11 @@ class _ContactUsViewState extends State<ContactUsView> {
             body: ListView(
               padding: const EdgeInsets.all(8),
           children: <Widget>[
-            CustomOneButtonListItem(fontSizeMenu: fontSizeMenu, title: 'Call Us ', icon: Icon(Icons.phone), onBtnOnePress: (){launch('tel:3012405555'); print('Call (301) 240-5555');}),
-            CustomOneButtonListItem(fontSizeMenu: fontSizeMenu, title: 'Email Us', icon: Icon(Icons.mail), onBtnOnePress: (){launch('mailto:help@team.amazing.com'); print('Email help@team.amazing.com');}),
+            CustomOneButtonListItem(fontSizeMenu: fontSizeMenu, title: 'Call Us ', icon: Icon(Icons.phone), onBtnOnePress: (){launch('tel:2025799274'); print('Call (202) 579-9274');}),
+            CustomOneButtonListItem(fontSizeMenu: fontSizeMenu, title: 'Email Us', icon: Icon(Icons.mail), onBtnOnePress: (){launch('mailto:me.teamamazing@gmail.com'); print('Email me.teamamazing@gmail.com');}),
             CustomOneButtonListItem(fontSizeMenu: fontSizeMenu, title: 'Visit Us', icon: Icon(Icons.public), onBtnOnePress: (){launch('https://umgc.edu/'); print('Visit UMGC');}),
             CustomOneButtonListItem(fontSizeMenu: fontSizeMenu, title: 'Facebook', icon: Icon(Icons.facebook), onBtnOnePress: (){launch('https://facebook.com/umgc'); print('Facebook');}),
-            CustomOneButtonListItem(fontSizeMenu: fontSizeMenu, title: 'YouTube', icon: Icon(Icons.tv), onBtnOnePress: (){launch('https://youtube.com/channel/UCC1suhu1lcmqv6a1uagvXjA'); print('YouTube');}),
+            CustomOneButtonListItem(fontSizeMenu: fontSizeMenu, title: 'YouTube', icon: Icon(Icons.tv), onBtnOnePress: (){launch('https://www.youtube.com/channel/UC79vq1NeyKhNwenCsTh0IBQ'); print('YouTube');}),
               ]
             ),
             bottomNavigationBar: BottomNavigationBarController(

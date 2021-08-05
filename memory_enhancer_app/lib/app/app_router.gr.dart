@@ -15,7 +15,7 @@ import 'package:memory_enhancer_app/ui/notes/notes_view.dart' as _i5;
 import 'package:memory_enhancer_app/ui/settings/general/general_settings_view.dart'
     as _i9;
 import 'package:memory_enhancer_app/ui/settings/settings_view.dart' as _i4;
-import 'package:memory_enhancer_app/ui/trigger_words/trigger_words_view.dart'
+import 'package:memory_enhancer_app/ui/settings/trigger_words/trigger_words_view.dart'
     as _i7;
 
 class AppRouter extends _i1.RootStackRouter {
