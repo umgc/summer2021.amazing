@@ -10,11 +10,11 @@ import 'package:text_to_speech/text_to_speech.dart';
 @singleton
 class TextToSpeechService with ReactiveServiceMixin {
 
-  TextToSpeech _tts = TextToSpeech();
+  TextToSpeech tts = TextToSpeech();
 
   Future<void> synthesizeText(String text) async {
     print("TEXT-TO-SPEECH SERVICE / Speech synthesizing result : $text");
-    _tts.speak(text);
+    tts.speak(text);
   }
 
 }
