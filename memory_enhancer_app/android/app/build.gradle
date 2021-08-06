@@ -52,8 +52,3 @@ android {
 flutter {
     source '../..'
 }
-
-dependencies {
-    implementation 'com.ibm.watson:ibm-watson:9.2.0'
-    implementation 'com.ibm.watson.developer_cloud:android-sdk:0.6.0'
-}

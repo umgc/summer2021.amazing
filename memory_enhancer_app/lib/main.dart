@@ -9,14 +9,12 @@ import 'app/themes/light_theme.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   configureDependencies();
-  // something
-  await ThemeManager.initialise();
+  ThemeManager.initialise();
   await speechService.initialize();
   fileOperations.initialNoteFile();
   fileOperations.initializeTriggersFile();
-  fileOperations.initializeSettingsFile(false);
+  fileOperations.initializeSettingsFile(false).then((value) => fileOperations.cleanupNotes());
   await dataProcessingService.initialize();
-  fileOperations.cleanupNotes();
   runApp(MemoryEnhancerApp());
 }
 

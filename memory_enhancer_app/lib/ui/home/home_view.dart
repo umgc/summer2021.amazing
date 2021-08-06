@@ -4,7 +4,6 @@
 //**************************************************************
 import 'package:memory_enhancer_app/app/themes/dark_theme.dart';
 import 'package:memory_enhancer_app/app/themes/light_theme.dart';
-import 'package:memory_enhancer_app/services/services.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
@@ -40,7 +39,7 @@ class HomeView extends StatelessWidget {
                       padding:
                           const EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
                       child: Text(
-                        speechService.interimTranscription,
+                        "", // speechService.interimTranscription, // enable to see transcription
                         style: TextStyle(
                           color: Colors.black87,
                           fontWeight: FontWeight.w400,

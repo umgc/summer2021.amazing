@@ -177,7 +177,7 @@ class FileOperations with ReactiveServiceMixin {
   }
 
   // Create initial notes file
-  void initialNoteFile() async {
+  Future<void> initialNoteFile() async {
     try {
       final file = await _noteFile;
       if (await file.exists()) {
@@ -317,7 +317,7 @@ class FileOperations with ReactiveServiceMixin {
     }
   }
 
-  void initializeTriggersFile() async {
+  Future<void> initializeTriggersFile() async {
     final startFile = await _startTriggersFile;
     final stopFile = await _stopTriggersFile;
     final recallFile = await _recallTriggersFile;
@@ -429,7 +429,7 @@ class FileOperations with ReactiveServiceMixin {
     dataProcessingService.initializeTriggers();
   }
 
-  void initializeSettingsFile(bool reset) async {
+  Future<void> initializeSettingsFile(bool reset) async {
     final settingsFile = await _settingsValuesFile;
     if(reset){
       String xmlBody = await rootBundle.loadString('assets/settings/settingsValues.xml');
