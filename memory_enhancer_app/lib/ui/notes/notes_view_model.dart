@@ -56,7 +56,8 @@ class NotesViewModel extends BaseViewModel {
   //Create note from recording/speaking
   void speakNote(String data) async {
     // If data is not empty , make a Note object and save to file
-    if (data.isNotEmpty && !speechService.isListening) {
+    if (data.isNotEmpty) {
+      data = data.split('you ')[1];
       Note note = Note('', DateTime.now(), data); // New Note
       fileOperations.writeNoteToFile(note); // Save Note to file
       dataProcessingService.initializeUserNotes();
