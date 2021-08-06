@@ -56,8 +56,11 @@ class NotesViewModel extends BaseViewModel {
   //Create note from recording/speaking
   void speakNote(String data) async {
     // If data is not empty , make a Note object and save to file
-    if (data.isNotEmpty) {
-      data = data.split('you ')[1];
+    String ttsPhrase = 'memory enhancer is now listening to you ';
+    if (!listening && data.isNotEmpty) {
+      if(data.startsWith(ttsPhrase)){
+        data = data.split(ttsPhrase)[1];
+      }
       Note note = Note('', DateTime.now(), data); // New Note
       fileOperations.writeNoteToFile(note); // Save Note to file
       dataProcessingService.initializeUserNotes();
@@ -71,6 +74,9 @@ class NotesViewModel extends BaseViewModel {
 
   Future<void> handleListening() async {
     // If already listening, stop listening
+    if(!listening && speechService.interimTranscription.isNotEmpty){
+      speechService.interimTranscription = '';
+    }
     speechService.processSpeechRecognize();
     this.speakNote(speechService.interimTranscription);
     notifyListeners();
