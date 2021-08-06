@@ -293,6 +293,14 @@ class _NotesViewState extends State<NotesView> {
               onLongPress: () {
                 viewNote(context, subjectNoteLists(id)[index]);
               },
+              onPress: () {
+                final snackBar = SnackBar(
+                  content: const Text('Please Long Press To View Whole Note'),
+                );
+                // Find the ScaffoldMessenger in the widget tree
+                // and use it to show a SnackBar.
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              },
               onEdit: () {
                 _ntTxtControl.text = subjectNoteLists(id)[index].body;
                 getNoteContent();
@@ -410,14 +418,6 @@ class _NotesViewState extends State<NotesView> {
                 actions: [IconButton(onPressed:(){
                   searchNotes(context);
                   }, icon: Icon(Icons.search))]),
-            bottomSheet: Container(
-                height: 30,
-                padding: EdgeInsets.all(5),
-                alignment: Alignment.center,
-                child: Text(
-                  'Please long press on note to view more',
-                  style: TextStyle(fontSize: 16),
-                )),
             body: SingleChildScrollView(
                 child: ExpansionPanelList(
                   expansionCallback: (int index, bool isExpanded) {
