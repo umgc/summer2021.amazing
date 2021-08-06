@@ -4,6 +4,7 @@
 //**************************************************************
 import 'package:memory_enhancer_app/app/themes/dark_theme.dart';
 import 'package:memory_enhancer_app/app/themes/light_theme.dart';
+import 'package:memory_enhancer_app/services/services.dart';
 import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
@@ -33,17 +34,26 @@ class HomeView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Flexible(
-                  child: SingleChildScrollView(
-                    reverse: true,
-                    child: Container(
-                      padding:
-                          const EdgeInsets.fromLTRB(20.0, 30.0, 20.0, 30.0),
+                  flex: 2,
+                  fit: FlexFit.tight,
+                  child: Container(
+                    margin: const EdgeInsets.all(10.0),
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black54),
+                        borderRadius: BorderRadius.all(Radius.circular(10))
+                    ),
+                    padding: const EdgeInsets.all(10.0),
+                    width: MediaQuery.of(context).size.width * 1.0,
+                    height: MediaQuery.of(context).size.width * 0.5,
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.vertical,
+                      physics: BouncingScrollPhysics(),
                       child: Text(
-                        "", // speechService.interimTranscription, // enable to see transcription
+                        speechService.interimTranscription,
                         style: TextStyle(
-                          color: Colors.black87,
+                          color: Colors.black,
                           fontWeight: FontWeight.w400,
-                          fontSize: 25,
+                          fontSize: 20,
                         ),
                         textAlign: TextAlign.left,
                       ),
@@ -51,7 +61,8 @@ class HomeView extends StatelessWidget {
                   ),
                 ),
                 Flexible(
-                  flex: 2,
+                  flex: 3,
+                  fit: FlexFit.tight,
                   child: Stack(
                     children: [
                       Positioned.fill(
@@ -60,14 +71,14 @@ class HomeView extends StatelessWidget {
                           showTwoGlows: true,
                           animate: model.listening,
                           glowColor: Colors.grey,
-                          endRadius: 200.0,
+                          endRadius: MediaQuery.of(context).size.width * 0.65,
                           duration: const Duration(milliseconds: 2000),
                           repeatPauseDuration:
                               const Duration(milliseconds: 100),
                           repeat: true,
                           child: Container(
-                            height: 200,
-                            width: 200,
+                            height: MediaQuery.of(context).size.width * 0.55,
+                            width: MediaQuery.of(context).size.width * 0.55,
                             child: FloatingActionButton(
                               elevation: 10,
                               backgroundColor: darkTheme.primaryColor,
@@ -77,7 +88,7 @@ class HomeView extends StatelessWidget {
                               },
                               child: Icon(
                                 model.listening ? Icons.mic : Icons.mic_none,
-                                size: 180,
+                                size: MediaQuery.of(context).size.width * 0.45,
                               ),
                             ),
                           ),

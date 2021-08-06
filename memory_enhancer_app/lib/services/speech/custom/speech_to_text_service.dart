@@ -132,7 +132,7 @@ class SpeechToTextService with ReactiveServiceMixin {
       notifyListeners();
       await stopListening();
       await textToSpeechService.synthesizeText("- Memory Enhancer is no longer listening to you");
-      await _processFinalTranscript();
+      _processFinalTranscript();
     }
   }
 
@@ -163,9 +163,12 @@ class SpeechToTextService with ReactiveServiceMixin {
           }
 
           // Print the returned transcription
-          interimTranscription = _interimFinalTranscription + responseJson["results"][0]["alternatives"][0]["transcript"].replaceAll("%HESITATION", "");
-          notifyListeners();
-          print("---------- $interimTranscription");
+          String trs = responseJson["results"][0]["alternatives"][0]["transcript"].replaceAll("%HESITATION", "");
+          if(!interimTranscription.endsWith(trs)) {
+            interimTranscription = _interimFinalTranscription + trs;
+            notifyListeners();
+            print("---------- $interimTranscription");
+          }
         } on Exception catch (ex) {
           // Do nothing
         }
@@ -232,16 +235,12 @@ class SpeechToTextService with ReactiveServiceMixin {
     // Separate speakers and their words
     _processSpeakerDiarization();
 
-    print("\n\n\n-----------------------------------------------------------------------------------------------------------\n");
-    // Print final transcriptions
-    print(_fullTranscription);
-
-    // TODO : Remove later. For testing.
+    //
+    interimTranscription = "";
     _distinctSpeakerTexts.forEach((key, value) {
-      print("\n-----------------------------------------------------------------------------------------------------------\n");
-      print("SPEAKER #$key : $value");
+      interimTranscription += "SPEAKER #$key : $value \n\n";
     });
-    print("\n-----------------------------------------------------------------------------------------------------------\n\n\n");
+    notifyListeners();
   }
 
   Future<void> _processSpeakerDiarization() async {
