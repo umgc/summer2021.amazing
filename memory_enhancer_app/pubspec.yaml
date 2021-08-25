@@ -124,13 +124,14 @@ flutter:
   assets:
     - assets/text/notes.txt
     - assets/text/words.txt
-    - assets/text/default_start_record_triggers.txt
-    - assets/text/default_stop_record_triggers.txt
-    - assets/text/default_recall_triggers.txt
+    - assets/settings/default_start_record_triggers.txt
+    - assets/settings/default_stop_record_triggers.txt
+    - assets/settings/default_recall_triggers.txt
     - assets/settings/settingsValues.xml
     - assets/porcupine/hey_amazing_en_android.ppn
     - assets/porcupine/hey_amazing_en_ios.ppn
     - assets/ibm_watson/speech_to_text_credentials.xml
+    - assets/how_to_videos/howToVideoLinks.xml
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

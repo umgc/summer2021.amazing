@@ -12,7 +12,7 @@ import 'package:memory_enhancer_app/ui/app_bar/app_bar.dart';
 import 'package:memory_enhancer_app/ui/enums/enums.dart';
 import 'package:memory_enhancer_app/ui/list_item/list_item_dynamic.dart';
 import 'package:memory_enhancer_app/ui/navigation/navigation_controller.dart';
-import 'package:memory_enhancer_app/ui/trigger_words/trigger_words_view_model.dart';
+import 'package:memory_enhancer_app/ui/settings/trigger_words/trigger_words_view_model.dart';
 import 'package:stacked/stacked.dart';
 import 'package:memory_enhancer_app/services/services.dart';
 
@@ -33,7 +33,6 @@ class _TriggerWordsViewState extends State<TriggerWordsView> with TickerProvider
   late TabController tabCtrl;
 
   void updateTriggerWords() {
-    print("updating words");
     fileOperations.readTriggers(0).then((String value) {
       setState(() {
         startTriggerWords = value;

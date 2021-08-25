@@ -136,6 +136,12 @@ class DataProcessingService with ReactiveServiceMixin {
       if(_userWordsToSave.startsWith("my")) {
         _userWordsToSave = _userWordsToSave.replaceFirst("my", "your");
       }
+      if(_userWordsToSave.startsWith("i am")) {
+        _userWordsToSave = _userWordsToSave.replaceFirst("i am", "you are");
+      }
+      if(_userWordsToSave.startsWith("i'm")) {
+        _userWordsToSave = _userWordsToSave.replaceFirst("i'm", "you are");
+      }
       print("DATA PROCESSING / Saving user note : [$_userWordsToSave]");
       saveNote(_userWordsToSave);
       voiceMessage("I save that for you");
